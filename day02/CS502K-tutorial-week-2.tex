@@ -42,8 +42,8 @@
 
 %ADD A % TO THE NEXT LINE, AND REMOVE THE % FROM THE FOLLOWING LINE IN ORDER TO
 %MAKE THE ANSWERS DISAPPEAR
-%\newcommand{\answer}[1]{\textbf{Answer: }#1}
-\newcommand{\answer}[1]{}
+\newcommand{\answer}[1]{\textbf{Answer: }#1}
+% \newcommand{\answer}[1]{}
 
 %\newcommand{\answer}[3]{\textbf{Learning Outcomes:} #1 \ \\ \textbf{Answer: }#2  \ \\ \textbf{Marking scheme: }#3 }
 %\newcommand{\answer}[3]{}
@@ -150,14 +150,15 @@ The components are
 }
 \answer{The items are open-ended, and these depend on the choice of the initial state (location of origin and destination, and obstacles.}
 
-\item
-\question{Familiarise yourself with the code base for the algorithms presented in the textbook; the code is available at \url{https://github.com/aimacode/aima-python}. In particular, download and experiment with the search algorithms, available at \url{http://aima.cs.berkeley.edu/python/search.html}. Consider the following tasks:
+\item \question{Familiarise yourself with the search algorithms in the aima-python library (\url{https://github.com/aimacode/aima-python}). You find two versions of Jupyter notebooks with search algorithms: (1) \texttt{search.ipynb} (corresponding to AIMA 3e) and (2) \texttt{search4e.ipynb} (corresponding to AIMA 4e). Although in this course we largely follow AIMA 3e, for searching algorithms it is best you learn from both versions as each has a different set of examples. Consider the following tasks:
 \begin{enumerate}
-    \item Create a map for the Northeast of Scotland, with the main towns and their distances, and use the algorithms to find a route between any two towns.
-    \item Model the problem of the jugs introduced above, and use the algorithms to find a solution.
+\item Inspect the code for the abstract Problem and Node classes which are defined in the \texttt{search.py} library.
+\item Create a map for the Northeast of Scotland, with the main towns and their distances, and use the algorithms to find a route between any two towns.
+\item Inspect the code corresponding to the 8 Puzzle, focusing mainly on how you define the problem, define cost and heuristic functions to search problems. Investigate the search space explored (nodes expanded) and the paths to solutions.
+\item Model the problem of the jugs introduced above, and use the algorithms to find a solution. (Note: a solution to the Jugs problem is in \texttt{search4e.ipynb}.)
 \end{enumerate}
 }
-\answer{These items are open-ended. They aim at making students comfortable with (re-) using code.}
+\answer{Follow the instructions in the aima-python code repository.}
 
 % \item (\textbf{Hand-in Exercise})
 % \question{Using the on-line search demo available at
