@@ -2,7 +2,7 @@
 
 ## Tutorial 04: Planning Formalisms
 
-#### Prof. Felipe Meneguzzi
+Prof. Felipe Meneguzzi
 
 Adapted from code in the [AI Planning Community Modelling](https://github.com/AI-Planning/modeling-in-pddl) public repository.
 
