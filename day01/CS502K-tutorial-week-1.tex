@@ -1,14 +1,11 @@
 \DocumentMetadata{
-	lang=en,
-	testphase={phase-III,math,table,title,firstaid},
-	pdfversion=2.0,
-	pdfstandard=a-4,
+  lang        = en,
+%   pdfstandard = ua-2,
+%   pdfstandard = a-4f, %or a-4
+  pdfstandard = a-4,
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE} 
 }
-% \tagpdfsetup{math/mathml/sources, math/alt/use}
-\ifx\pdfvariable\undefined\else \pdfvariable omitcidset=1 \fi
-
-\renewcommand\DocumentMetadata[1]{}
-
 \documentclass[11pt]{article}
 \usepackage{paralist}
 \usepackage{fullpage,graphicx}

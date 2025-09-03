@@ -1,0 +1,202 @@
+\DocumentMetadata{
+  lang        = en,
+%   pdfstandard = ua-2,
+%   pdfstandard = a-4f, %or a-4
+  pdfstandard = a-4,
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE} 
+}
+\documentclass[11pt]{article}
+\usepackage{paralist}
+\usepackage{fullpage,graphicx}
+\usepackage{bold-extra}
+\usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[dvipsnames]{xcolor}
+\input xy
+\xyoption{all}
+\usepackage{color,soul}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+\RequirePackage{etex}
+
+\usepackage{listings}
+\lstdefinestyle{customjava}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=java,
+  showstringspaces=false,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{red!40!black},
+}
+
+\newcommand{\question}[1]{#1}
+
+%ADD A % TO THE NEXT LINE, AND REMOVE THE % FROM THE FOLLOWING LINE IN ORDER TO
+%MAKE THE ANSWERS DISAPPEAR
+%\newcommand{\answer}[1]{\textbf{Answer: }#1}
+\newcommand{\answer}[1]{}
+
+%\newcommand{\answer}[3]{\textbf{Learning Outcomes:} #1 \ \\ \textbf{Answer: }#2  \ \\ \textbf{Marking scheme: }#3 }
+%\newcommand{\answer}[3]{}
+
+%\lfoot{PLEASE TURN OVER}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usepackage{tkz-graph}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mb}[1]{\mathbb{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\cob}[1]{{\color{RoyalBlue} #1}}
+\newcommand{\cor}[1]{{\color{RedOrange} #1}}
+\newcommand{\cop}[1]{{\color{Purple} #1}}
+\newcommand{\cog}[1]{{\color{ForestGreen} #1}}
+
+\newcommand{\deft}{\mc{D}}
+\newcommand{\coop}{\mc{C}}
+
+\begin{document}
+
+\centerline{\textsc{University of Aberdeen}} 
+\centerline{MSc in Artificial Intelligence -- Foundations of Artificial Intelligence (CS5060)}
+\centerline{Tutorial -- Search} 
+
+\hrulefill
+
+The tutorial is based on parts of Chapter 3 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach}, and the slides covered in our lectures.
+
+\hrulefill
+
+\begin{enumerate}
+
+\item
+\question{What's the difference between a world state, a state description, and a search node? Why is this distinction useful?
+}
+
+\answer{A world state is how reality is or could be. In one world state we're in Arad, in another we're in Bucharest. The world state also includes which street we're on, what's currently on the radio, and the price of tea in China. A state description is an agent's internal description of a world state. Examples are $\mathit{In}(\mathit{Arad})$ and $\mathit{In}(\mathit{Bucharest})$. These descriptions
+are necessarily approximate, recording only some aspects of the world state. We need to distinguish between world states and state descriptions: state descriptions are very simple abstractions of the world state, and this can be i) because the agent could be mistaken about how the world is, ii) because the agent might want to imagine things that aren't true but it could make true, and ii) because the agent cares about the world (and not its internal representation of it). Search nodes are generated during search, representing a state the search process knows how to reach. They contain additional information aside from the state description, such as the sequence of actions used to reach this state. This distinction is useful because we may generate different search nodes which represent the same state, and because search nodes contain more information than a state representation.
+}
+
+\item 
+\question{ Suppose two friends live in different cities on a map, such as the Romania map from the lectures. On every turn, we can simultaneously move each friend to a neighboring city on the map. The amount of time needed to move from city $i$ to neighbor $j$ is equal to the road distance $d(i, j)$ between the cities, but on each turn the friend that arrives first must wait until the other one arrives (and calls the other one on his/her mobile phone) before the next turn can begin. We want the two friends to meet as quickly as possible.
+\begin{enumerate}
+\item Write a detailed formulation for this search problem. You will find it helpful to define some formal notation.
+\item Let $D(i, j)$ be the straight-line distance between cities $i$ and $j$. Which of the following heuristic functions are admissible? 
+\begin{enumerate}
+    \item $D(i, j)$
+    \item $2 \times D(i, j)$
+    \item $D(i, j)/2$.
+\end{enumerate}
+\item Are there completely connected maps for which no solution exists?
+\item Are there maps in which all solutions require one friend to visit the same city twice?
+\end{enumerate}
+}
+\answer{
+\begin{enumerate}
+\item The formulation of the search problem has the following components:
+\begin{itemize}
+    \item State space: states are all possible city pairs $(i, j)$. \emph{The map is not the state space.} 
+    \item Successor function: the successors of $(i, j)$ are all pairs $(x, y)$ such that $\mathit{Adjacent}(x, i)$ and $\mathit{Adjacent}(y, j)$. 
+    \item Goal: Be at $(i, i)$ for some $i$. 
+    \item Step cost function: The cost to go from $(i, j)$ to $(x, y)$ is $\mathit{max}(d(i, x), d(j, y))$.
+\end{itemize}
+
+\item In the best case, the friends head straight for each other in steps of equal size, reducing their separation by twice the time cost on each step. Hence (iii) is admissible.
+\item Yes: e.g., a map with two nodes connected by one link. The two friends will swap places forever. The same will happen on any chain if they start an odd number of steps apart. (One can see this best on the graph that represents the state space, which has two disjoint sets of nodes.) The same even holds for a grid of any size or shape, because every move changes the Manhattan distance between the two friends by 0 or 2.
+\item Yes: take any of the unsolvable maps from part (c) and add a self-loop to any one of the nodes. If the friends start an odd number of steps apart, a move in which one of the friends takes the self-loop changes the distance by 1, rendering the problem solvable. If the self-loop is not taken, the argument from (c) applies and no solution is possible.
+\end{enumerate}
+}
+
+\item 
+\question{Suppose you have three jugs, measuring 12 gallons, 8 gallons, and 3 gallons, and a water faucet. You can fill the jugs up or empty them out from one to another or onto the ground. You need to measure out exactly one gallon. Give this problem a formulation as a search space (with its initial and goal states, its successor function, and a cost function).}
+\answer{
+The components are
+\begin{itemize}
+\item Initial state: jugs have values $[0, 0, 0]$. 
+\item Final states: it can be any of $[1, y, z], [x, 1, z]$, or $[x, y, 1]$
+\item Successor function: given values $[x, y, z]$, generate $[12, y, z], [x, 8, z], [x, y, 3]$ (by filling); $[0, y, z], [x, 0, z], [x, y, 0]$ (by emptying); or for any two jugs with current values $x$ and $y$, pour $y$ into $x$; this changes the jug with $x$ to the minimum of $x + y$ and the capacity of the jug, and decrements the jug with $y$ by the amount gained by the first jug.
+\item Cost function: number of actions
+\end{itemize}
+}
+
+\item 
+\question{The web site 
+\url{https://qiao.github.io/PathFinding.js/visual/}, implements various search algorithms to find paths between two cells of an $n \times n$ grid. Use it to:
+\begin{enumerate}
+    \item Create a problem which will require the exploration of all cells in the grid, using one of the available algorithms. Can you do this without any obstacles?
+    \item Create a problem to compare 2 heuristics using the A* algorithm. Compare these in terms of overall number of explored states and length of path (optimality of solution). 
+\end{enumerate}
+}
+\answer{The items are open-ended, and these depend on the choice of the initial state (location of origin and destination, and obstacles.}
+
+\item
+\question{Familiarise yourself with the code base for the algorithms presented in the textbook; the code is available at \url{https://github.com/aimacode/aima-python}. In particular, download and experiment with the search algorithms, available at \url{http://aima.cs.berkeley.edu/python/search.html}. Consider the following tasks:
+\begin{enumerate}
+    \item Create a map for the Northeast of Scotland, with the main towns and their distances, and use the algorithms to find a route between any two towns.
+    \item Model the problem of the jugs introduced above, and use the algorithms to find a solution.
+\end{enumerate}
+}
+\answer{These items are open-ended. They aim at making students comfortable with (re-) using code.}
+
+% \item (\textbf{Hand-in Exercise})
+% \question{Using the on-line search demo available at
+% \url{http://tristanpenman.com/demos/n-puzzle/}, implementing a number of search algorithms to solve the $n$-puzzle:
+% \begin{enumerate}
+%     \item Compare 2 algorithms of your choice, using the same initial and goal states and counting how many states each of them explored/expanded in the search tree. \hfill [3 marks]
+%     \item Compare 2 algorithms of your choice in terms of how long (how many steps/moves) their solutions provide. Do any of the algorithms provide the optimal solution (with fewer operations)? \hfill [2 marks]
+% %    \item Are there any configurations for which no solution can ever be found? Which ones (if any)? [1 mark]
+% \end{enumerate}
+% }
+% \answer{
+% \begin{enumerate}
+%     \item This item is open-ended and its answer depends on the initial and final configurations, as well as the search algorithm used.
+%     \item This item is open-ended and its answer depends on the initial and final configurations, as well as the search algorithm used. The A* provides an optimal solution.
+%     % \item Yes, there are configurations for which we cannot find solutions. If we try the search demo with the initial and final configurations:
+%     % \begin{center}
+%     % \begin{tabular}{cc}
+%     %     \begin{tabular}{|c|c|c|} \hline
+%     %         1 & 2 & 3 \\ \hline
+%     %         4 & 5 & 6 \\ \hline
+%     %           & 8 & 7 \\ \hline
+%     %     \end{tabular}
+%     %     &
+%     %     \begin{tabular}{|c|c|c|} \hline
+%     %         1 & 2 & 3 \\ \hline
+%     %         4 & 5 & 6 \\ \hline
+%     %         7  & 8 & \\ \hline
+%     %     \end{tabular}
+%     % \end{tabular}
+%     % \end{center}
+%     % The search will fail. The way to find out if an initial configuration leads to a final configuration is by counting the number of inversions, that is, by counting how many times a tile precedes another tile with a lower number; if the total of inversions is an odd number, then the configuration is unsolvable. In our case above, $1,2,3,4,5,6,7$ have 0 inversions, and $8$ has only $1$ inversion (it precedes a tile with number $7$). The total number of inversions is $1$ (an odd number) so the puzzle is unsolvable.
+% \end{enumerate}
+% \textbf{Marking scheme}:
+% \begin{enumerate}
+%     \item 2 marks for the first algorithm used and its number of states, 1 mark for the second one.
+%     \item 1 mark per algorithm used and its number of moves (levels of the search tree).
+% \end{enumerate}
+% }
+
+\end{enumerate}
+
+\end{document}
