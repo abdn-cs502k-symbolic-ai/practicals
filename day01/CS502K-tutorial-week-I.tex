@@ -1,4 +1,14 @@
-%%%%%%%%%RESIT EXAM%%%%%%%%%
+\DocumentMetadata{
+	lang=en,
+	testphase={phase-III,math,table,title,firstaid},
+	pdfversion=2.0,
+	pdfstandard=a-4,
+}
+% \tagpdfsetup{math/mathml/sources, math/alt/use}
+\ifx\pdfvariable\undefined\else \pdfvariable omitcidset=1 \fi
+
+\renewcommand\DocumentMetadata[1]{}
+
 \documentclass[11pt]{article}
 \usepackage{paralist}
 \usepackage{fullpage,graphicx}
@@ -38,8 +48,8 @@
 
 %ADD A % TO THE NEXT LINE, AND REMOVE THE % FROM THE FOLLOWING LINE IN ORDER TO
 %MAKE THE ANSWERS DISAPPEAR
-\newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
-%\newcommand{\answer}[1]{}
+% \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
+\newcommand{\answer}[1]{}
 
 %\lfoot{PLEASE TURN OVER}
 \renewcommand{\headrulewidth}{0pt}
@@ -72,7 +82,7 @@
 \begin{document}
 
 \centerline{\textsc{University of Aberdeen}} 
-\centerline{Foundations of Artificial Intelligence (CS5060)}
+\centerline{Symbolic AI (CS502K)}
 \centerline{Tutorial I  -- Introduction to A.I. \& Intelligent Agents} 
 
 \hrulefill
@@ -381,6 +391,30 @@ This problem is also a partially observable Markov decision process.
 %     \item 0.5 mark per actuator correctly identified.
 %     \item 1 mark per correct rule which should list all sensors and actuators, although no marks deducted if the status of actuators is missing from the ``if-part'' of the rules. Rules, however, must ``make sense'' in that they should describe realistic situations and appropriate actions for these situations.
 % \end{enumerate}}
+
+\item 
+\question{Familiarise yourself with the code base for the algorithms presented in the AIMA textbook; the code is available at \url{https://github.com/aimacode/aima-python}. You have two options to work with aima-python: (1) install Anaconda + Jupyter on your computer--recommended; (2) run aima-python directly online in a Binder Environment – worth trying.
+
+\begin{enumerate}
+\item Start exploring aima-python with the intro Jupyter notebook (e.g. \url{https://github.com/aimacode/aima-python/blob/master/intro.ipynb}). If you have a local aima-python (as recommended above) you start with your local version of the intro Jupyter notebook.
+\item The intro notebook has a link to another notebook called index (e.g. \url{https://github.com/aimacode/aima-python/blob/master/index.ipynb}). If you have a local aima-python (as recommended above) you start with your local version of the index Jupyter notebook.
+\end{enumerate}
+}
+\answer{Follow the instructions in the aima-python code repository.}
+
+\item 
+\question{The agents Jupyter notebook (e.g. \url{https://github.com/aimacode/aima-python/blob/master/agents.ipynb}) has a few examples of agents and environments – i.e. a BlindDog in a park. You will notice that the agents.ipynb imports code from agents.py. This is a common feature in aima-python where Jupyter notebooks use python libraries that actually implement the algorithms from the AIMA textbook.
+
+\begin{enumerate}
+\item Inspect the code for the abstract Agent and Environment classes which are defined in the \texttt{agents.py} library.
+\item Starting with a simple BlindDog agent and a Park environment, the agents.ipynb notebook has multiple implementations of BlindDog agents and their Park environments increasing the complexity of the environment. You will learn how complex environments increases the sophistication of the agents e.g. EnergeticBlindDog.
+\item The agents.ipynb also shows an example of the Wumpus environment. We will only learn building functionality to reason about individual actions an agent in the Wumpus world can take at any given stage of the agent's journey in the Wumpus world. A fully functioning agent for the Wumpus environment is way more complex than building a BlindDog. Why?
+\end{enumerate}
+}
+
+\answer{
+Follow the instructions in the aima-python code repository.
+}
 
 \end{enumerate} % end of top-level enumeration
 
