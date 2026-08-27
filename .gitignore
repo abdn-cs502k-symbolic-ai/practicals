@@ -1,5 +1,25 @@
 CS502K-*.pdf
 build
+## macOS / editor cruft
+# Also covered by ~/.gitignore_global here, but that does not travel with the repo.
+.DS_Store
+*~
+
+## Planner output
+# Fast Downward and friends write sas_plan next to the domain. Reference plans
+# are committed under their own names (e.g. cup_of_tea/solution.plan), so ignore
+# only the generated one.
+sas_plan
+sas_plan.*
+output.sas
+*.plan.tmp
+
+## Distribution bundles and rendered previews
+# Both are regenerable: zips are made for MyAberdeen upload, and the .html files
+# come from VSCode's markdown preview export. Generate them, do not commit them.
+*.zip
+*.html
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -26,7 +46,6 @@ build
 ## Generated if empty string is given at "Please type another file name for output:"
 .pdf
 ai-lecture*.pdf
-Lectures-2023.html
 
 ## Bibliography auxiliary files (bibtex/biblatex/biber):
 *.bbl
