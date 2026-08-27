@@ -43,10 +43,14 @@
 
 \newcommand{\question}[1]{#1}
 
-%ADD A % TO THE NEXT LINE, AND REMOVE THE % FROM THE FOLLOWING LINE IN ORDER TO
-%MAKE THE ANSWERS DISAPPEAR
-% \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
-\newcommand{\answer}[1]{}
+%% Answers are OFF by default. Do not edit this block to turn them on: the
+%% Makefile builds the solutions variant by passing \def\showanswers{} on the
+%% command line, so `make' cannot ship answers in the student PDF by accident.
+\ifdefined\showanswers
+  \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
+\else
+  \newcommand{\answer}[1]{}
+\fi
 
 %\lfoot{PLEASE TURN OVER}
 \renewcommand{\headrulewidth}{0pt}
@@ -79,8 +83,9 @@
 \begin{document}
 
 \centerline{\textsc{University of Aberdeen}} 
-\centerline{Symbolic AI (CS502K)}
-\centerline{Tutorial I  -- Introduction to A.I. \& Intelligent Agents} 
+\centerline{Symbolic AI (CS502K / CS507K)}
+\centerline{Tutorial I  -- Introduction to A.I. \& Intelligent Agents}
+\ifdefined\showanswers\centerline{\textbf{SOLUTIONS}}\fi
 
 \hrulefill
 
