@@ -19,15 +19,15 @@ Your task is to read the description of the domains and encode both the domain d
 
 ### Planning.Domains
 
-In order to run this tutorial, we will use an online PDDL Editor and Planner available at [editor.planning.domains](http://editor.planning.domains). This web tool includes both a syntax-highlighting element and an underlying planning algorithm that solves problems described in PDDL. 
+In order to run this tutorial, we will use an online PDDL Editor and Planner available at [editor.planning.domains](http://editor.planning.domains). This web tool includes both a syntax-highlighting element and an underlying planning algorithm that solves problems described in PDDL.
 
 Alternatively, you can use the VSCode-based PDDL plugin and work offline on the files made available in this repository. 
 
-Editor.Planning.Domains Tutorial
+#### Editor.Planning.Domains Tutorial
 
-[![](http://img.youtube.com/vi/HCVoVtAFkLo/0.jpg)](http://www.youtube.com/watch?v=HCVoVtAFkLo "Micro Tutorial on Editor")
+[![](http://img.youtube.com/vi/HCVoVtAFkLo/0.jpg)](https://abdn.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=844eabf4-dbb8-4570-a4e7-b37100c2afa0 "Micro Tutorial on the web based PDDL Editor Editor")
 
-VScode PDDL Tutorial: 
+#### VScode PDDL Tutorial:
 
 [![](http://img.youtube.com/vi/XW0z8Oik6G8/0.jpg)](http://www.youtube.com/watch?v=XW0z8Oik6G8 "PDDL Modeling Course")
 
@@ -84,7 +84,6 @@ Objective: Change the BlocksWorld domain so that there are 2 (or more) grippers 
 
 1. [Domain](blocksworld/blocksworld.pddl)
 2. [Problem](blocksworld/demo.pddl)
-3. [Solution Plan](cup_of_tea/solution.plan)
 
 #### Things to consider
 
