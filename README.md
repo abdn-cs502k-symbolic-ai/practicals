@@ -34,12 +34,18 @@ It is not lecture numbering: `day05` serves lectures 9 and 10.
 
 ## Catalogue
 
-### `day01`: Introduction and Agents
+### `day01`: Agents, Rationality and Problem Formulation
+
+Reworked 2026-08-27, and the first practical rebuilt for the 2026-27 catalogue. Runs over both
+sessions of week 9.
 
 | File | What it is |
 | --- | --- |
-| `CS502K-tutorial-week-1.tex` | Pen-and-paper tutorial. Ten live questions: four on AIMA Ch 1 (what counts as AI, evolution and rationality, science or engineering, "computers only do what they are told"), five on Ch 2 (true/false on rationality, a PEAS description exercise, agent functions versus agent programs, agent programs for stochastic vacuum worlds), and two on getting started with `aima-python`. Much of the file is commented-out material from earlier years, including the Turing test question |
-| `8-Puzzle.ipynb` | Eight code cells lifted from AIMA 4e: `Problem`, `Node`, the queues, breadth-first search and `EightPuzzle`. **No markdown, no exercise, no instructions.** Unattached to any question in the tutorial |
+| `CS502K-tutorial-week-1.tex` | Session 1, pen and paper. Twelve questions: five on AIMA Ch 1 (what counts as AI, the Turing test, evolution and rationality, science or engineering, "computers only do what they are told"), four on Ch 2 (true/false on rationality, PEAS, agent functions versus agent programs, stochastic vacuum worlds), one comparing the Wumpus World with the vacuum world, and one pointing at the notebook |
+| `tutorial1-problem-formulation.ipynb` | Session 2, and **self-contained**: it defines the `Problem` class in a cell and imports nothing from this repository. Read a formulation of the 8-puzzle, write one for the vacuum world of Lecture 2, check the resulting state space against the lecture's graph, then generalise to n rooms. Carries **no search algorithm**, because students implement those in Tutorial 2 |
+
+The notebook replaces `8-Puzzle.ipynb`, which was eight code cells of AIMA 4e with no markdown,
+no exercise and no connection to any question in the tutorial.
 
 ### `day02`: Search
 
@@ -104,8 +110,8 @@ make distclean  # also remove the PDFs
 ```
 
 `make verify` extracts the text of each student PDF and **fails the build** if the string
-`Answer:` appears. This is a backstop, not a formality: a student-facing PDF did once ship with
-five worked answers in it, because the toggle was a comment someone forgot to restore.
+`Answer:` appears. Take that check seriously: a student-facing PDF did once ship with five worked
+answers in it, after someone left the answer toggle switched on.
 
 All PDFs are gitignored. Distribution happens through MyAberdeen, so **the leak check is the only
 thing standing between an edit and the cohort**. Run `make`, not `pdflatex`.
@@ -140,7 +146,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 
 | Day | State |
 | --- | --- |
-| `day01` | Live. Needs a problem-formulation exercise: the topic moved into Lecture 2 and no question covers it |
+| `day01` | **Reworked 2026-08-27.** Problem formulation now covered and the notebook rebuilt. No worked solution for the notebook yet |
 | `day02` | Live, paper only. Wants a coding half |
 | `day03` | **Empty.** Highest-priority new material after `day04` |
 | `day04` | Live. Assessment-critical, and missing the challenge/solution structure it needs |

@@ -89,6 +89,18 @@
 
 \hrulefill
 
+This tutorial runs over the two practical sessions of week 9.
+The questions below are pen and paper, and cover Lectures 1 and 2.
+The second session uses the notebook \texttt{tutorial1-problem-formulation.ipynb} in this folder, which formulates the vacuum world of Lecture 2 as a search problem and sets up the search tutorial in week 10.
+
+\textbf{On generative AI.}
+A language model answers most of the questions below, and answers them well.
+We know, and we set them anyway.
+The questions exist to make you commit to a position and defend it, which is what the tutorial session is for, and you cannot defend a position that a model chose for you.
+Assessment 1 is invigilated and Assessment 2 is proctored, so you sit both with no model available.
+Assessment 3 permits generative AI and ends in a defence, where you explain what you submitted.
+Argue with a model if you find that useful, but do not let it answer for you.
+
 %\textit{Please hand in your answer to item 5 below; its mark will contribute 10\% of your overall result for the course.}
 
 \begin{enumerate}
@@ -140,6 +152,8 @@
 %  \item Web search engines
 %  \item Voice-activated telephone menus
   \item Internet routing algorithms that respond dynamically to the state of the network.
+  \item The spam filter in your email.
+  \item A large language model answering a question about this course.
   \end{enumerate}}
   \answer{\begin{enumerate}
   \item Although bar code scanning is in a sense computer vision, these are not AI systems. The problem of reading a bar code is an extremely limited and artificial form of visual interpretation, and it has been carefully designed to be as simple as possible, given the hardware.
@@ -150,7 +164,24 @@ working in cyberspace. The task is sophisticated, the information available is p
 techniques are heuristic (not guaranteed optimal), and the state of the world is dynamic.
 All of these are characteristic of intelligent activities. On the other hand, the task is very
 far from those normally carried out in human cognition.
+  \item Yes. The task is genuinely uncertain, the filter learns its decision from data rather than from a rule someone wrote, and an adversary changes the distribution deliberately. A filter built from a fixed list of banned words would not qualify on the same reading, which shows that the question is about how the system decides, not about what it decides.
+  \item Yes, on any of the four definitions in Section 1.1, but it is worth asking which one. It acts humanly, which is exactly what Turing proposed to measure. It is not built to think rationally: no part of it manipulates sentences that stand for facts, which is the tradition this course follows. Note also that it holds no explicit goal and optimises no stated utility, so the ``acting rationally'' definition fits it only loosely. A system can be uncontroversially AI and still sit outside the strand we study.
   \end{enumerate}
+}
+
+\item
+\question{Turing's 1950 paper (\emph{Computing Machinery and Intelligence}, \emph{Mind} LIX(236):433--460) proposes the imitation game and then answers nine objections to it.
+\begin{enumerate}
+\item Which of the nine still carry weight, and which has the intervening 75 years settled?
+\item Turing predicted that by 2000 an interrogator would stand no better than a 70\% chance of identifying the machine after five minutes of questioning. Judged against a chatbot you have used, was he wrong about the date, about the difficulty, or about the test?
+\item Passing the imitation game and thinking come apart in both directions. Give one system that would pass without thinking, and one that thinks without passing.
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item The mathematical objection (from G\"odel) and the argument from consciousness survive largely intact, because neither turns on how good the machine gets. The arguments from disability (``a machine will never do X'') have gone badly for their proponents one item at a time. Lady Lovelace's objection, that a machine originates nothing, is the interesting case: it now reads as a claim about training data rather than about programming.
+\item Mostly about the test. Turing's numbers were roughly right and arrived late rather than never, but current systems pass casual five-minute questioning while failing in ways he did not anticipate, which suggests the test measures fluency in conversation rather than thought. That an easily passed test was ever taken as the criterion is the point worth discussing.
+\item A lookup table over every five-minute conversation would pass and think nothing; it is finite, absurdly large, and contains no reasoning. A chess engine, or any planner in this course, reasons its way to a decision no human could match and would be identified as a machine within one question.
+\end{enumerate}
 }
 
 \item 
@@ -285,6 +316,12 @@ agent’s expected winnings are nonnegative.
 \item Shopping for used AI books on the Internet
 \item Bidding on an item at an auction.
 \end{enumerate}
+
+\textbf{A note on the properties.}
+Lecture 2 grades environments on four dimensions: observability, determinism, dynamicity and discreteness.
+Section 2.3.2 names two more, the number of agents and whether the task is episodic.
+We drop those two deliberately, and for the rest of the course they stay dropped: nothing we build after this lecture reasons about other agents or about episode boundaries, because search, logic and planning all assume one agent acting over a single continuing sequence of decisions.
+Name all six here, then expect to use four.
 }
 \answer{\begin{enumerate}
 \item Partially observable, deterministic, sequential, static, discrete, single agent. This can be
@@ -394,29 +431,26 @@ This problem is also a partially observable Markov decision process.
 %     \item 1 mark per correct rule which should list all sensors and actuators, although no marks deducted if the status of actuators is missing from the ``if-part'' of the rules. Rules, however, must ``make sense'' in that they should describe realistic situations and appropriate actions for these situations.
 % \end{enumerate}}
 
-\item 
-\question{Familiarise yourself with the code base for the algorithms presented in the AIMA textbook; the code is available at \url{https://github.com/aimacode/aima-python}. You have two options to work with aima-python: (1) install Anaconda + Jupyter on your computer--recommended; (2) run aima-python directly online in a Binder Environment – worth trying.
-
+\item
+\question{Chapter 7 of Russell and Norvig introduces the Wumpus World, which returns in Lecture 5 as the running example for propositional logic.
+Compare it with the vacuum world of Lecture 2.
 \begin{enumerate}
-\item Start exploring aima-python with the intro Jupyter notebook (e.g. \url{https://github.com/aimacode/aima-python/blob/master/intro.ipynb}). If you have a local aima-python (as recommended above) you start with your local version of the intro Jupyter notebook.
-\item The intro notebook has a link to another notebook called index (e.g. \url{https://github.com/aimacode/aima-python/blob/master/index.ipynb}). If you have a local aima-python (as recommended above) you start with your local version of the index Jupyter notebook.
-\end{enumerate}
-}
-\answer{Follow the instructions in the aima-python code repository.}
-
-\item 
-\question{The agents Jupyter notebook (e.g. \url{https://github.com/aimacode/aima-python/blob/master/agents.ipynb}) has a few examples of agents and environments – i.e. a BlindDog in a park. You will notice that the agents.ipynb imports code from agents.py. This is a common feature in aima-python where Jupyter notebooks use python libraries that actually implement the algorithms from the AIMA textbook.
-
-\begin{enumerate}
-\item Inspect the code for the abstract Agent and Environment classes which are defined in the \texttt{agents.py} library.
-\item Starting with a simple BlindDog agent and a Park environment, the agents.ipynb notebook has multiple implementations of BlindDog agents and their Park environments increasing the complexity of the environment. You will learn how complex environments increases the sophistication of the agents e.g. EnergeticBlindDog.
-\item The agents.ipynb also shows an example of the Wumpus environment. We will only learn building functionality to reason about individual actions an agent in the Wumpus world can take at any given stage of the agent's journey in the Wumpus world. A fully functioning agent for the Wumpus environment is way more complex than building a BlindDog. Why?
-\end{enumerate}
-}
-
+\item Classify both environments on the four dimensions from the lecture, and say where they differ.
+\item A vacuum agent can decide what to do from what it senses now; a Wumpus agent cannot. Account for that using the classification you just gave.
+\item Name an action in the Wumpus World whose consequences the agent cannot undo, and say what that costs an agent that guesses.
+\end{enumerate}}
 \answer{
-Follow the instructions in the aima-python code repository.
+\begin{enumerate}
+\item Both are discrete and static, and both are deterministic. They part company on observability. The vacuum world as Lecture 2 formulates it is fully observable, so the agent knows which rooms are dirty. The Wumpus World is partially observable: the agent perceives a breeze, a stench or a glitter in the square it occupies, and never sees a pit or the Wumpus directly. Note that the uncertainty comes from the agent's ignorance and not from chance, which is why logic rather than probability answers it.
+\item Each percept in the Wumpus World is a consequence of facts about neighbouring squares, so a breeze tells the agent that some adjacent square holds a pit without saying which. To act, the agent must combine percepts gathered in different squares at different times and work out what follows from them together, and that needs a representation of what it knows rather than a rule from percept to action. Lectures 5 and 6 build exactly that machinery.
+\item Moving into a square containing a pit or the live Wumpus ends the run, so a wrong inference cannot be recovered from. A guessing agent therefore does not merely lose time, it loses the game, which is why the agent should enter only squares it can prove to be safe. Notice that ``I have no evidence of a pit here'' and ``I can prove there is no pit here'' are different claims, and only the second justifies the move.
+\end{enumerate}
 }
+
+\item
+\question{Work through \texttt{tutorial1-problem-formulation.ipynb} in this folder, which is the second session of this tutorial.
+It asks you to read a formulation of the 8-puzzle, write your own formulation of the vacuum world from Lecture 2, and check the state space you obtain against the graph on the slides.}
+\answer{See the notebook. Every check in it must pass.}
 
 \end{enumerate} % end of top-level enumeration
 

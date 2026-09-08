@@ -25,6 +25,6 @@ assignment:
    `(handempty)` and `(ontable ?c ?r)` true, so the robot can hold every cup at
    once and the cups stay on the table while it does.
 
-The lesson: a plan coming back is not evidence that the model is right. The
-planner will exploit anything you leave under-constrained. Check the plan against
+A returned plan is no evidence that the model is right, because the planner will
+exploit anything you leave under-constrained. Check the plan against
 what the domain description actually says, and use a validator.
