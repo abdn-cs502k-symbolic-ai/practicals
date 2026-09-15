@@ -36,16 +36,10 @@
   stringstyle=\color{red!40!black},
 }
 
-\usepackage[textwidth=2cm,textsize=tiny]{todonotes}
-\newcommand{\new}[1]{\textcolor{blue}{#1}}
-\newcommand{\wnote}[1]{\todo[color=Yellow]{{\bf WV}: #1}}
-\newcommand{\pnote}[1]{\todo[color=Lavender]{{\bf PE}: #1}}
-
 \newcommand{\question}[1]{#1}
 
-%% Answers are OFF by default. Do not edit this block to turn them on: the
-%% Makefile builds the solutions variant by passing \def\showanswers{} on the
-%% command line, so `make' cannot ship answers in the student PDF by accident.
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
 \ifdefined\showanswers
   \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
 \else
@@ -81,6 +75,21 @@
 \newcommand{\coop}{\mc{C}}
 
 
+%% ---------------------------------------------------------------------------
+%% Question provenance
+%%
+%% Each question below carries a %% SOURCE: line.
+%% Where a question descends from Russell and Norvig, the chapter and section are given, along with the exercise's label in aimacode/aima-exercises, which is the identifier AIMA itself uses across editions.
+%%
+%% CAVEAT, and it differs from day01 and day02.
+%% Those two cite 3e exercise numbers checked against the 3e Instructor's Manual.
+%% That manual could not be obtained for this file, so nothing here claims a printed 3e exercise number.
+%% The aima-exercises labels below were checked by matching the exercise text on 2026-09-15 and are reliable; the printed numbers are for Felipe to fill in from the book.
+%%
+%% "Ours" marks a question written for this course with no AIMA counterpart.
+%% "Inherited" marks one carried over from the 2025-26 CS502K tutorials III and IV, whose own origin is not recorded.
+%% ---------------------------------------------------------------------------
+
 \begin{document}
 
 \centerline{\textsc{University of Aberdeen}}
@@ -91,13 +100,19 @@
 \hrulefill
 
 This tutorial covers Lecture 6, first-order logic, and is the second of the two practical sessions of week 11.
-It is based on parts of Chapters 9 and 12 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach}, and on the slides covered in our lectures.
-The first session uses \texttt{CS502K-tutorial-week-3a.tex}, which is Logic 1 and covers propositional logic.
+It draws on Chapters 8 and 9 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach} and on the lecture slides.
+The first session uses \texttt{CS502K-tutorial-week-3a.pdf}, which is Logic 1 and covers propositional logic.
+Question 8 sends you to the notebook \texttt{tutorial3-logic.ipynb} in this folder, the same one the first session uses.
+
+\textbf{Before this session, work through the bonus deck.}
+Lecture 6 has no room for Skolemisation, clausal form, or resolution lifted by unification, and questions 3(f), 4(b), 6 and 7 below all depend on them.
+They are in \emph{Bonus: Clausal Form and Resolution in FOL} (\texttt{ai-lecture06-bonus-slides-clausal-form.pdf} in the lecture repository), which is self-study and takes about ten minutes.
+It assumes the bonus deck from the first session, so read that one first if you have not.
 
 \textbf{On generative AI.}
 A language model answers most of the questions below, and answers them well.
 We know, and we set them anyway.
-The questions exist to make you commit to a position and defend it, which is what the tutorial session is for, and you cannot defend a position that a model chose for you.
+The questions exist to make you commit to a position and defend it in the tutorial session, and you cannot defend a position that a model chose for you.
 Assessment 1 is invigilated and Assessment 2 is proctored, so you sit both with no model available.
 Assessment 3 permits generative AI and ends in a defence, where you explain what you submitted.
 Argue with a model if you find that useful, but do not let it answer for you.
@@ -106,6 +121,7 @@ Argue with a model if you find that useful, but do not let it answer for you.
 
 \begin{enumerate}
 
+%% SOURCE: Inherited (2025-26 CS502K Tutorial IV). Exercises the "Truth in first-order logic" and "Models for FOL" frames of L06.
 \item
 \question{Answer the items below in connection with first-order logic. For each formula:
 \begin{itemize}
@@ -119,26 +135,31 @@ Argue with a model if you find that useful, but do not let it answer for you.
 \item $\forall x\, (P(x) \Rightarrow P(s(x)))$
 \item $\forall x\, [(x = a \lor x = b) \land (a \neq b)]$
 \end{enumerate}}
-\answer{For each item the answer is an interpretation, a triple $I = (D, I_c, I_v)$ whose components are chosen to suit the formula. For items (i) to (iv) let $D = \mb{N}$, the natural numbers including zero. The other two components are as follows.
+\answer{For each item the answer is an interpretation, a triple $I = (D, I_c, I_v)$ whose components suit the formula.
+For items (a) to (d) let $D = \mb{N}$, the natural numbers including zero.
+The other two components are as follows.
 \begin{enumerate}
 \item $\exists x \forall y\, \mi{LE}(x, y)$:
 \begin{itemize}
 \item $I_c$ defines no functions.
 \item $I_v$ associates the predicate symbol $\mi{LE}$ with the relation $\leq$, that is $\mi{LE}(x, y)$ holds if and only if $x \leq y$.
 \end{itemize}
-The meaning is ``there is a number which is less than or equal to every number'', witnessed by $x = 0$. Note the formula is false over the integers, which shows that the choice of domain is doing real work here.
+The meaning is ``there is a number which is less than or equal to every number'', witnessed by $x = 0$.
+The same formula is false over the integers, so the choice of domain does real work here.
 
 \item $\forall x \forall y \forall z\, [(P(x, y) \land P(y, z)) \Rightarrow P(x, z)]$:
 \begin{itemize}
 \item $I_c$ defines no functions.
-\item $I_v$ associates the predicate symbol $P$ with the relation $\leq$, that is $P(x, y)$ holds if and only if $x \leq y$. Any transitive relation serves.
+\item $I_v$ associates the predicate symbol $P$ with the relation $\leq$, that is $P(x, y)$ holds if and only if $x \leq y$.
+Any transitive relation serves.
 \end{itemize}
 The meaning is ``if $x \leq y$ and $y \leq z$ then $x \leq z$'', that is, $P$ is transitive.
 
 \item $\forall x \exists y\, G(y, x)$:
 \begin{itemize}
 \item $I_c$ defines no functions.
-\item $I_v$ associates the predicate symbol $G$ with the relation $>$ over $\mb{N}$. The domain must be infinite for this to hold.
+\item $I_v$ associates the predicate symbol $G$ with the relation $>$ over $\mb{N}$.
+The domain must be infinite for this to hold.
 \end{itemize}
 The meaning is ``for every number $x$ there is another number $y$ greater than $x$''.
 
@@ -149,9 +170,13 @@ The meaning is ``for every number $x$ there is another number $y$ greater than $
 \end{itemize}
 The formula states that for any $x$, if $x \geq 0$ then its successor $x + 1 \geq 0$.
 
-\item $\forall x\, [(x = a \lor x = b) \land (a \neq b)]$. Reading $=$ as equality and $\neq$ as inequality, any interpretation with a domain of exactly two elements, $|D| = 2$, makes the formula true. $I_c$ maps each element of $D$ to one of $a$ and $b$. Note that if we dropped the conjunct $(a \neq b)$ then $|D| = 1$ would also do.
+\item $\forall x\, [(x = a \lor x = b) \land (a \neq b)]$.
+Reading $=$ as equality and $\neq$ as inequality, any interpretation with a domain of exactly two elements, $|D| = 2$, makes the formula true.
+$I_c$ maps each element of $D$ to one of $a$ and $b$.
+Dropping the conjunct $(a \neq b)$ would admit $|D| = 1$ as well.
 \end{enumerate}}
 
+%% SOURCE: AIMA Chapter 9, section 9.2 (Unification), exercise labelled id=9.3 in aimacode/aima-exercises. Our four pairs differ from AIMA's, but items (b) and (d) preserve AIMA's two failure cases: a variable bound twice, and the occurs check.
 \item
 \question{For each pair of atomic sentences, give the most general unifier if one exists:
 \begin{enumerate}
@@ -168,6 +193,7 @@ The formula states that for any $x$, if $x \geq 0$ then its successor $x + 1 \ge
 \item No unifier exists, because the occurs check prevents unifying $x$ with $\mi{Father}(x)$.
 \end{enumerate}}
 
+%% SOURCE: AIMA Chapter 9, section 9.2, the exercise labelled fol-horses-exercise (id=9.5) in aimacode/aima-exercises. AIMA's horses, cows and pigs become magpies, pheasants and pigeons, and Bluebeard and Charlie become Tam and Doug; the six items are AIMA's.
 \item
 \question{Write down logical representations for the following sentences, in a form suitable for use with Generalised Modus Ponens:
 \begin{enumerate}
@@ -188,22 +214,29 @@ The formula states that for any $x$, if $x \geq 0$ then its successor $x + 1 \ge
 \item $\mi{Parent}(\mi{Tam}, \mi{Doug})$
 \item $\mi{Offspring}(x, y) \Rightarrow \mi{Parent}(y, x)$\\
       $\mi{Parent}(x, y) \Rightarrow \mi{Offspring}(y, x)$\\
-      Note we could not write $\mi{Offspring}(x, y) \Leftrightarrow \mi{Parent}(y, x)$, because a biconditional is not in the definite-clause form that Generalised Modus Ponens expects.
+      A biconditional will not serve here: $\mi{Offspring}(x, y) \Leftrightarrow \mi{Parent}(y, x)$ falls outside the definite-clause form that Generalised Modus Ponens expects, so we write the two implications separately.
 \item $\mi{Bird}(x) \Rightarrow \mi{Parent}(G(x), x)$, where $G$ is a Skolem function.
+The parent depends on the bird, so a Skolem constant would be wrong here; the bonus deck sets out the distinction.
 \end{enumerate}}
 
+%% SOURCE: AIMA Chapter 9, section 9.4, exercise labelled id=9.23 in aimacode/aima-exercises, items 1 and 2 of its four. AIMA's items 3 and 4 (Skolem constant in place of a Skolem function, and substituting for a Skolem constant) are left out for time.
 \item
 \question{Answer the items below in connection with substitution and Skolemisation:
 \begin{enumerate}
-\item Given the premise $\forall x \exists y\, P(x, y)$, it is not valid to conclude $\exists z\, P(z, z)$. Give an example of a predicate $P$ for which the first is true and the second is false.
+\item Given the premise $\forall x \exists y\, P(x, y)$, it is not valid to conclude $\exists z\, P(z, z)$.
+Give an example of a predicate $P$ for which the first is true and the second is false.
 \item Suppose an inference engine is written incorrectly, with no occurs check, so that it allows a literal like $P(x, y)$ to be unified with $P(z, z)$.\footnote{Some implementations of Prolog do allow this.} Show that such an engine will allow $\exists z\, P(z, z)$ to be inferred from the premise $\forall x \exists y\, P(x, y)$.
 \end{enumerate}}
 \answer{
 \begin{enumerate}
-\item Let $P(x, y)$ be the relation ``$x$ is less than $y$'' over the integers. Then $\forall x \exists y\, P(x, y)$ is true and $\exists z\, P(z, z)$ is false.
-\item Converting the premise to clausal form gives $P(x, F(x))$, where $F$ is a Skolem function, and converting the negated goal to clausal form gives $\lnot P(z, z)$. Without the occurs check the two unify, under $\{z/x, x/F(x)\}$, and resolve to the empty clause, so the engine reports a proof. The occurs check is what stops $x$ binding to a term that contains $x$.
+\item Let $P(x, y)$ be the relation ``$x$ is less than $y$'' over the integers.
+Then $\forall x \exists y\, P(x, y)$ is true and $\exists z\, P(z, z)$ is false.
+\item Converting the premise to clausal form gives $P(x, F(x))$, where $F$ is a Skolem function, and converting the negated goal to clausal form gives $\lnot P(z, z)$.
+Without the occurs check the two unify, under $\{z/x, x/F(x)\}$, and resolve to the empty clause, so the engine reports a proof.
+The occurs check is what stops $x$ binding to a term that contains $x$.
 \end{enumerate}}
 
+%% SOURCE: AIMA Chapter 9, section 9.3, exercise labelled id=9.11 in aimacode/aima-exercises, verbatim. Item (b) is AIMA's second half, restored 2026-09-15: L06 teaches the forward-chaining algorithm and nothing in this tutorial exercised it.
 \item
 \question{Suppose you are given the following axioms:
 \begin{enumerate}
@@ -216,8 +249,14 @@ The formula states that for any $x$, if $x \geq 0$ then its successor $x + 1 \ge
 \item $\forall w \forall x \forall y \forall z\ (w \leq y \land x \leq z) \Rightarrow (w + x \leq y + z)$
 \item $\forall x \forall y \forall z\ (x \leq y \land y \leq z) \Rightarrow (x \leq z)$
 \end{enumerate}
-Give a backward-chaining proof of the sentence $7 \leq 3 + 9$. Use only the axioms given here, and nothing else you may know about arithmetic. Show only the steps that lead to success, not the irrelevant ones.}
-\answer{At each resolution we rename the variables in the rule, by adding a subscript to them.
+\begin{enumerate}
+\item Give a backward-chaining proof of the sentence $7 \leq 3 + 9$.
+\item Give a forward-chaining proof of the same sentence.
+\end{enumerate}
+In both cases use only the axioms given here, and nothing else you may know about arithmetic, and show only the steps that lead to success.}
+\answer{
+\begin{enumerate}
+\item At each resolution we rename the variables in the rule, by adding a subscript to them.
 \begin{center}
 \begin{tabular}{@{}ll@{}}
 Goal $G_0$: $7 \leq 3 + 9$        & Resolve with (8), $\{x_1/7, z_1/3 + 9\}$\\
@@ -229,8 +268,19 @@ Goal $G_0$: $7 \leq 3 + 9$        & Resolve with (8), $\{x_1/7, z_1/3 + 9\}$\\
 \quad\quad\quad Goal $G_6$: $7 \leq 9$       & Resolve with (2) (succeeds)
 \end{tabular}
 \end{center}
-The proof turns on using transitivity (8) twice to work $7$ into the form $0 + 7$, at which point (7) splits the goal into the two ground facts we were given.}
+The proof turns on using transitivity (8) twice to work $7$ into the form $0 + 7$, at which point (7) splits the goal into the two ground facts we were given.
 
+\item Forward chaining runs the same axioms in the other direction, starting from the ground facts and adding every consequence until $7 \leq 3 + 9$ appears.
+From (1) $0 \leq 3$ and (2) $7 \leq 9$, rule (7) with $\{w/0, x/7, y/3, z/9\}$ derives $0 + 7 \leq 3 + 9$.
+Rule (6) with $\{x/7, y/0\}$ gives $7 + 0 \leq 0 + 7$, and (4) with $\{x/7\}$ gives $7 \leq 7 + 0$.
+Two applications of transitivity (8) then chain $7 \leq 7 + 0$, $7 + 0 \leq 0 + 7$ and $0 + 7 \leq 3 + 9$ into $7 \leq 3 + 9$.
+
+The two proofs use the same five axioms in the same combination.
+What differs is the search: backward chaining considered only sentences that could contribute to the goal, whereas forward chaining also derived facts such as $3 + 0 \leq 3$ that lead nowhere.
+With eight axioms the waste is invisible; with a large knowledge base it is the whole cost.
+\end{enumerate}}
+
+%% SOURCE: Ours (inherited stem), Russell's paradox in first-order form. Depends on the "Skolemisation and Clausal Form" and "Resolution in First-order Logic" frames of the L06 bonus deck, written 2026-09-15.
 \item
 \question{Let $L$ be the first-order language with a single predicate $M(x, y)$, meaning ``$x$ massages $y$''. Assume a domain of people.
 \begin{enumerate}
@@ -262,27 +312,38 @@ C_2&: M(\mi{Sk}_1, y) \lor M(y, y)
 \[C_3: \lnot M(\mi{Sk}_1, \mi{Sk}_1)\]
 Applying factoring to $C_2$ with the substitution $\{y/\mi{Sk}_1\}$ gives
 \[C_4: M(\mi{Sk}_1, \mi{Sk}_1)\]
-Resolving $C_3$ with $C_4$ gives the empty clause. This is Russell's paradox in first-order form: the sentence asks for a barber who shaves exactly those who do not shave themselves, and no such person can exist.
+Resolving $C_3$ with $C_4$ gives the empty clause, so the two clauses are inconsistent.
+The sentence is Russell's paradox in first-order form.
+It asks for a barber who shaves exactly those people who do not shave themselves, and no such person can exist.
 \end{enumerate}}
 
+%% SOURCE: Ours (inherited stem). Depends on the resolution frames of both bonus decks, written 2026-09-15.
 \item
-\question{How can resolution be used to show that a sentence is valid? And how can it be used to show that a sentence is unsatisfiable?}
-\answer{This question tests your understanding of resolution and your ability to reason at a high level about relations among sets of sentences. Recall that resolution shows $KB \models \alpha$ by proving that $KB \land \lnot \alpha$ is inconsistent. Suppose the resolution system is invoked as $\textsc{Ask}(KB, \alpha)$, and that we want to show a given sentence $\beta$ is valid, or is unsatisfiable.
+\question{How would you use resolution to show that a sentence is valid? And how would you use it to show that a sentence is unsatisfiable?}
+\answer{The question asks you to reason about relations among sets of sentences rather than to run the algorithm.
+Resolution shows $KB \models \alpha$ by refuting $KB \land \lnot \alpha$.
+Suppose we invoke the resolution system as $\textsc{Ask}(KB, \alpha)$, and we want to show that a given sentence $\beta$ is valid, or that it is unsatisfiable.
 
-A sentence $\beta$ is valid if it can be shown true with no additional information. We check this by calling $\textsc{Ask}(KB_0, \beta)$, where $KB_0$ is the empty knowledge base: the system then attempts to refute $\lnot \beta$ alone, and succeeds exactly when $\beta$ is valid.
+A sentence $\beta$ is valid if it can be shown true with no additional information.
+We check this by calling $\textsc{Ask}(KB_0, \beta)$, where $KB_0$ is the empty knowledge base: the system then attempts to refute $\lnot \beta$ alone, and succeeds exactly when $\beta$ is valid.
 
-A sentence $\beta$ that is unsatisfiable is inconsistent by itself. So we empty the knowledge base again and call $\textsc{Ask}(KB_0, \lnot \beta)$. The system attempts to derive a contradiction starting from $\lnot \lnot \beta$, that is from $\beta$, and if it can do so then $\beta$ is unsatisfiable.
+A sentence $\beta$ that is unsatisfiable is inconsistent by itself.
+So we empty the knowledge base again and call $\textsc{Ask}(KB_0, \lnot \beta)$.
+The system attempts to derive a contradiction starting from $\lnot \lnot \beta$, that is from $\beta$, and if it can do so then $\beta$ is unsatisfiable.
 
-The two checks are the same machinery pointed in opposite directions, which is worth noticing: resolution only ever does one thing, which is to refute a set of clauses.}
+Both checks run the same machinery, pointed in opposite directions.
+Resolution only ever does one thing, which is to refute a set of clauses, and validity and unsatisfiability are two different sets to hand it.}
 
+%% SOURCE: Ours, 2026-09-15, replacing a question that sent students to aima-python's logic.ipynb. Upstream reorganised in 2026 and the paths in that question no longer resolve.
 \item
-\question{In this exercise you learn, from the examples in the Jupyter notebook \texttt{logic.ipynb} in the \texttt{aima-python} repository (\url{https://github.com/aimacode/aima-python}), how to build well-formed clauses of first-order logic, populate a knowledge base (\texttt{FolKB}) with them, and make valid inferences from it. Work through the following tasks:
+\question{Return to \texttt{tutorial3-logic.ipynb} and work through its first-order half.
 \begin{enumerate}
-\item Learn how to use the \texttt{expr} function to define well-formed clauses of first-order logic, with the help of the examples around the Criminal KB in \texttt{logic.ipynb}.
-\item Learn to create a first-order knowledge base using the \texttt{FolKB} class over a list of well-formed clauses, using the \texttt{crime\_kb} example from \texttt{logic.ipynb}.
-\item You can perform inferences on a first-order knowledge base by forward and backward chaining. \texttt{logic.ipynb} uses methods called \texttt{fol\_fc\_ask()} and \texttt{fol\_bc\_ask()} to make inferences on \texttt{crime\_kb}. You can also use the \texttt{ask()} method defined in \texttt{FolKB}.
+\item Implement \texttt{unify}, including the occurs check, and check it against the four pairs of question 2.
+\item Make the occurs check switchable, then show that turning it off lets the notebook derive $\exists z\, P(z, z)$ from $\forall x \exists y\, P(x, y)$, which is the failure of question 4(b).
+\item Implement \texttt{fol\_bc\_ask}, backward chaining with unification, and run it on the bird knowledge base you wrote in question 3.
 \end{enumerate}}
-\answer{Follow the instructions in the \texttt{aima-python} code repository. Note that upstream reorganised in 2026: the algorithms now live under \texttt{aima/} and the notebooks under \texttt{notebooks/}.}
+\answer{The worked implementation is \texttt{tutorial3-logic-solutions.ipynb}, released at the end of the week.
+The occurs check is one line and the whole point of the exercise, so write \texttt{unify} without it first, watch the test in item (b) pass when it should fail, and then add it.}
 
 \end{enumerate}
 

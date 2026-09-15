@@ -36,16 +36,10 @@
   stringstyle=\color{red!40!black},
 }
 
-\usepackage[textwidth=2cm,textsize=tiny]{todonotes}
-\newcommand{\new}[1]{\textcolor{blue}{#1}}
-\newcommand{\wnote}[1]{\todo[color=Yellow]{{\bf WV}: #1}}
-\newcommand{\pnote}[1]{\todo[color=Lavender]{{\bf PE}: #1}}
-
 \newcommand{\question}[1]{#1}
 
-%% Answers are OFF by default. Do not edit this block to turn them on: the
-%% Makefile builds the solutions variant by passing \def\showanswers{} on the
-%% command line, so `make' cannot ship answers in the student PDF by accident.
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
 \ifdefined\showanswers
   \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
 \else
@@ -81,6 +75,21 @@
 \newcommand{\coop}{\mc{C}}
 
 
+%% ---------------------------------------------------------------------------
+%% Question provenance
+%%
+%% Each question below carries a %% SOURCE: line.
+%% Where a question descends from Russell and Norvig, the chapter and section are given, along with the exercise's label in aimacode/aima-exercises, which is the identifier AIMA itself uses across editions.
+%%
+%% CAVEAT, and it differs from day01 and day02.
+%% Those two cite 3e exercise numbers checked against the 3e Instructor's Manual.
+%% That manual could not be obtained for this file, so nothing here claims a printed 3e exercise number.
+%% The aima-exercises labels below were checked by matching the exercise text on 2026-09-15 and are reliable; the printed numbers are for Felipe to fill in from the book.
+%%
+%% "Ours" marks a question written for this course with no AIMA counterpart.
+%% "Inherited" marks one carried over from the 2025-26 CS502K tutorials III and IV, whose own origin is not recorded.
+%% ---------------------------------------------------------------------------
+
 \begin{document}
 
 \centerline{\textsc{University of Aberdeen}}
@@ -91,13 +100,19 @@
 \hrulefill
 
 This tutorial covers Lecture 5, propositional logic, and is the first of the two practical sessions of week 11.
-It is based on parts of Chapters 7 and 8 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach}, and on the slides covered in our lectures.
-The second session uses \texttt{CS502K-tutorial-week-3b.tex}, which is Logic 2 and covers first-order logic.
+It draws on Chapter 7 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach} and on the lecture slides.
+The second session uses \texttt{CS502K-tutorial-week-3b.pdf}, which is Logic 2 and covers first-order logic.
+Question 6 sends you to the notebook \texttt{tutorial3-logic.ipynb} in this folder, where you implement the algorithms you trace here.
+
+\textbf{Before this session, work through the bonus deck.}
+Lecture 5 has no room for the grammar of propositional logic, the interpretation function $I(m, \alpha)$, validity and satisfiability, conjunctive normal form, or resolution, and questions 1(a), 1(c), 1(d), 1(e), 3 and 4 below all depend on them.
+They are in \emph{Bonus: Normal Forms and Resolution} (\texttt{ai-lecture05-bonus-slides-normal-forms.pdf} in the lecture repository), which is self-study and takes about twenty minutes.
+Its second frame lists which question needs which slide.
 
 \textbf{On generative AI.}
 A language model answers most of the questions below, and answers them well.
 We know, and we set them anyway.
-The questions exist to make you commit to a position and defend it, which is what the tutorial session is for, and you cannot defend a position that a model chose for you.
+The questions exist to make you commit to a position and defend it in the tutorial session, and you cannot defend a position that a model chose for you.
 Assessment 1 is invigilated and Assessment 2 is proctored, so you sit both with no model available.
 Assessment 3 permits generative AI and ends in a defence, where you explain what you submitted.
 Argue with a model if you find that useful, but do not let it answer for you.
@@ -106,11 +121,12 @@ Argue with a model if you find that useful, but do not let it answer for you.
 
 \begin{enumerate}
 
+%% SOURCE: Inherited (2025-26 CS502K Tutorial III). Items (a) to (f) exercise the syntax, semantics and validity frames of the L05 bonus deck.
 \item \question{Provide answers to the items below in connection with propositional logic.}
 \begin{enumerate}
 
 \item
-\question{Show that the propositional formulae below are, or are not, syntactically correct.
+\question{Using the grammar of propositional logic from the bonus deck, show that the propositional formulae below are, or are not, syntactically correct.
 \begin{itemize}
 \item $P \lor Q \land S \Rightarrow S$
 \item $P \Leftrightarrow Q \Rightarrow \lnot R$
@@ -136,7 +152,8 @@ Argue with a model if you find that useful, but do not let it answer for you.
               &\rightarrow P \lor Q \land S \Rightarrow S
 \end{align*}
 \item $P \Leftrightarrow Q \Rightarrow \lnot R$ is correct; the sequence of grammar rules is similar to the previous item.
-\item $P \lnot (P \lor Q)$ is not syntactically correct. The grammar for propositional logic establishes $\lnot$ as a unary connective, so this formula is in fact
+\item $P \lnot (P \lor Q)$ is not syntactically correct.
+The grammar for propositional logic establishes $\lnot$ as a unary connective, so this formula is in fact
 \[\mi{AtomicSentence}\,\lnot\,\mi{Sentence}\]
 where $\mi{AtomicSentence}$ is $P$ and $\mi{Sentence}$ is $(P \lor Q)$. Using the grammar we obtain
 \[\mi{AtomicSentence}\,\mi{ComplexSentence}\]
@@ -175,7 +192,9 @@ write the meaning in English of the following formulae:
 \item $((P \land Q) \Rightarrow R) \Rightarrow ((P \lor Q) \Rightarrow R)$
 \item $(P \land (Q \Rightarrow R)) \lor (Q \lor \lnot Q)$
 \end{enumerate}}
-\answer{Items (i) and (iii) are valid. Item (ii) is not: it fails on the two rows where exactly one of $P$ and $Q$ is true and $R$ is false.
+\answer{Items (i) and (iii) are valid.
+Item (ii) is not, because it fails on the two rows where exactly one of $P$ and $Q$ is true and $R$ is false.
+Item (ii) is satisfiable rather than valid, so in the vocabulary of the bonus deck it is a contingency.
 
 To build a truth-table, you should:
 \begin{enumerate}
@@ -228,7 +247,8 @@ false & false & false & false & false & true  & true  & true
 \end{center}
 Two rows make the formula false, so it is not valid. It is satisfiable, since six rows make it true.
 
-\item $(P \land (Q \Rightarrow R)) \lor (Q \lor \lnot Q)$ is a tautology, and needs no full table to see why: the right disjunct $(Q \lor \lnot Q)$ is true in every model, so the disjunction is too.
+\item $(P \land (Q \Rightarrow R)) \lor (Q \lor \lnot Q)$ is a tautology.
+The right disjunct $(Q \lor \lnot Q)$ is true in every model, so the whole disjunction is true in every model and no full table is needed.
 \end{enumerate}}
 
 \item
@@ -239,9 +259,9 @@ Two rows make the formula false, so it is not valid. It is satisfiable, since si
 \begin{algorithmic}[1]
 \Require $KB = \alpha_1 \land \cdots \land \alpha_n$, and $\alpha$ (a query)
 \Ensure true or false
-\Function{Entails}{$KB, \alpha$}
+\Function{TT-Entails}{$KB, \alpha$}
   \State $\mi{symbols} \gets \mi{prop}(KB) \cup \mi{prop}(\alpha)$ \Comment{get symbols of $KB$ and $\alpha$}
-  \State \Return \Call{CheckAll}{$KB, \alpha, \mi{symbols}, \emptyset$}
+  \State \Return \Call{TT-Check-All}{$KB, \alpha, \mi{symbols}, \emptyset$}
 \EndFunction
 \end{algorithmic}
 \end{minipage}
@@ -249,7 +269,7 @@ Two rows make the formula false, so it is not valid. It is satisfiable, since si
 \begin{algorithmic}[1]
 \Require $KB$, $\alpha$, a set $\mi{symbols}$, and a partial $\mi{model}$
 \Ensure true or false
-\Function{CheckAll}{$KB, \alpha, \mi{symbols}, \mi{model}$}
+\Function{TT-Check-All}{$KB, \alpha, \mi{symbols}, \mi{model}$}
   \If{$\mi{symbols} = \emptyset$}
     \If{$I(\mi{model}, KB) = \mi{true}$}
       \State \Return $I(\mi{model}, \alpha)$
@@ -258,60 +278,207 @@ Two rows make the formula false, so it is not valid. It is satisfiable, since si
     \EndIf
   \Else
     \State $\mi{rest} \gets \mi{symbols} \setminus \{P\}$ \Comment{pick one symbol $P$}
-    \State \Return \Call{CheckAll}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{true})\}$}
-    \State \qquad \textbf{and} \Call{CheckAll}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{false})\}$}
+    \State \Return \Call{TT-Check-All}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{true})\}$}
+    \State \qquad \textbf{and} \Call{TT-Check-All}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{false})\}$}
   \EndIf
 \EndFunction
 \end{algorithmic}
 \medskip
 
-\noindent show how the algorithm computes $\textsc{Entails}(((P \land \lnot P) \land \lnot Q), Q)$.}
-\answer{Your answer should explain how each variable in the algorithm was instantiated and updated as a result of the instructions. The original invocation $\textsc{Entails}(((P \land \lnot P) \land \lnot Q), Q)$ makes $KB = (P \land \lnot P) \land \lnot Q$ and $\alpha = Q$; line 2 computes $\mi{symbols} = \{P, Q\}$, and line 3 invokes $\textsc{CheckAll}((P \land \lnot P) \land \lnot Q,\ Q,\ \{P, Q\},\ \emptyset)$.
+\noindent show how the algorithm computes $\textsc{TT-Entails}(((P \land \lnot P) \land \lnot Q), Q)$.
+Lecture 5 writes the test on line 4 as $\textsc{PL-True?}(\alpha, \mi{model})$; it computes the same thing as $I(\mi{model}, \alpha)$, which the bonus deck defines.}
+\answer{Your answer should say how each variable in the algorithm was instantiated and how the instructions changed it.
+The original invocation $\textsc{TT-Entails}(((P \land \lnot P) \land \lnot Q), Q)$ makes $KB = (P \land \lnot P) \land \lnot Q$ and $\alpha = Q$; line 2 computes $\mi{symbols} = \{P, Q\}$, and line 3 invokes $\textsc{TT-Check-All}((P \land \lnot P) \land \lnot Q,\ Q,\ \{P, Q\},\ \emptyset)$.
 
-Use the definition of \textsc{CheckAll} to compute the final result: it is true. The recursion reaches four leaves, one per model of $\{P, Q\}$, and $KB$ is false in every one of them because $KB$ contains the contradiction $P \land \lnot P$. Every leaf therefore returns true by the ``if $KB$ is false always return true'' branch, so the conjunction of all four is true. Note that this is entailment holding vacuously: an inconsistent $KB$ entails everything, including $Q$ and $\lnot Q$.
+The definition of \textsc{TT-Check-All} then gives the final result, which is true.
+The recursion reaches four leaves, one per model of $\{P, Q\}$, and $KB$ is false in every one of them because $KB$ contains the contradiction $P \land \lnot P$.
+Every leaf therefore returns true by the ``if $KB$ is false always return true'' branch, so the conjunction of all four is true.
+Entailment here holds vacuously: an inconsistent $KB$ entails everything, including both $Q$ and $\lnot Q$.
 
-When following an algorithm, it is important to understand the types of the variables (sets, integers, and so on) and how the operations on them change their values. Take particular care with recursive definitions, and with how to follow them with paper and pencil.}
+When you follow an algorithm by hand, keep track of the type of each variable, whether it is a set, an integer or a formula, and of how each operation changes it.
+Recursive definitions repay particular care.}
 
 \item
 \question{Answer the following items:
 \begin{enumerate}
-\item A propositional formula is a \emph{contradiction} if it is false in every possible model. If $\lnot \alpha$ is a contradiction, what can we say about $\alpha$? Justify your answer.
+\item A propositional formula is a \emph{contradiction} if it is false in every possible model.
+If $\lnot \alpha$ is a contradiction, what can we say about $\alpha$? Justify your answer.
 \item If $\alpha$ is not a contradiction, what can we say about $\lnot \alpha$? Justify your answer.
 \item How are truth tables related to the interpretation function $I(m, \alpha)$?
+\item The bonus deck states that $KB \models \alpha$ if and only if $(KB \land \lnot \alpha)$ is unsatisfiable.
+Justify that equivalence from the definition of entailment.
 \end{enumerate}}
 \answer{
 \begin{enumerate}
-\item If $\lnot \alpha$ is a contradiction then $I(m, \lnot \alpha) = \mi{false}$ for every model $m$. Dropping the negation flips every one of those to true, that is $I(m, \alpha) = \mi{true}$ for every model $m$, so $\alpha$ is valid, a tautology.
-\item If $\alpha$ is not a contradiction then $I(m, \alpha)$ can be true or false depending on $m$. Such formulae are called \emph{contingencies}, and their truth values depend on the values the model gives the propositions. If $I(m, \alpha)$ can be true or false depending on $m$, then $I(m, \lnot \alpha)$ can be false or true depending on $m$, so $\lnot \alpha$ is also a contingency. Note the asymmetry with the previous item: ``not a contradiction'' is a weaker premise than ``is a tautology'', and it buys a weaker conclusion.
+\item If $\lnot \alpha$ is a contradiction then $I(m, \lnot \alpha) = \mi{false}$ for every model $m$.
+Dropping the negation flips every one of those to true, that is $I(m, \alpha) = \mi{true}$ for every model $m$, so $\alpha$ is valid, a tautology.
+\item If $\alpha$ is not a contradiction then $I(m, \alpha)$ can be true or false depending on $m$.
+We call such formulae \emph{contingencies}, and their truth values depend on the values the model gives the propositions.
+If $I(m, \alpha)$ can be true or false depending on $m$, then $I(m, \lnot \alpha)$ can be false or true depending on $m$, so $\lnot \alpha$ is also a contingency.
+The premise here is weaker than in the previous item, since ``not a contradiction'' says less than ``is a tautology'', and it buys a correspondingly weaker conclusion.
 \item Each row of a truth table corresponds to one model $m$, and each cell in that row is the value of $I(m, \cdot)$ on the sub-formula heading its column.
+\item $KB \models \alpha$ means that $\alpha$ is true in every model of $KB$, so no model makes $KB$ true and $\alpha$ false.
+A model makes $(KB \land \lnot \alpha)$ true exactly when it makes $KB$ true and $\alpha$ false, so there is no such model, and having no model is exactly unsatisfiability.
+Reading the argument in the other direction gives the converse.
+Resolution rests on this equivalence.
 \end{enumerate}}
 
 \item
 \question{Given the model $m = \{(P, \mi{false}), (Q, \mi{false}), (R, \mi{true})\}$ over the propositions $\{P, Q, R\}$, compute $I(m, ((P \Rightarrow \lnot Q) \land R))$.}
-\answer{$I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$ if and only if $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$ and $I(m, R) = \mi{true}$. Since $(R, \mi{true}) \in m$ we have $I(m, R) = \mi{true}$. Now $I(m, (P \Rightarrow \lnot Q)) = \mi{false}$ only if $I(m, P) = \mi{true}$ and $I(m, \lnot Q) = \mi{false}$. But $I(m, P) = \mi{false}$, because $(P, \mi{false}) \in m$. So $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$, and therefore $I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$.}
+\answer{$I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$ if and only if $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$ and $I(m, R) = \mi{true}$.
+Since $(R, \mi{true}) \in m$ we have $I(m, R) = \mi{true}$.
+Now $I(m, (P \Rightarrow \lnot Q)) = \mi{false}$ only if $I(m, P) = \mi{true}$ and $I(m, \lnot Q) = \mi{false}$.
+But $I(m, P) = \mi{false}$, because $(P, \mi{false}) \in m$.
+So $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$, and therefore $I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$.}
 
 \end{enumerate}
 
+%% SOURCE: Ours, 2026-09-15, after AIMA Chapter 7 section 7.4.3 and the "Wumpus World Sentences" and "Truth tables for inference" frames of L05, which use the same KB.
 \item
-\question{Define a procedure, in pseudo-code, to convert a propositional formula into an equivalent formula in conjunctive normal form. Your procedure should handle any formula built from the logical operators studied in our lectures, namely $\lnot$, $\lor$, $\land$, $\Rightarrow$ and $\Leftrightarrow$.}
-\answer{This question is open-ended. A solution should handle one operator at a time and use the existing functionality to process the resulting equivalent formula recursively. The usual shape is four passes over the formula:
+\question{Lecture 5 wrote one situation in the Wumpus world as five propositional sentences.
+Let $P_{i,j}$ be true when square $[i,j]$ holds a pit, and $B_{i,j}$ be true when square $[i,j]$ is breezy.
+After the agent has visited $[1,1]$ and $[2,1]$, feeling no breeze in the first and a breeze in the second, its knowledge base is $KB = R_1 \land R_2 \land R_3 \land R_4 \land R_5$, where
+\begin{align*}
+R_1&: \lnot P_{1,1} & R_2&: \lnot B_{1,1} & R_3&: B_{2,1}\\
+R_4&: B_{1,1} \Leftrightarrow (P_{1,2} \lor P_{2,1}) & R_5&: B_{2,1} \Leftrightarrow (P_{1,1} \lor P_{2,2} \lor P_{3,1}) &&
+\end{align*}
+\begin{enumerate}
+\item The full truth table over the seven propositions appearing in $KB$ has $128$ rows, and the lecture works with eight.
+Which four propositions does $KB$ pin to a single value, and why does that leave eight rows?
+\item Write out those eight models, over $P_{1,2}$, $P_{2,2}$ and $P_{3,1}$, and say which of them satisfy $KB$.
+\item Using your answer, decide whether $KB \models \lnot P_{1,2}$ and whether $KB \models \lnot P_{2,2}$.
+What does each verdict tell the agent to do next?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item $R_1$ gives $P_{1,1} = \mi{false}$, $R_2$ gives $B_{1,1} = \mi{false}$ and $R_3$ gives $B_{2,1} = \mi{true}$.
+With $B_{1,1}$ false, the biconditional $R_4$ forces $P_{1,2} \lor P_{2,1}$ to be false, so $P_{2,1} = \mi{false}$ as well, and so does $P_{1,2}$.
+Four of the seven propositions are therefore fixed, and any row disagreeing with them falsifies $KB$.
+The three that remain free are $P_{1,2}$, $P_{2,2}$ and $P_{3,1}$, giving $2^{3} = 8$ rows worth writing down.
+
+\item With $B_{2,1}$ true and $P_{1,1}$ false, $R_5$ reduces to $P_{2,2} \lor P_{3,1}$.
+Writing the eight models as triples $(P_{1,2}, P_{2,2}, P_{3,1})$:
+\begin{center}
+\begin{tabular}{c|c|l}
+$(P_{1,2}, P_{2,2}, P_{3,1})$ & satisfies $KB$? & why not\\
+\hline
+(false, false, false) & no  & $R_5$ needs $P_{2,2} \lor P_{3,1}$\\
+(false, false, true)  & \textbf{yes} & \\
+(false, true,  false) & \textbf{yes} & \\
+(false, true,  true)  & \textbf{yes} & \\
+(true,  false, false) & no  & $R_4$ forces $P_{1,2}$ false, and $R_5$ fails too\\
+(true,  false, true)  & no  & $R_4$\\
+(true,  true,  false) & no  & $R_4$\\
+(true,  true,  true)  & no  & $R_4$
+\end{tabular}
+\end{center}
+Three models satisfy $KB$, which matches the three highlighted rows of the lecture's $128$-row table.
+
+\item $P_{1,2}$ is false in all three models of $KB$, so $KB \models \lnot P_{1,2}$ and the agent can step into $[1,2]$ knowing there is no pit.
+$P_{2,2}$ is true in two of the three and false in the third, so neither $KB \models \lnot P_{2,2}$ nor $KB \models P_{2,2}$ holds, and $[2,2]$ stays unknown.
+Entailment gives the agent a safe move and, just as usefully, refuses to give it an unsafe one.
+\end{enumerate}}
+
+%% SOURCE: Ours (inherited stem). The bonus deck's "Conjunctive Normal Form" frame gives the four passes; the question asks students to turn them into code.
+\item
+\question{Define a procedure, in pseudo-code, to convert a propositional formula into an equivalent formula in conjunctive normal form.
+Your procedure should handle any formula built from the logical operators studied in our lectures, namely $\lnot$, $\lor$, $\land$, $\Rightarrow$ and $\Leftrightarrow$.}
+\answer{This question is open-ended.
+A solution should handle one operator at a time and use the existing functionality to process the resulting equivalent formula recursively.
+The usual shape is four passes over the formula:
 \begin{enumerate}
 \item eliminate $\Leftrightarrow$, rewriting $\alpha \Leftrightarrow \beta$ as $(\alpha \Rightarrow \beta) \land (\beta \Rightarrow \alpha)$;
 \item eliminate $\Rightarrow$, rewriting $\alpha \Rightarrow \beta$ as $\lnot \alpha \lor \beta$;
 \item push $\lnot$ inwards using De Morgan's laws and double-negation elimination, until every negation sits on a proposition symbol;
 \item distribute $\lor$ over $\land$, rewriting $\alpha \lor (\beta \land \gamma)$ as $(\alpha \lor \beta) \land (\alpha \lor \gamma)$, until the formula is a conjunction of disjunctions of literals.
 \end{enumerate}
-Two things are worth saying about the procedure you write. The order of the passes matters: distributing before the negations are pushed in leaves negated conjunctions in the way. And the result can be exponentially larger than the input, because step 4 duplicates $\alpha$ each time it fires.}
+The order of the passes matters, because distributing before the negations are pushed in leaves negated conjunctions in the way.
+The result can also be exponentially larger than the input, since step 4 duplicates $\alpha$ every time it fires.}
 
+%% SOURCE: Ours, 2026-09-15. Depends on the "Resolution" and "Resolution Example" frames of the L05 bonus deck, written the same day.
 \item
-\question{Familiarise yourself with the logic algorithms, in particular \texttt{logic.ipynb}, in the \texttt{aima-python} library (\url{https://github.com/aimacode/aima-python}). In this practical you learn how to build well-formed sentences of propositional logic, populate a knowledge base (\texttt{PropKB}) with them, and make inferences from it. Work through the following tasks:
+\question{Let $KB = (A \Leftrightarrow (B \lor C)) \land \lnot B \land \lnot C$ and let $\alpha = \lnot A$.
 \begin{enumerate}
-\item Learn how to use the \texttt{Expr} class, and the \texttt{expr} function as a shortcut, to define well-formed sentences of propositional logic, with the help of the examples in \texttt{logic.ipynb}.
-\item Learn to create a propositional knowledge base using the \texttt{PropKB} class, and to add well-formed sentences to it.
-\item \texttt{logic.ipynb} defines the Wumpus environment in a \texttt{PropKB} object, and adds sentences that model a few states in the agent's journey through the Wumpus world. Learn how those states are defined.
-\item You can perform inferences on a knowledge base by model checking. \texttt{logic.ipynb} uses a method of \texttt{PropKB} called \texttt{ask\_if\_true()} to make inferences. Learn to use it to make valid inferences at each of the states from the previous item.
+\item Convert $KB \land \lnot \alpha$ to conjunctive normal form, using the four passes of the previous question, and list the clauses.
+\item Give a resolution refutation, stating at each step which two clauses you resolve and on which literal.
+\item Suppose $\lnot C$ were dropped from $KB$.
+Show that no refutation exists, by giving a model of the remaining clauses.
 \end{enumerate}}
-\answer{Follow the instructions in the \texttt{aima-python} code repository. Note that upstream reorganised in 2026: the algorithms now live under \texttt{aima/} and the notebooks under \texttt{notebooks/}.}
+\answer{
+\begin{enumerate}
+\item $\lnot \alpha$ is $A$.
+The biconditional $A \Leftrightarrow (B \lor C)$ becomes $(A \Rightarrow (B \lor C)) \land ((B \lor C) \Rightarrow A)$, then $(\lnot A \lor B \lor C) \land (\lnot (B \lor C) \lor A)$, and pushing the negation inwards turns the second conjunct into $(\lnot B \land \lnot C) \lor A$, which distributes to $(\lnot B \lor A) \land (\lnot C \lor A)$.
+The five clauses are
+\[C_1: \lnot A \lor B \lor C \qquad C_2: \lnot B \lor A \qquad C_3: \lnot C \lor A \qquad C_4: \lnot B \qquad C_5: \lnot C \qquad C_6: A\]
+where $C_6$ is the negated query.
+
+\item Resolve $C_6$ with $C_1$ on $A$, giving $C_7: B \lor C$.
+Resolve $C_7$ with $C_4$ on $B$, giving $C_8: C$.
+Resolve $C_8$ with $C_5$ on $C$, giving the empty clause.
+So $KB \models \lnot A$.
+
+\item Without $C_5$ the derivation stalls at $C_8: C$, and nothing resolves with it.
+The model $\{(A, \mi{true}), (B, \mi{false}), (C, \mi{true})\}$ satisfies $C_1$ to $C_4$ and $C_6$, so the clause set is satisfiable and no refutation can exist.
+Read back through the biconditional, this is the agent saying that $A$ holds because $C$ does, which is exactly what the removed sentence ruled out.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-15. The Horn KB differs from the one traced in L05's "Forward Chaining Example" and "Backward Chaining Example" frames, so the lecture's answer does not transfer.
+\item
+\question{Take the Horn knowledge base
+\begin{align*}
+r_1&: W \Rightarrow Y  & r_2&: X \land Y \Rightarrow Z & r_3&: Y \Rightarrow V\\
+r_4&: V \land Z \Rightarrow U & r_5&: X \Rightarrow T   & &\text{together with the facts } W \text{ and } X
+\end{align*}
+and the query $U$.
+\begin{enumerate}
+\item Run forward chaining. Give the order in which propositions are added to the set of known facts.
+\item Run backward chaining on $U$. Draw the tree of subgoals, and give the order in which they are proved.
+\item One rule fires under forward chaining and is never touched by backward chaining.
+Which one, and what does the difference say about when each algorithm is the one to reach for?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item The facts $W$ and $X$ start the agenda.
+$W$ satisfies $r_1$, adding $Y$.
+$Y$ satisfies $r_3$, adding $V$, and together with $X$ it satisfies $r_2$, adding $Z$.
+$X$ alone satisfies $r_5$, adding $T$.
+With $V$ and $Z$ both known, $r_4$ fires and adds $U$.
+One admissible order is $W, X, Y, V, Z, T, U$; any order that respects those dependencies is correct, since forward chaining derives every consequence of the knowledge base whatever order the agenda imposes.
+
+\item Backward chaining starts from $U$ and works down:
+\begin{center}
+\begin{tabular}{@{}l@{}}
+$U$ \quad by $r_4$, subgoals $V$ and $Z$\\
+\quad $V$ \quad by $r_3$, subgoal $Y$\\
+\quad\quad $Y$ \quad by $r_1$, subgoal $W$\\
+\quad\quad\quad $W$ \quad a fact, succeeds\\
+\quad $Z$ \quad by $r_2$, subgoals $X$ and $Y$\\
+\quad\quad $X$ \quad a fact, succeeds\\
+\quad\quad $Y$ \quad already proved\\
+\end{tabular}
+\end{center}
+The proofs complete in the order $W, Y, V, X, Z, U$.
+
+\item Rule $r_5$ fires under forward chaining, adding $T$, and backward chaining never considers it, because $T$ appears in no subgoal on the way to $U$.
+Forward chaining is data-driven and derives everything the knowledge base supports, which suits a fixed set of facts queried many times.
+Backward chaining is goal-driven and touches only what the query needs, which suits a large knowledge base queried about one thing.
+The cost is the mirror image: forward chaining pays for conclusions nobody asked for, and backward chaining repeats work across separate queries unless it caches.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-15, replacing a question that sent students to aima-python's logic.ipynb. Upstream reorganised in 2026 and the paths in that question no longer resolve.
+\item
+\question{Open \texttt{tutorial3-logic.ipynb} in this folder, either in Colab or locally, and implement the algorithms you traced above.
+The notebook gives you a representation for propositional sentences and a set of failing tests; your job is to fill in the stubs until the tests pass.
+\begin{enumerate}
+\item Implement \texttt{pl\_true}, the interpretation function $I(m, \alpha)$, by recursion over the structure of a sentence.
+\item Implement \texttt{tt\_entails}, the model-enumeration algorithm of question 1(d), on top of it, and check it against the Wumpus knowledge base of question 2.
+\item Implement \texttt{to\_cnf}, the four passes of question 3, and confirm that your output is logically equivalent to the input by comparing truth tables.
+\item Implement \texttt{pl\_resolution} and use it to reproduce the refutation of question 4.
+\end{enumerate}}
+\answer{The worked implementation is \texttt{tutorial3-logic-solutions.ipynb}, released at the end of the week.
+Two things are worth checking as you go.
+Your \texttt{to\_cnf} should be tested by equivalence rather than by string comparison, because several correct CNFs exist for one input and they differ in clause order.
+And \texttt{tt\_entails} and \texttt{pl\_resolution} should agree on every query you try; where they disagree, the bug is almost always a missing case in \texttt{to\_cnf}.}
 
 \end{enumerate}
 
