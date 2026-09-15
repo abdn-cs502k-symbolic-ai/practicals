@@ -1,0 +1,318 @@
+\DocumentMetadata{
+  lang        = en,
+%   pdfstandard = ua-2,
+%   pdfstandard = a-4f, %or a-4
+  pdfstandard = a-4,
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE} 
+}
+\documentclass[11pt]{article}
+\usepackage{paralist}
+\usepackage{fullpage,graphicx}
+\usepackage{bold-extra}
+\usepackage{fancyhdr}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage[dvipsnames]{xcolor}
+\input xy
+\xyoption{all}
+\usepackage{color,soul}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+
+\usepackage{listings}
+\lstdefinestyle{customjava}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  frame=L,
+  xleftmargin=\parindent,
+  language=java,
+  showstringspaces=false,
+  basicstyle=\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{red!40!black},
+}
+
+\usepackage[textwidth=2cm,textsize=tiny]{todonotes}
+\newcommand{\new}[1]{\textcolor{blue}{#1}}
+\newcommand{\wnote}[1]{\todo[color=Yellow]{{\bf WV}: #1}}
+\newcommand{\pnote}[1]{\todo[color=Lavender]{{\bf PE}: #1}}
+
+\newcommand{\question}[1]{#1}
+
+%% Answers are OFF by default. Do not edit this block to turn them on: the
+%% Makefile builds the solutions variant by passing \def\showanswers{} on the
+%% command line, so `make' cannot ship answers in the student PDF by accident.
+\ifdefined\showanswers
+  \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
+\else
+  \newcommand{\answer}[1]{}
+\fi
+
+%\lfoot{PLEASE TURN OVER}
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+
+\setlength{\parindent}{0pt}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,shapes}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+\usepackage{tkz-graph}
+\newcommand{\mi}[1]{\mathit{#1}}
+\newcommand{\mr}[1]{\mathrm{#1}}
+\newcommand{\mt}[1]{\mathtt{#1}}
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\mb}[1]{\mathbb{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand{\cob}[1]{{\color{RoyalBlue} #1}}
+\newcommand{\cor}[1]{{\color{RedOrange} #1}}
+\newcommand{\cop}[1]{{\color{Purple} #1}}
+\newcommand{\cog}[1]{{\color{ForestGreen} #1}}
+
+\newcommand{\deft}{\mc{D}}
+\newcommand{\coop}{\mc{C}}
+
+
+\begin{document}
+
+\centerline{\textsc{University of Aberdeen}}
+\centerline{Symbolic AI (CS502K / CS507K)}
+\centerline{Tutorial -- Logic 1}
+\ifdefined\showanswers\centerline{\textbf{SOLUTIONS}}\fi
+
+\hrulefill
+
+This tutorial covers Lecture 5, propositional logic, and is the first of the two practical sessions of week 11.
+It is based on parts of Chapters 7 and 8 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach}, and on the slides covered in our lectures.
+The second session uses \texttt{CS502K-tutorial-week-3b.tex}, which is Logic 2 and covers first-order logic.
+
+\textbf{On generative AI.}
+A language model answers most of the questions below, and answers them well.
+We know, and we set them anyway.
+The questions exist to make you commit to a position and defend it, which is what the tutorial session is for, and you cannot defend a position that a model chose for you.
+Assessment 1 is invigilated and Assessment 2 is proctored, so you sit both with no model available.
+Assessment 3 permits generative AI and ends in a defence, where you explain what you submitted.
+Argue with a model if you find that useful, but do not let it answer for you.
+
+\hrulefill
+
+\begin{enumerate}
+
+\item \question{Provide answers to the items below in connection with propositional logic.}
+\begin{enumerate}
+
+\item
+\question{Show that the propositional formulae below are, or are not, syntactically correct.
+\begin{itemize}
+\item $P \lor Q \land S \Rightarrow S$
+\item $P \Leftrightarrow Q \Rightarrow \lnot R$
+\item $P \lnot (P \lor Q)$
+\end{itemize}}
+\answer{For each item, give a sequence of grammar rules which yields the formula.
+\begin{itemize}
+\item $P \lor Q \land S \Rightarrow S$ is correct:
+\begin{align*}
+\mi{Sentence} &\rightarrow \mi{ComplexSentence}\\
+              &\rightarrow \mi{Sentence} \lor \mi{Sentence}\\
+              &\rightarrow \mi{AtomicSentence} \lor \mi{Sentence}\\
+              &\rightarrow P \lor \mi{Sentence}\\
+              &\rightarrow P \lor \mi{ComplexSentence}\\
+              &\rightarrow P \lor \mi{Sentence} \land \mi{Sentence}\\
+              &\rightarrow P \lor \mi{AtomicSentence} \land \mi{Sentence}\\
+              &\rightarrow P \lor Q \land \mi{Sentence}\\
+              &\rightarrow P \lor Q \land \mi{ComplexSentence}\\
+              &\rightarrow P \lor Q \land \mi{Sentence} \Rightarrow \mi{Sentence}\\
+              &\rightarrow P \lor Q \land \mi{AtomicSentence} \Rightarrow \mi{Sentence}\\
+              &\rightarrow P \lor Q \land S \Rightarrow \mi{Sentence}\\
+              &\rightarrow P \lor Q \land S \Rightarrow \mi{AtomicSentence}\\
+              &\rightarrow P \lor Q \land S \Rightarrow S
+\end{align*}
+\item $P \Leftrightarrow Q \Rightarrow \lnot R$ is correct; the sequence of grammar rules is similar to the previous item.
+\item $P \lnot (P \lor Q)$ is not syntactically correct. The grammar for propositional logic establishes $\lnot$ as a unary connective, so this formula is in fact
+\[\mi{AtomicSentence}\,\lnot\,\mi{Sentence}\]
+where $\mi{AtomicSentence}$ is $P$ and $\mi{Sentence}$ is $(P \lor Q)$. Using the grammar we obtain
+\[\mi{AtomicSentence}\,\mi{ComplexSentence}\]
+where $\mi{ComplexSentence}$ is $\lnot (P \lor Q)$. This can be further rewritten as
+\[\mi{Sentence}\,\mi{Sentence}\]
+The grammar does not allow two sentences to appear juxtaposed with no binary operator between them.
+\end{itemize}}
+
+\item
+\question{Assuming the following propositions and their meaning:
+\begin{itemize}
+\item $P$ stands for ``I will go to the beach''
+\item $Q$ stands for ``I will go to the museum''
+\item $R$ stands for ``it is raining''
+\item $S$ stands for ``it is sunny''
+\end{itemize}
+write the meaning in English of the following formulae:
+\begin{itemize}
+\item $R \Leftrightarrow \lnot S$
+\item $(R \lor S) \Rightarrow (P \lor Q)$
+\item $R \Rightarrow (Q \land \lnot P)$
+\item $S \Rightarrow (\lnot Q \land P)$
+\end{itemize}}
+\answer{
+\begin{itemize}
+\item ``it is raining if, and only if, it is not sunny''
+\item ``if it is raining or sunny then I will go to the beach or I will go to the museum''
+\item ``if it is raining then I will go to the museum and I will not go to the beach''
+\item ``if it is sunny then I will not go to the museum and I will go to the beach''
+\end{itemize}}
+
+\item
+\question{Prove via truth-tables whether the following formulae are valid (tautologies) or not:
+\begin{enumerate}
+\item $(P \land \lnot P) \Rightarrow (\lnot Q \lor Q)$
+\item $((P \land Q) \Rightarrow R) \Rightarrow ((P \lor Q) \Rightarrow R)$
+\item $(P \land (Q \Rightarrow R)) \lor (Q \lor \lnot Q)$
+\end{enumerate}}
+\answer{Items (i) and (iii) are valid. Item (ii) is not: it fails on the two rows where exactly one of $P$ and $Q$ is true and $R$ is false.
+
+To build a truth-table, you should:
+\begin{enumerate}
+\item create a column for each proposition symbol;
+\item create a column for each sub-formula, and one column for the complete formula;
+\item create rows for all possible combinations of true and false values of the proposition symbols;
+\item using the truth values of the proposition symbols, work out the truth value of each sub-formula, and use those values to work out the truth value of the complete formula.
+\end{enumerate}
+The meaning (truth value) of each logical operator is as follows:
+\begin{center}
+\begin{tabular}{cc|ccccc}
+$\alpha_1$ & $\alpha_2$ & $\lnot \alpha_1$ & $\alpha_1 \land \alpha_2$ & $\alpha_1 \lor \alpha_2$ & $\alpha_1 \Rightarrow \alpha_2$ & $\alpha_1 \Leftrightarrow \alpha_2$\\
+\hline
+false & false & true  & false & false & true  & true\\
+false & true  & true  & false & true  & true  & false\\
+true  & false & false & false & true  & false & false\\
+true  & true  & false & true  & true  & true  & true
+\end{tabular}
+\end{center}
+
+Our specific items have the following tables.
+\begin{enumerate}
+\item $(P \land \lnot P) \Rightarrow (\lnot Q \lor Q)$
+\begin{center}
+\begin{tabular}{cc|ccccc}
+$P$ & $Q$ & $\lnot P$ & $(P \land \lnot P)$ & $\lnot Q$ & $(\lnot Q \lor Q)$ & $(P \land \lnot P) \Rightarrow (\lnot Q \lor Q)$\\
+\hline
+true  & true  & false & false & false & true & true\\
+false & true  & true  & false & false & true & true\\
+true  & false & false & false & true  & true & true\\
+false & false & true  & false & true  & true & true
+\end{tabular}
+\end{center}
+The antecedent $(P \land \lnot P)$ is false in every model, so the implication is true in every model.
+
+\item $((P \land Q) \Rightarrow R) \Rightarrow ((P \lor Q) \Rightarrow R)$
+\begin{center}
+\begin{tabular}{ccc|cccc|c}
+$P$ & $Q$ & $R$ & $(P \land Q)$ & $(P \lor Q)$ & $((P \land Q) \Rightarrow R)$ & $((P \lor Q) \Rightarrow R)$ & whole\\
+\hline
+true  & true  & true  & true  & true  & true  & true  & true\\
+false & true  & true  & false & true  & true  & true  & true\\
+true  & false & true  & false & true  & true  & true  & true\\
+false & false & true  & false & false & true  & true  & true\\
+true  & true  & false & true  & true  & false & false & true\\
+false & true  & false & false & true  & true  & false & \textbf{false}\\
+true  & false & false & false & true  & true  & false & \textbf{false}\\
+false & false & false & false & false & true  & true  & true
+\end{tabular}
+\end{center}
+Two rows make the formula false, so it is not valid. It is satisfiable, since six rows make it true.
+
+\item $(P \land (Q \Rightarrow R)) \lor (Q \lor \lnot Q)$ is a tautology, and needs no full table to see why: the right disjunct $(Q \lor \lnot Q)$ is true in every model, so the disjunction is too.
+\end{enumerate}}
+
+\item
+\question{Using the algorithm to enumerate all models studied in our lectures:
+
+\medskip
+\noindent\begin{minipage}{\linewidth}
+\begin{algorithmic}[1]
+\Require $KB = \alpha_1 \land \cdots \land \alpha_n$, and $\alpha$ (a query)
+\Ensure true or false
+\Function{Entails}{$KB, \alpha$}
+  \State $\mi{symbols} \gets \mi{prop}(KB) \cup \mi{prop}(\alpha)$ \Comment{get symbols of $KB$ and $\alpha$}
+  \State \Return \Call{CheckAll}{$KB, \alpha, \mi{symbols}, \emptyset$}
+\EndFunction
+\end{algorithmic}
+\end{minipage}
+
+\begin{algorithmic}[1]
+\Require $KB$, $\alpha$, a set $\mi{symbols}$, and a partial $\mi{model}$
+\Ensure true or false
+\Function{CheckAll}{$KB, \alpha, \mi{symbols}, \mi{model}$}
+  \If{$\mi{symbols} = \emptyset$}
+    \If{$I(\mi{model}, KB) = \mi{true}$}
+      \State \Return $I(\mi{model}, \alpha)$
+    \Else
+      \State \Return $\mi{true}$ \Comment{if $KB$ is false always return true}
+    \EndIf
+  \Else
+    \State $\mi{rest} \gets \mi{symbols} \setminus \{P\}$ \Comment{pick one symbol $P$}
+    \State \Return \Call{CheckAll}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{true})\}$}
+    \State \qquad \textbf{and} \Call{CheckAll}{$KB, \alpha, \mi{rest}, \mi{model} \cup \{(P, \mi{false})\}$}
+  \EndIf
+\EndFunction
+\end{algorithmic}
+\medskip
+
+\noindent show how the algorithm computes $\textsc{Entails}(((P \land \lnot P) \land \lnot Q), Q)$.}
+\answer{Your answer should explain how each variable in the algorithm was instantiated and updated as a result of the instructions. The original invocation $\textsc{Entails}(((P \land \lnot P) \land \lnot Q), Q)$ makes $KB = (P \land \lnot P) \land \lnot Q$ and $\alpha = Q$; line 2 computes $\mi{symbols} = \{P, Q\}$, and line 3 invokes $\textsc{CheckAll}((P \land \lnot P) \land \lnot Q,\ Q,\ \{P, Q\},\ \emptyset)$.
+
+Use the definition of \textsc{CheckAll} to compute the final result: it is true. The recursion reaches four leaves, one per model of $\{P, Q\}$, and $KB$ is false in every one of them because $KB$ contains the contradiction $P \land \lnot P$. Every leaf therefore returns true by the ``if $KB$ is false always return true'' branch, so the conjunction of all four is true. Note that this is entailment holding vacuously: an inconsistent $KB$ entails everything, including $Q$ and $\lnot Q$.
+
+When following an algorithm, it is important to understand the types of the variables (sets, integers, and so on) and how the operations on them change their values. Take particular care with recursive definitions, and with how to follow them with paper and pencil.}
+
+\item
+\question{Answer the following items:
+\begin{enumerate}
+\item A propositional formula is a \emph{contradiction} if it is false in every possible model. If $\lnot \alpha$ is a contradiction, what can we say about $\alpha$? Justify your answer.
+\item If $\alpha$ is not a contradiction, what can we say about $\lnot \alpha$? Justify your answer.
+\item How are truth tables related to the interpretation function $I(m, \alpha)$?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item If $\lnot \alpha$ is a contradiction then $I(m, \lnot \alpha) = \mi{false}$ for every model $m$. Dropping the negation flips every one of those to true, that is $I(m, \alpha) = \mi{true}$ for every model $m$, so $\alpha$ is valid, a tautology.
+\item If $\alpha$ is not a contradiction then $I(m, \alpha)$ can be true or false depending on $m$. Such formulae are called \emph{contingencies}, and their truth values depend on the values the model gives the propositions. If $I(m, \alpha)$ can be true or false depending on $m$, then $I(m, \lnot \alpha)$ can be false or true depending on $m$, so $\lnot \alpha$ is also a contingency. Note the asymmetry with the previous item: ``not a contradiction'' is a weaker premise than ``is a tautology'', and it buys a weaker conclusion.
+\item Each row of a truth table corresponds to one model $m$, and each cell in that row is the value of $I(m, \cdot)$ on the sub-formula heading its column.
+\end{enumerate}}
+
+\item
+\question{Given the model $m = \{(P, \mi{false}), (Q, \mi{false}), (R, \mi{true})\}$ over the propositions $\{P, Q, R\}$, compute $I(m, ((P \Rightarrow \lnot Q) \land R))$.}
+\answer{$I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$ if and only if $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$ and $I(m, R) = \mi{true}$. Since $(R, \mi{true}) \in m$ we have $I(m, R) = \mi{true}$. Now $I(m, (P \Rightarrow \lnot Q)) = \mi{false}$ only if $I(m, P) = \mi{true}$ and $I(m, \lnot Q) = \mi{false}$. But $I(m, P) = \mi{false}$, because $(P, \mi{false}) \in m$. So $I(m, (P \Rightarrow \lnot Q)) = \mi{true}$, and therefore $I(m, ((P \Rightarrow \lnot Q) \land R)) = \mi{true}$.}
+
+\end{enumerate}
+
+\item
+\question{Define a procedure, in pseudo-code, to convert a propositional formula into an equivalent formula in conjunctive normal form. Your procedure should handle any formula built from the logical operators studied in our lectures, namely $\lnot$, $\lor$, $\land$, $\Rightarrow$ and $\Leftrightarrow$.}
+\answer{This question is open-ended. A solution should handle one operator at a time and use the existing functionality to process the resulting equivalent formula recursively. The usual shape is four passes over the formula:
+\begin{enumerate}
+\item eliminate $\Leftrightarrow$, rewriting $\alpha \Leftrightarrow \beta$ as $(\alpha \Rightarrow \beta) \land (\beta \Rightarrow \alpha)$;
+\item eliminate $\Rightarrow$, rewriting $\alpha \Rightarrow \beta$ as $\lnot \alpha \lor \beta$;
+\item push $\lnot$ inwards using De Morgan's laws and double-negation elimination, until every negation sits on a proposition symbol;
+\item distribute $\lor$ over $\land$, rewriting $\alpha \lor (\beta \land \gamma)$ as $(\alpha \lor \beta) \land (\alpha \lor \gamma)$, until the formula is a conjunction of disjunctions of literals.
+\end{enumerate}
+Two things are worth saying about the procedure you write. The order of the passes matters: distributing before the negations are pushed in leaves negated conjunctions in the way. And the result can be exponentially larger than the input, because step 4 duplicates $\alpha$ each time it fires.}
+
+\item
+\question{Familiarise yourself with the logic algorithms, in particular \texttt{logic.ipynb}, in the \texttt{aima-python} library (\url{https://github.com/aimacode/aima-python}). In this practical you learn how to build well-formed sentences of propositional logic, populate a knowledge base (\texttt{PropKB}) with them, and make inferences from it. Work through the following tasks:
+\begin{enumerate}
+\item Learn how to use the \texttt{Expr} class, and the \texttt{expr} function as a shortcut, to define well-formed sentences of propositional logic, with the help of the examples in \texttt{logic.ipynb}.
+\item Learn to create a propositional knowledge base using the \texttt{PropKB} class, and to add well-formed sentences to it.
+\item \texttt{logic.ipynb} defines the Wumpus environment in a \texttt{PropKB} object, and adds sentences that model a few states in the agent's journey through the Wumpus world. Learn how those states are defined.
+\item You can perform inferences on a knowledge base by model checking. \texttt{logic.ipynb} uses a method of \texttt{PropKB} called \texttt{ask\_if\_true()} to make inferences. Learn to use it to make valid inferences at each of the states from the previous item.
+\end{enumerate}}
+\answer{Follow the instructions in the \texttt{aima-python} code repository. Note that upstream reorganised in 2026: the algorithms now live under \texttt{aima/} and the notebooks under \texttt{notebooks/}.}
+
+\end{enumerate}
+
+\end{document}
