@@ -40,9 +40,8 @@
 
 \newcommand{\question}[1]{#1}
 
-%% Answers are OFF by default. Do not edit this block to turn them on: the
-%% Makefile builds the solutions variant by passing \def\showanswers{} on the
-%% command line, so `make' cannot ship answers in the student PDF by accident.
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
 \ifdefined\showanswers
   \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
 \else
@@ -80,34 +79,76 @@
 \newcommand{\deft}{\mc{D}}
 \newcommand{\coop}{\mc{C}}
 
+%% ---------------------------------------------------------------------------
+%% Question provenance
+%%
+%% Each question below carries a %% SOURCE: line.
+%% Numbering follows Russell and Norvig, *Artificial Intelligence: A Modern Approach*, THIRD edition, and was checked against the 3e Instructor's Manual on 2026-09-15 rather than recalled.
+%% Beware: the online exercise set at aimacode.github.io/aima-exercises is the FOURTH edition and numbers the same exercises differently (our 1.7 is 1.9/1.10 there, our 2.3 is 2.4, our 3.3 is 3.5), so do not cite from it.
+%%
+%% "ours" marks a question written for this course with no AIMA counterpart.
+%% ---------------------------------------------------------------------------
+
 \begin{document}
 
 \centerline{\textsc{University of Aberdeen}} 
 \centerline{Symbolic AI (CS502K / CS507K)}
-\centerline{Tutorial -- Search}
+\centerline{Tutorial II -- Search}
 \ifdefined\showanswers\centerline{\textbf{SOLUTIONS}}\fi
 
 \hrulefill
 
-The tutorial is based on parts of Chapter 3 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach}, and the slides covered in our lectures.
+This tutorial runs over the two practical sessions of week 10.
+The questions below are pen and paper, and cover Lectures 3 and 4.
+The second session uses the notebook \texttt{tutorial2-search.ipynb} in this folder, where you implement the algorithms you trace here and run them on the problems you formulated in week 9.
+
+This tutorial draws on Chapter 3 of Russell and Norvig's \emph{Artificial Intelligence: A modern approach} and on the lecture slides.
+
+\textbf{On generative AI.}
+A language model answers most of the questions below, and answers them well.
+We know, and we set them anyway.
+Tracing a search algorithm by hand is how you find out whether you can predict what your code will do, and a trace you did not produce tells you nothing about that.
+Assessment 1 is invigilated and Assessment 2 is proctored, so you sit both with no model available.
+Assessment 3 permits generative AI and ends in a defence, where you explain what you submitted.
+Argue with a model if you find that useful, but do not let it answer for you.
 
 \hrulefill
 
 \begin{enumerate}
 
 \item
-\question{What's the difference between a world state, a state description, and a search node? Why is this distinction useful?
+%% SOURCE: AIMA 3e Ex 3.11, verbatim, with AIMA's answer.
+\question{What is the difference between a world state, a state description, and a search node?
+Why is this distinction useful?
 }
 
-\answer{A world state is how reality is or could be. In one world state we're in Arad, in another we're in Bucharest. The world state also includes which street we're on, what's currently on the radio, and the price of tea in China. A state description is an agent's internal description of a world state. Examples are $\mathit{In}(\mathit{Arad})$ and $\mathit{In}(\mathit{Bucharest})$. These descriptions
-are necessarily approximate, recording only some aspects of the world state. We need to distinguish between world states and state descriptions: state descriptions are very simple abstractions of the world state, and this can be i) because the agent could be mistaken about how the world is, ii) because the agent might want to imagine things that aren't true but it could make true, and ii) because the agent cares about the world (and not its internal representation of it). Search nodes are generated during search, representing a state the search process knows how to reach. They contain additional information aside from the state description, such as the sequence of actions used to reach this state. This distinction is useful because we may generate different search nodes which represent the same state, and because search nodes contain more information than a state representation.
+\answer{A world state is how reality is or could be.
+In one world state we are in Arad, in another we are in Bucharest.
+The world state also covers which street we are on, what the radio is playing, and the price of tea in China.
+A state description is an agent's internal description of a world state.
+Examples are $\mathit{In}(\mathit{Arad})$ and $\mathit{In}(\mathit{Bucharest})$.
+Such a description only ever approximates the world state, recording some of its aspects and discarding the rest.
+
+Three reasons make the distinction worth keeping.
+The agent may be mistaken about how the world is.
+The agent may want to imagine things that do not hold but that it could bring about.
+And the agent cares about the world itself, not about its own representation of the world.
+
+A search node is something the search process creates, and it stands for a state that the process knows how to reach.
+A node carries more than a state description: it also records the sequence of actions that reached the state.
+The distinction earns its keep because one search can create several different nodes that all describe the same state.
 }
 
 \item 
-\question{ Suppose two friends live in different cities on a map, such as the Romania map from the lectures. On every turn, we can simultaneously move each friend to a neighboring city on the map. The amount of time needed to move from city $i$ to neighbor $j$ is equal to the road distance $d(i, j)$ between the cities, but on each turn the friend that arrives first must wait until the other one arrives (and calls the other one on his/her mobile phone) before the next turn can begin. We want the two friends to meet as quickly as possible.
+%% SOURCE: AIMA 3e Ex 3.3, verbatim apart from `cell phone' to `mobile phone', with AIMA's answer.
+\question{ Suppose two friends live in different cities on a map, such as the Romania map from the lectures.
+On every turn, we can simultaneously move each friend to a neighboring city on the map.
+The amount of time needed to move from city $i$ to neighbor $j$ is equal to the road distance $d(i, j)$ between the cities, but on each turn the friend that arrives first must wait until the other one arrives (and calls the other one on his/her mobile phone) before the next turn can begin.
+We want the two friends to meet as quickly as possible.
 \begin{enumerate}
 \item Write a detailed formulation for this search problem. You will find it helpful to define some formal notation.
-\item Let $D(i, j)$ be the straight-line distance between cities $i$ and $j$. Which of the following heuristic functions are admissible? 
+\item Let $D(i, j)$ be the straight-line distance between cities $i$ and $j$.
+Which of the following heuristic functions are admissible? 
 \begin{enumerate}
     \item $D(i, j)$
     \item $2 \times D(i, j)$
@@ -127,14 +168,26 @@ are necessarily approximate, recording only some aspects of the world state. We 
     \item Step cost function: The cost to go from $(i, j)$ to $(x, y)$ is $\mathit{max}(d(i, x), d(j, y))$.
 \end{itemize}
 
-\item In the best case, the friends head straight for each other in steps of equal size, reducing their separation by twice the time cost on each step. Hence (iii) is admissible.
-\item Yes: e.g., a map with two nodes connected by one link. The two friends will swap places forever. The same will happen on any chain if they start an odd number of steps apart. (One can see this best on the graph that represents the state space, which has two disjoint sets of nodes.) The same even holds for a grid of any size or shape, because every move changes the Manhattan distance between the two friends by 0 or 2.
-\item Yes: take any of the unsolvable maps from part (c) and add a self-loop to any one of the nodes. If the friends start an odd number of steps apart, a move in which one of the friends takes the self-loop changes the distance by 1, rendering the problem solvable. If the self-loop is not taken, the argument from (c) applies and no solution is possible.
+\item In the best case, the friends head straight for each other in steps of equal size, reducing their separation by twice the time cost on each step.
+Hence (iii) is admissible.
+\item Yes: e.g., a map with two nodes connected by one link.
+The two friends will swap places forever.
+The same will happen on any chain if they start an odd number of steps apart.
+(One can see this best on the graph that represents the state space, which has two disjoint sets of nodes.)
+The same even holds for a grid of any size or shape, because every move changes the Manhattan distance between the two friends by 0 or 2.
+\item Yes: take any of the unsolvable maps from part (c) and add a self-loop to any one of the nodes.
+If the friends start an odd number of steps apart, a move in which one of the friends takes the self-loop changes the distance by 1, rendering the problem solvable.
+If the self-loop is not taken, the argument from (c) applies and no solution is possible.
 \end{enumerate}
 }
 
 \item 
-\question{Suppose you have three jugs, measuring 12 gallons, 8 gallons, and 3 gallons, and a water faucet. You can fill the jugs up or empty them out from one to another or onto the ground. You need to measure out exactly one gallon. Give this problem a formulation as a search space (with its initial and goal states, its successor function, and a cost function).}
+%% SOURCE: AIMA 3e Ex 3.6, item (d) of its four.
+%% Adapted: AIMA asks only for a formulation, and we also ask for the goal states, which AIMA's answer omits.
+\question{Suppose you have three jugs, measuring 12 gallons, 8 gallons, and 3 gallons, and a water faucet.
+You can fill the jugs up or empty them out from one to another or onto the ground.
+You need to measure out exactly one gallon.
+Give this problem a formulation as a search space (with its initial and goal states, its successor function, and a cost function).}
 \answer{
 The components are
 \begin{itemize}
@@ -146,24 +199,112 @@ The components are
 }
 
 \item 
+%% SOURCE: Ours.
+%% Pre-dates the 2026 redesign; URL re-checked 2026-09-14 and live.
 \question{The web site 
-\url{https://qiao.github.io/PathFinding.js/visual/}, implements various search algorithms to find paths between two cells of an $n \times n$ grid. Use it to:
+\url{https://qiao.github.io/PathFinding.js/visual/}, implements various search algorithms to find paths between two cells of an $n \times n$ grid.
+Use it to:
 \begin{enumerate}
-    \item Create a problem which will require the exploration of all cells in the grid, using one of the available algorithms. Can you do this without any obstacles?
-    \item Create a problem to compare 2 heuristics using the A* algorithm. Compare these in terms of overall number of explored states and length of path (optimality of solution). 
+    \item Create a problem which will require the exploration of all cells in the grid, using one of the available algorithms.
+    Can you do this without any obstacles?
+    \item Create a problem to compare 2 heuristics using the A* algorithm.
+    Compare these in terms of overall number of explored states and length of path (optimality of solution). 
 \end{enumerate}
 }
 \answer{The items are open-ended, and these depend on the choice of the initial state (location of origin and destination, and obstacles.}
 
-\item \question{Familiarise yourself with the search algorithms in the aima-python library (\url{https://github.com/aimacode/aima-python}). You find two versions of Jupyter notebooks with search algorithms: (1) \texttt{search.ipynb} (corresponding to AIMA 3e) and (2) \texttt{search4e.ipynb} (corresponding to AIMA 4e). Although in this course we largely follow AIMA 3e, for searching algorithms it is best you learn from both versions as each has a different set of examples. Consider the following tasks:
+\item
+%% SOURCE: Ours, 2026-09-14, replacing a dead aima-python question.
+%% Traces AIMA 3e Figs 3.2 and 3.22 to 3.24, which are the Lecture 3 and 4 figures.
+%% Counts verified against the reference implementation in tutorial2-search-solutions.ipynb.
+\question{This question uses the Romania map and the straight-line-distance heuristic $h_{\mathit{SLD}}$ from Lectures 3 and 4.
+Search from Arad to Bucharest in every part, expanding nodes by hand and breaking ties alphabetically.
+Use \emph{graph} search throughout: a state that has already been expanded is never expanded again, and the goal test applies to a node when you select it for expansion, not when you generate it.
+\emph{Expanding} a node means generating its successors, so the goal node is never expanded: you select it and return it.
 \begin{enumerate}
-\item Inspect the code for the abstract Problem and Node classes which are defined in the \texttt{search.py} library.
-\item Create a map for the Northeast of Scotland, with the main towns and their distances, and use the algorithms to find a route between any two towns.
-\item Inspect the code corresponding to the 8 Puzzle, focusing mainly on how you define the problem, define cost and heuristic functions to search problems. Investigate the search space explored (nodes expanded) and the paths to solutions.
-\item Model the problem of the jugs introduced above, and use the algorithms to find a solution. (Note: a solution to the Jugs problem is in \texttt{search4e.ipynb}.)
+    \item Run uniform-cost search. List the states in the order you expand them, then give the solution path and its cost.
+    \item Run greedy best-first search with $h_{\mathit{SLD}}$.
+    List the states in the order you expand them, then give the solution path and its cost.
+    \item Run A$^{*}$ with the same heuristic.
+    List the states in the order you expand them, then give the solution path and its cost.
+    \item In the A$^{*}$ trace, Bucharest first reaches the frontier with $f = 450$ by way of Fagaras, and A$^{*}$ does not return it.
+    Say which step of the algorithm prevents that, and what would go wrong if the algorithm returned a goal as soon as it generated one.
+    \item Count the expansions in each of the three traces and rank the algorithms by that count.
+    Say which of them returned an optimal solution.
+    What does the pair of numbers tell you that the expansion count alone does not?
 \end{enumerate}
 }
-\answer{Follow the instructions in the aima-python code repository.}
+\answer{
+\begin{enumerate}
+\item Expansion order: Arad, Zerind, Timisoara, Sibiu, Oradea, Rimnicu Vilcea, Lugoj, Fagaras, Mehadia, Pitesti, Craiova, Drobeta, so \textbf{12 expansions}, after which the search selects Bucharest and returns it.
+Solution: Arad, Sibiu, Rimnicu Vilcea, Pitesti, Bucharest, at cost $140 + 80 + 97 + 101 = \mathbf{418}$.
+Bucharest first enters the frontier at 450 by way of Fagaras, and the cheaper 418 by way of Pitesti later displaces it.
+\item Expansion order: Arad, Sibiu, Fagaras, so \textbf{3 expansions}, after which the search selects Bucharest and returns it.
+Solution: Arad, Sibiu, Fagaras, Bucharest, at cost $140 + 99 + 211 = \mathbf{450}$.
+Greedy follows the smallest $h$ at every step and never looks at the cost it has already paid, so it stops at the first goal it reaches and not at the cheapest one.
+\item Expansion order with $f = g + h$, reading $h$ off the table beside the map: Arad (366), Sibiu (393), Rimnicu Vilcea (413), Pitesti (415), Fagaras (417), so \textbf{5 expansions}, after which the search selects Bucharest at $f = 418$ and returns it.
+Solution: Arad, Sibiu, Rimnicu Vilcea, Pitesti, Bucharest, at cost \textbf{418}, the same optimal path uniform-cost search found.
+
+\textbf{A caveat on the last two.} The A$^{*}$ tree figure in Lecture 4 expands Fagaras before Pitesti, which is the opposite order.
+The two figures in that lecture carry different heuristic values for these two cities: the table says Fagaras 178 and Pitesti 98, while the trees print $415 = 239 + 176$ and $417 = 317 + 100$.
+Accept either order.
+A$^{*}$ expands the same five nodes, takes the same five expansions and returns the same 418 km path whichever pair you use, and nothing in the lecture's argument turns on it.
+\item The algorithm tests for the goal when it \emph{selects} a node to expand, and not when it generates one.
+Expanding Fagaras generates Bucharest at $f = 450$, and at that moment Pitesti still sits on the frontier at $f = 417$.
+The search therefore takes Pitesti next, and expanding Pitesti generates the cheaper Bucharest at $f = 418$.
+A goal node has $h = 0$, so its $f$ equals its path cost, and any frontier node with a smaller $f$ may still lead to a cheaper solution.
+An algorithm that tested on generation would return the 450 path and would forfeit optimality.
+\item Greedy 3, A$^{*}$ 5, uniform-cost 12, but only A$^{*}$ and uniform-cost returned the optimal 418; greedy returned 450.
+A ranking by expansions alone puts greedy first and so rewards it for a guarantee it does not offer.
+The comparison that informs is A$^{*}$ against uniform-cost search, because the two return the same path, and the heuristic bought that path for fewer than half the expansions.
+\end{enumerate}
+}
+
+\item
+%% SOURCE: Ours, 2026-09-14.
+%% Builds on AIMA 3e Sec 3.6: 3.6.1 defines h1 and h2, 3.6.2 defines domination, 3.6.3 derives both from relaxed problems.
+%% Related AIMA exercises are 3.17 and 3.37, neither of which we use.
+\question{Lecture 4 gives two heuristics for the 8-puzzle: $h_{1}$, the number of misplaced tiles, and $h_{2}$, the sum over all tiles of the Manhattan distance from each tile's current square to its goal square.
+The blank counts in neither.
+\begin{enumerate}
+    \item Show that $h_{1}$ is admissible by naming the relaxed problem that it solves exactly.
+    \item Do the same for $h_{2}$.
+    \item Show that $h_{2}$ dominates $h_{1}$, and say what domination buys you in the number of nodes A$^{*}$ expands.
+    \item $h_{3}(n) = h_{1}(n) + h_{2}(n)$ is at least as large as either.
+    Is it admissible?
+    Give a state that settles the question.
+    \item Is $\mathit{max}(h_{1}, h_{2})$ admissible? Is it worth using \emph{here}?
+\end{enumerate}
+}
+\answer{
+\begin{enumerate}
+\item Drop the condition that a tile may only slide into the adjacent blank square, so that any tile may move from any square to any other square in one move.
+Every misplaced tile then needs exactly one move and every correctly placed tile needs none, so the optimal cost of the relaxed problem is exactly $h_{1}$.
+The relaxed problem admits every solution of the original and more besides, so its optimal cost cannot exceed the cost of the original, and $h_{1}$ never overestimates.
+\item Drop only the condition that the destination square must be blank, so a tile may move one square up, down, left or right regardless of what is there.
+Each tile then needs exactly its Manhattan distance and the moves are independent, so the optimal cost of that relaxation is exactly $h_{2}$.
+\item Every misplaced tile contributes exactly 1 to $h_{1}$ and at least 1 to $h_{2}$, because a tile off its goal square is at Manhattan distance 1 or more.
+Every correctly placed tile contributes 0 to both.
+Hence $h_{2}(n) \geq h_{1}(n)$ for every state $n$, and both are admissible, which is what domination means.
+A$^{*}$ expands every node whose $f$ is strictly less than the optimal cost $C^{*}$, so a larger admissible heuristic puts fewer nodes under that bound: every node A$^{*}$ expands with $h_{2}$ it would also expand with $h_{1}$.
+Domination never costs expansions, though it can cost computation per node.
+\item Not admissible.
+Take a state one move from the goal, with a single tile adjacent to its goal square and the blank sitting in that goal square.
+Then $h_{1} = 1$, $h_{2} = 1$, and $h_{3} = 2$, which exceeds the true cost of 1.
+Adding two admissible heuristics counts the same work twice, so the sum is not admissible in general.
+\item Yes: the maximum of admissible heuristics is admissible, because if every member never exceeds the true cost then neither does the largest of them.
+It is not worth using here, because part (c) established $h_{2} \geq h_{1}$ everywhere, so $\mathit{max}(h_{1}, h_{2})$ equals $h_{2}$ at every state and you pay for computing $h_{1}$ to no effect.
+The maximum earns its keep when neither heuristic dominates the other, so each is the stronger one somewhere.
+\end{enumerate}
+}
+
+\item
+%% SOURCE: Ours, 2026-09-14.
+%% Points at the session 2 notebook.
+\question{Work through \texttt{tutorial2-search.ipynb} in this folder, which is the second session of this tutorial.
+It asks you to implement breadth-first search, uniform-cost search and A$^{*}$ against the \texttt{Problem} interface you met in week 9, and to reproduce the expansion counts you worked out by hand in question 5.}
+\answer{See the notebook.
+Every check in it must pass, and the Romania counts it reports must match question 5: 12 expansions for uniform-cost search, 3 for greedy best-first search and 5 for A$^{*}$.}
 
 % \item (\textbf{Hand-in Exercise})
 % \question{Using the on-line search demo available at

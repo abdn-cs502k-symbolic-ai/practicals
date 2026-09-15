@@ -11,8 +11,8 @@ The lecture decks and the course-wide planning documents live in a separate repo
   each practical is for.
 
 > **This repository is mid-redesign.** The 2026-27 catalogue dropped Local Search, Adversarial
-> Search and Reinforcement Learning, and added Planning Heuristics, HTN and Solving MDPs. Day 3
-> has no material yet and Day 5 still holds the retired local-search notebook. See
+> Search and Reinforcement Learning, and added Planning Heuristics, HTN and Solving MDPs. Day 5
+> still holds the retired local-search notebook. See
 > [Status](#status).
 
 ## Schedule
@@ -24,7 +24,7 @@ Practical names follow `Lectures-2026.md` and are **provisional**.
 | ---- | ---------- | -------- | --------- |
 | 9  | `day01` | 1 Introduction, 2 Agents and Environments | Agents, rationality and problem formulation |
 | 10 | `day02` | 3 Uninformed Search, 4 Informed Search | Search: paper tutorial and pathfinder coding |
-| 11 | `day03` | 5 Propositional Logic, 6 First-Order Logic | Logic, entailment and SAT |
+| 11 | `day03` | 5 Propositional Logic, 6 First-Order Logic | Logic 1 (propositional) and Logic 2 (first-order) |
 | 12 | `day04` | 7 Planning Formalism, 8 Planning Algorithms | PDDL modelling. Assessment 1 takes the Tuesday slot |
 | 13 | `day05` | 9 Planning Heuristics, 10 Hierarchical Planning | Relaxation heuristics and HTN decomposition |
 | 14 | `day06` | 11 MDPs, 12 Solving MDPs | MDPs. Runs alongside the Assessment 3 demos, so it must be self-paced and interruptible. Assessment 2 takes the Tuesday slot |
@@ -56,9 +56,18 @@ no exercise and no connection to any question in the tutorial.
 No code. The lectures for this day are the two search lectures, so this is the thinnest coverage
 on the course relative to what is taught.
 
-### `day03`: Reasoning
+### `day03`: Logic
 
-`README.md` only. **There is no material.** A full teaching day, two lectures, no practical.
+Rebuilt 2026-09-15 from the 2025-26 CS502K tutorials III and IV. One tutorial per session, both
+pen and paper.
+
+| File | What it is |
+| --- | --- |
+| `CS502K-tutorial-week-3a.tex` | Session 1, Logic 1, propositional. Syntax against the grammar, English readings, truth tables for validity, following the model-enumeration entailment algorithm by hand, contradiction and contingency, evaluating $I(m, \alpha)$, a CNF procedure in pseudo-code, and an `aima-python` `PropKB` exercise |
+| `CS502K-tutorial-week-3b.tex` | Session 2, Logic 2, first-order. Interpretations for quantified formulae, most general unifiers, representations for Generalised Modus Ponens, Skolemisation and the occurs check, a backward-chaining proof, a resolution refutation of Russell's paradox, resolution for validity and unsatisfiability, and an `aima-python` `FolKB` exercise |
+
+No code of our own. The last question of each tutorial sends students to `aima-python`'s
+`logic.ipynb`, which reorganised upstream in 2026 and needs its paths checked before the session.
 
 ### `day04`: Planning Formalisms
 
@@ -135,7 +144,8 @@ renumbering a day folder breaks them silently**. Grep for `%cd` before moving an
 
 Inconsistent, and being settled as part of the redesign:
 
-- `day01` and `day02` build a separate `-solutions.pdf` from the same source. Both are gitignored.
+- `day01`, `day02` and `day03` build a separate `-solutions.pdf` from the same source. All are
+  gitignored.
 - `day04` has no reference solution at all.
 - `day06` ships worked code inline, since it is a walkthrough rather than an exercise.
 
@@ -148,7 +158,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | --- | --- |
 | `day01` | **Reworked 2026-08-27.** Problem formulation now covered and the notebook rebuilt. No worked solution for the notebook yet |
 | `day02` | Live, paper only. Wants a coding half |
-| `day03` | **Empty.** Highest-priority new material after `day04` |
+| `day03` | **Rebuilt 2026-09-15**, paper only. Wants a coded half of its own rather than pointing at `aima-python` |
 | `day04` | Live. Assessment-critical, and missing the challenge/solution structure it needs |
 | `day05` | Retired content in place, replacement not designed |
 | `day06` | Live. Wants signposting for the L11/L12 split and an automated test |

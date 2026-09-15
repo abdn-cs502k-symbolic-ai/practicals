@@ -12,7 +12,8 @@
 # rule below defines it. Editing the source to see the answers is what leaked
 # them into a student PDF before, so there is nothing left to edit.
 
-TUTORIALS := day01/CS502K-tutorial-week-1 day02/CS502K-tutorial-week-2
+TUTORIALS := day01/CS502K-tutorial-week-1 day02/CS502K-tutorial-week-2 \
+             day03/CS502K-tutorial-week-3a day03/CS502K-tutorial-week-3b
 
 STUDENT   := $(addsuffix .pdf,$(TUTORIALS))
 SOLUTIONS := $(addsuffix -solutions.pdf,$(TUTORIALS))
