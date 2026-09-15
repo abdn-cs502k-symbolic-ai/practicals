@@ -43,9 +43,8 @@
 
 \newcommand{\question}[1]{#1}
 
-%% Answers are OFF by default. Do not edit this block to turn them on: the
-%% Makefile builds the solutions variant by passing \def\showanswers{} on the
-%% command line, so `make' cannot ship answers in the student PDF by accident.
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
 \ifdefined\showanswers
   \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
 \else
@@ -83,12 +82,9 @@
 %% ---------------------------------------------------------------------------
 %% Question provenance
 %%
-%% Each question below carries a %% SOURCE: line. Numbering follows Russell and
-%% Norvig, *Artificial Intelligence: A Modern Approach*, THIRD edition, and was
-%% checked against the 3e Instructor's Manual on 2026-09-15 rather than recalled.
-%% Beware: the online exercise set at aimacode.github.io/aima-exercises is the
-%% FOURTH edition and numbers the same exercises differently (our 1.7 is 1.9/1.10
-%% there, our 2.3 is 2.4, our 3.3 is 3.5), so do not cite from it.
+%% Each question below carries a %% SOURCE: line.
+%% Numbering follows Russell and Norvig, *Artificial Intelligence: A Modern Approach*, THIRD edition, and was checked against the 3e Instructor's Manual on 2026-09-15 rather than recalled.
+%% Beware: the online exercise set at aimacode.github.io/aima-exercises is the FOURTH edition and numbers the same exercises differently (our 1.7 is 1.9/1.10 there, our 2.3 is 2.4, our 3.3 is 3.5), so do not cite from it.
 %%
 %% "ours" marks a question written for this course with no AIMA counterpart.
 %% ---------------------------------------------------------------------------
@@ -159,7 +155,9 @@ Argue with a model if you find that useful, but do not let it answer for you.
 % impersonators.}
 
 \item 
-%% SOURCE: AIMA 3e Ex 1.7. Items (a) bar codes and (d) routing are AIMA's, with AIMA's answers. The spam filter and the LLM are ours, added 2026-09-08; web search and voice menus are AIMA's, commented out.
+%% SOURCE: AIMA 3e Ex 1.7.
+%% Items (a) bar codes and (d) routing are AIMA's, with AIMA's answers.
+%% The spam filter and the LLM are ours, added 2026-09-08; web search and voice menus are AIMA's, commented out.
   \question{To what extent do the following computer systems embed artificial intelligence:
   \begin{enumerate}
   \item Supermarket bar code scanners
@@ -170,32 +168,47 @@ Argue with a model if you find that useful, but do not let it answer for you.
   \item A large language model answering a question about this course.
   \end{enumerate}}
   \answer{\begin{enumerate}
-  \item Although bar code scanning is in a sense computer vision, these are not AI systems. The problem of reading a bar code is an extremely limited and artificial form of visual interpretation, and it has been carefully designed to be as simple as possible, given the hardware.
+  \item Although bar code scanning is in a sense computer vision, these are not AI systems.
+  The problem of reading a bar code is an extremely limited and artificial form of visual interpretation, and it has been carefully designed to be as simple as possible, given the hardware.
 %  \item In many respects. The problem of determining the relevance of a web page to a query is a problem in natural language understanding, and the techniques are related to those presented in Chapters 22 and 23. Search engines like Ask.com, which group the retrieved pages into categories, use clustering techniques analogous to those we discuss in Chapter 20. Likewise, other functionalities provided by a search engines use intelligent techniques; for instance, the spelling corrector uses a form of data mining based on observing users’ corrections of their own spelling errors. On the other hand, the problem of indexing billions of web pages in a way that allows retrieval in seconds is a problem in database design, not in artificial intelligence.
 %  \item To a limited extent. Such menus tends to use vocabularies which are very limited -- e.g. the digits, ``Yes'', and ``No'' -- and within the designers’ control, which greatly simplifies the problem. On the other hand, the programs must deal with an uncontrolled space of all kinds of voices and accents. The voice activated directory assistance programs used by telephone companies, which must deal with a large and changing vocabulary are certainly AI programs.
-  \item This is borderline. There is something to be said for viewing these as intelligent agents
-working in cyberspace. The task is sophisticated, the information available is partial, the
-techniques are heuristic (not guaranteed optimal), and the state of the world is dynamic.
-All of these are characteristic of intelligent activities. On the other hand, the task is very
-far from those normally carried out in human cognition.
-  \item Yes. The task is genuinely uncertain, an adversary shifts the distribution deliberately, and the filter learns its decision from data instead of applying a rule that somebody wrote down. A filter working from a fixed list of banned words fails that last test and would not qualify. The mechanism a system uses to reach its verdict settles the question here.
-  \item Yes, on any of the four definitions in Section 1.1, though the interesting question is which one. It acts humanly, and acting humanly is what Turing proposed to measure. It does not think rationally in the sense this course follows, because no part of it manipulates sentences that stand for facts. It also holds no explicit goal and optimises no stated utility, so the ``acting rationally'' definition fits it only loosely. A system can be uncontroversially AI and still sit outside the strand we study.
+  \item This is borderline. There is something to be said for viewing these as intelligent agents working in cyberspace. 
+  The task is sophisticated, the information available is partial, the techniques are heuristic (not guaranteed optimal), and the state of the world is dynamic.
+  All of these are characteristic of intelligent activities. 
+  On the other hand, the task is very far from those normally carried out in human cognition.
+  \item Yes.
+  The task is genuinely uncertain, an adversary shifts the distribution deliberately, and the filter learns its decision from data instead of applying a rule that somebody wrote down.
+  A filter working from a fixed list of banned words fails that last test and would not qualify.
+  The mechanism a system uses to reach its verdict settles the question here.
+  \item Yes, on any of the four definitions in Section 1.1, though the interesting question is which one.
+  It acts humanly, and acting humanly is what Turing proposed to measure.
+  It does not think rationally in the sense this course follows, because no part of it manipulates sentences that stand for facts.
+  It also holds no explicit goal and optimises no stated utility, so the ``acting rationally'' definition fits it only loosely.
+  A system can be uncontroversially AI and still sit outside the strand we study.
   \end{enumerate}
 }
 
 \item
-%% SOURCE: Ours, 2026-09-08, replacing AIMA 3e Ex 1.2 (commented out above). Same source paper, but asks about the nine objections and about what the test measures, which 1.2 does not.
+%% SOURCE: Ours, 2026-09-08, replacing AIMA 3e Ex 1.2 (commented out above).
+%% Same source paper, but asks about the nine objections and about what the test measures, which 1.2 does not.
 \question{Turing's 1950 paper (\emph{Computing Machinery and Intelligence}, \emph{Mind} LIX(236):433--460) proposes the imitation game and then answers nine objections to it.
 \begin{enumerate}
 \item Which of the nine still carry weight, and which has the intervening 75 years settled?
-\item Turing predicted that by 2000 an interrogator would stand no better than a 70\% chance of identifying the machine after five minutes of questioning. Judged against a chatbot you have used, was he wrong about the date, about the difficulty, or about the test?
-\item Passing the imitation game and thinking come apart in both directions. Give one system that would pass without thinking, and one that thinks without passing.
+\item Turing predicted that by 2000 an interrogator would stand no better than a 70\% chance of identifying the machine after five minutes of questioning.
+Judged against a chatbot you have used, was he wrong about the date, about the difficulty, or about the test?
+\item Passing the imitation game and thinking come apart in both directions.
+Give one system that would pass without thinking, and one that thinks without passing.
 \end{enumerate}}
 \answer{
 \begin{enumerate}
-\item The mathematical objection (from G\"odel) and the argument from consciousness survive largely intact, because neither turns on how good the machine gets. The arguments from disability (``a machine will never do X'') have gone badly for their proponents one item at a time. Lady Lovelace's objection, that a machine originates nothing, has aged into the interesting one, because it now reads as a claim about training data instead of a claim about programming.
-\item Mostly about the test. Turing's numbers came out roughly right and arrived late rather than never, but current systems pass casual five-minute questioning while failing in ways he never anticipated, which suggests that the test measures conversational fluency and not thought. Ask yourselves why the field ever accepted so passable a test as its criterion.
-\item A lookup table over every five-minute conversation would pass and think nothing; it is finite, absurdly large, and contains no reasoning. A chess engine, or any planner in this course, reasons its way to a decision no human could match, and an interrogator would spot it as a machine inside one question.
+\item The mathematical objection (from G\"odel) and the argument from consciousness survive largely intact, because neither turns on how good the machine gets.
+The arguments from disability (``a machine will never do X'') have gone badly for their proponents one item at a time.
+Lady Lovelace's objection, that a machine originates nothing, has aged into the interesting one, because it now reads as a claim about training data instead of a claim about programming.
+\item Mostly about the test.
+Turing's numbers came out roughly right and arrived late rather than never, but current systems pass casual five-minute questioning while failing in ways he never anticipated, which suggests that the test measures conversational fluency and not thought.
+Ask yourselves why the field ever accepted so passable a test as its criterion.
+\item A lookup table over every five-minute conversation would pass and think nothing; it is finite, absurdly large, and contains no reasoning.
+A chess engine, or any planner in this course, reasons its way to a decision no human could match, and an interrogator would spot it as a machine inside one question.
 \end{enumerate}
 }
 
@@ -218,33 +231,31 @@ practice of AI research.
 A science is a field of study that leads to the acquisition of empirical knowledge by the
 scientific method, which involves falsifiable hypotheses about what is. A pure engineering
 field can be thought of as taking a fixed base of empirical knowledge and using it to solve
-problems of interest to society. Of course, engineers do bits of science -- e.g., they measure the
-properties of building materials -- and scientists do bits of engineering to create new devices
-and so on. As described in Section 1.1, the ``human'' side of AI is clearly an empirical science --
-called cognitive science these days -- because it involves psychological experiments designed
-out to find out how human cognition actually works. What about the the ``rational'' side?
+problems of interest to society. 
+Of course, engineers do bits of science (e.g., they measure the properties of building materials) and scientists do bits of engineering to create new devices and so on. 
+As described in Section 1.1, the ``human'' side of AI is clearly an empirical science (
+called cognitive science these days) because it involves psychological experiments designed
+out to find out how human cognition actually works. 
+What about the ``rational'' side?
 If we view it as studying the abstract relationship among an arbitrary task environment, a
 computing device, and the program for that computing device that yields the best performance
 in the task environment, then the rational side of AI is really mathematics and engineering;
-it does not require any empirical knowledge about the actual world -- and the actual task
-environment -- that we inhabit; that a given program will do well in a given environment is a
-theorem. (The same is true of pure decision theory.) In practice, however, we are interested
-in task environments that do approximate the actual world, so even the rational side of AI
-involves finding out what the actual world is like. For example, in studying rational agents
-that communicate, we are interested in task environments that contain humans, so we have to find out what human language is like. In studying perception, we tend to focus on sensors
-such as cameras that extract useful information from the actual world. (In a world without
-light, cameras would not be much use.) Moreover, to design vision algorithms that are good
-at extracting information from camera images, we need to understand the actual world that
-generates those images. Obtaining the required understanding of scene characteristics, object
-types, surface markings, and so on is a quite different kind of science from ordinary physics,
-chemistry, biology, and so on, but it is still science.
+it does not require any empirical knowledge about the actual world (and the actual task
+environment) that we inhabit; 
+that a given program will do well in a given environment is a theorem (The same is true of pure decision theory). 
+In practice, however, we are interested in task environments that do approximate the actual world, so even the rational side of AI involves finding out what the actual world is like. 
+For example, in studying rational agents that communicate, we are interested in task environments that contain humans, so we have to find out what human language is like.
+In studying perception, we tend to focus on sensors such as cameras that extract useful information from the actual world. (In a world without light, cameras would not be much use.) 
+Moreover, to design vision algorithms that are good at extracting information from camera images, we need to understand the actual world that generates those images. 
+Obtaining the required understanding of scene characteristics, object types, surface markings, and so on is a quite different kind of science from ordinary physics, chemistry, biology, and so on, but it is still science.
 
-In summary, AI is definitely engineering but it would not be especially useful to us if it
+In summary, AI is definitely engineering, but it would not be especially useful to us if it
 were not also an empirical science concerned with those aspects of the real world that affect
 the design of intelligent systems for that world.}
 
 \item 
-%% SOURCE: AIMA 3e Ex 1.11, verbatim, with AIMA's answer. Ex 1.12 (genes) and 1.13 (atoms) follow it, commented out.
+%% SOURCE: AIMA 3e Ex 1.11, verbatim, with AIMA's answer.
+%% Ex 1.12 (genes) and 1.13 (atoms) follow it, commented out.
 \question{``Surely computers cannot be intelligent -- they can do only what their programmers
 tell them.'' Is the latter statement true, and does it imply the former?}
 \answer{This depends on your definition of ``intelligent'' and ``tell.'' In one sense computers only
@@ -284,7 +295,8 @@ computer.}
 \begin{enumerate}
 
  \item
-%% SOURCE: AIMA 3e Ex 2.3, items (h) and (i). Items (a) to (g) are commented out.
+%% SOURCE: AIMA 3e Ex 2.3, items (h) and (i).
+%% Items (a) to (g) are commented out.
   \question{For each of the following assertions, say whether it is true or false and support your
 answer with examples or counterexamples where appropriate:
 \begin{enumerate}
@@ -330,7 +342,8 @@ agent’s expected winnings are nonnegative.
   \end{enumerate}}
 
 \item
-%% SOURCE: AIMA 3e Ex 2.4, items (c) used AI books and (h) auction, of its eight. The note on the four-versus-six dimensions is ours, 2026-09-08.
+%% SOURCE: AIMA 3e Ex 2.4, items (c) used AI books and (h) auction, of its eight.
+%% The note on the four-versus-six dimensions is ours, 2026-09-08.
 \question{Give a PEAS description of the task environments below and characterize them in terms of the properties discussed in section 2.3.2 of the textbook
 \begin{enumerate}
 \item Shopping for used AI books on the Internet
@@ -352,7 +365,8 @@ long enough scale that book offers change.
 }
 
 \item
-%% SOURCE: AIMA 3e Ex 2.6, items (b) and (e). Items (a), (c) and (d) are commented out.
+%% SOURCE: AIMA 3e Ex 2.6, items (b) and (e).
+%% Items (a), (c) and (d) are commented out.
 \question{This exercise explores the differences between agent functions and agent programs.
 \begin{enumerate}
 %\item Can there be more than one agent program that implements a given agent function? Give an example, or show why one is not possible.
@@ -454,24 +468,35 @@ This problem is also a partially observable Markov decision process.
 % \end{enumerate}}
 
 \item
-%% SOURCE: Ours, 2026-09-08. No AIMA counterpart: it compares the Wumpus World of AIMA Ch 7 against the vacuum world of Ch 2 to set up Lectures 5 and 6.
+%% SOURCE: Ours, 2026-09-08.
+%% No AIMA counterpart: it compares the Wumpus World of AIMA Ch 7 against the vacuum world of Ch 2 to set up Lectures 5 and 6.
 \question{Chapter 7 of Russell and Norvig introduces the Wumpus World, which returns in Lecture 5 as the running example for propositional logic.
 Compare it with the vacuum world of Lecture 2.
 \begin{enumerate}
 \item Classify both environments on the four dimensions from the lecture, and say where they differ.
-\item A vacuum agent can decide what to do from what it senses now; a Wumpus agent cannot. Account for that using the classification you just gave.
+\item A vacuum agent can decide what to do from what it senses now; a Wumpus agent cannot.
+Account for that using the classification you just gave.
 \item Name an action in the Wumpus World whose consequences the agent cannot undo, and say what that costs an agent that guesses.
 \end{enumerate}}
 \answer{
 \begin{enumerate}
-\item Both are discrete and static, and both are deterministic. They part company on observability. The vacuum world as Lecture 2 formulates it is fully observable, so the agent knows which rooms are dirty. The Wumpus World is partially observable: the agent perceives a breeze, a stench or a glitter in the square it occupies, and never sees a pit or the Wumpus directly. The uncertainty here springs from the agent's ignorance and not from chance, and that is the reason logic answers it where probability would be the wrong tool.
-\item Each percept in the Wumpus World is a consequence of facts about neighbouring squares, so a breeze tells the agent that some adjacent square holds a pit without saying which. To act, the agent must combine percepts gathered in different squares at different times and work out what follows from them together, and that demands a representation of what the agent knows, where a rule from percept to action would not do. Lectures 5 and 6 build that machinery.
-\item Moving into a square that holds a pit or the live Wumpus ends the run, so the agent can never recover from a wrong inference there. A guessing agent loses more than time, it loses the game, and so the agent should enter only those squares it can prove safe. ``I have no evidence of a pit here'' and ``I can prove there is no pit here'' say different things, and only the second justifies the move.
+\item Both are discrete and static, and both are deterministic.
+They part company on observability.
+The vacuum world as Lecture 2 formulates it is fully observable, so the agent knows which rooms are dirty.
+The Wumpus World is partially observable: the agent perceives a breeze, a stench or a glitter in the square it occupies, and never sees a pit or the Wumpus directly.
+The uncertainty here springs from the agent's ignorance and not from chance, and that is the reason logic answers it where probability would be the wrong tool.
+\item Each percept in the Wumpus World is a consequence of facts about neighbouring squares, so a breeze tells the agent that some adjacent square holds a pit without saying which.
+To act, the agent must combine percepts gathered in different squares at different times and work out what follows from them together, and that demands a representation of what the agent knows, where a rule from percept to action would not do.
+Lectures 5 and 6 build that machinery.
+\item Moving into a square that holds a pit or the live Wumpus ends the run, so the agent can never recover from a wrong inference there.
+A guessing agent loses more than time, it loses the game, and so the agent should enter only those squares it can prove safe.
+``I have no evidence of a pit here'' and ``I can prove there is no pit here'' say different things, and only the second justifies the move.
 \end{enumerate}
 }
 
 \item
-%% SOURCE: Ours, 2026-09-08. Points at the session 2 notebook.
+%% SOURCE: Ours, 2026-09-08.
+%% Points at the session 2 notebook.
 \question{Work through \texttt{tutorial1-problem-formulation.ipynb} in this folder, which is the second session of this tutorial.
 It asks you to read a formulation of the 8-puzzle, write your own formulation of the vacuum world from Lecture 2, and check the state space you obtain against the graph on the slides.}
 \answer{See the notebook. Every check in it must pass.}
