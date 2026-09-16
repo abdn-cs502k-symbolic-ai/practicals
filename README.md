@@ -77,7 +77,7 @@ released through MyAberdeen on a timer like the other tutorials.
 | File | What it is |
 | --- | --- |
 | `CS502K-tutorial-week-4.tex` | The tutorial. Seven questions: grounding and typing on the lecture's gripper domain, completing the cup-of-tea domain, diagnosing the `cheating/` model, validating a plan by hand and with VAL, extending blocksworld to two grippers, comparing three Fast Downward configurations, and two extensions |
-| `setting-up-a-local-planner.md` | Fast Downward and ENHSP, on all three platforms. On the critical path: question 6 needs a local planner and so does Assessment 3 |
+| `setting-up-a-local-planner.md` | Fast Downward, VAL and ENHSP, on all three platforms. Rewritten 2026-09-16. Stays **markdown**, because it goes to Blackboard as an HTML page: it is reference material with no answers to hide, so it needs no two-variant build. On the critical path: question 4 needs VAL, question 6 needs a planner, and so does Assessment 3 |
 | `cup_of_tea/` | Deliver a cup of tea to grandpa. `domain.pddl` is a skeleton with `pick-up` blank and two TODO actions; `problem.pddl` and `solution.plan` are given |
 | `cup_of_tea/cheating/` | A deliberately broken model, now question 3: an action that achieves the goal in one step, and a `pick-up` with no delete effects. Shows that a returned plan is not evidence the model is right |
 | `blocksworld/` | Extend blocksworld to two or more grippers. `blocksworld.pddl`, `demo.pddl`, and a JS visualiser |
@@ -89,8 +89,17 @@ Every reference solution was run under Fast Downward and checked with VAL on 202
 than reasoned about.
 
 Note that the handout is a PDF **plus** an archive of the skeleton files, because the deliverable
-is partly files the student edits. The solutions release is likewise a PDF plus an archive of
-`solutions/`. Nothing in the `Makefile` builds those archives yet.
+is partly files the student edits. `make archives` builds both:
+
+| Archive | Contents | Release |
+| --- | --- | --- |
+| `tutorial-week-4-files.zip` | `cup_of_tea/` and `blocksworld/`, minus the answer in `cheating/README.md` | with the tutorial PDF |
+| `tutorial-week-4-solutions.zip` | `solutions/`, plus `cheating/README.md` | with the solutions PDF |
+
+`make verify-archive` runs as part of `make` and fails the build if the student archive picks up
+anything from `solutions/`, picks up `cheating/README.md`, or ships a `cup_of_tea/domain.pddl`
+that has lost its TODO markers, which is what a completed skeleton committed by accident looks
+like. Both archives are gitignored along with the PDFs.
 
 ### `day05`: Local Search (retired)
 
@@ -177,7 +186,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | `day01` | **Reworked 2026-08-27.** Problem formulation now covered and the notebook rebuilt. No worked solution for the notebook yet |
 | `day02` | Live, paper only. Wants a coding half |
 | `day03` | **Rebuilt 2026-09-15**, paper only. Wants a coded half of its own rather than pointing at `aima-python` |
-| `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build and the leak check passes. Reference solutions now exist and are planner-verified. Wants the handout archives built by the `Makefile` |
+| `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build, both handout archives build, and the leak checks pass. Reference solutions are planner-verified. Wants a prose-only third modelling task shaped like Assessment 3 |
 | `day05` | Retired content in place, replacement not designed |
 | `day06` | Live. Wants signposting for the L11/L12 split and an automated test |
 

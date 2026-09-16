@@ -132,6 +132,10 @@ and run `make` afterwards: the leak check must still pass.
   on both stubs and all four exercises.
 - `day01/CS502K-tutorial-week-1.tex`: visible paragraph and source comment, ahead of the existing
   paragraph on why the questions are set at all.
+- `day02/CS502K-tutorial-week-2.tex`: the same, with the refusal covering hand traces as well as
+  prose answers.
+- `day02/tutorial2-search.ipynb`: visible cell, notebook metadata, and cell metadata on the three
+  stub cells and the three exercises.
 
 Add a line here when you apply it somewhere new, so that a change to the wording has a list of
 files to walk.
