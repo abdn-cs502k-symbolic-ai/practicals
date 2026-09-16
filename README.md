@@ -17,17 +17,18 @@ The lecture decks and the course-wide planning documents live in a separate repo
 
 ## Schedule
 
-Two practical sessions a week, Monday and Tuesday, except where an assessment takes one.
-Practical names follow `Lectures-2026.md` and are **provisional**.
+**Two practical slots a week, Monday and Tuesday**, and each assessment sat in a slot costs one of
+them. Weeks 12 and 14 therefore run a single practical each, and the other four run two. Ten
+sessions in all. `Lectures-2026.md` has the slot table and is the authority.
 
 | Week | Day folder | Lectures | Practical |
 | ---- | ---------- | -------- | --------- |
 | 9  | `day01` | 1 Introduction, 2 Agents and Environments | Agents, rationality and problem formulation |
 | 10 | `day02` | 3 Uninformed Search, 4 Informed Search | Search: paper tutorial and pathfinder coding |
 | 11 | `day03` | 5 Propositional Logic, 6 First-Order Logic | Logic 1 (propositional) and Logic 2 (first-order) |
-| 12 | `day04` | 7 Planning Formalism, 8 Planning Algorithms | PDDL modelling. **One session only**: Assessment 1 takes the Tuesday slot |
+| 12 | `day04` | 7 Planning Formalism, 8 Planning Algorithms | PDDL modelling, **one session**: Assessment 1 takes the Tuesday slot |
 | 13 | `day05` | 9 Planning Heuristics, 10 Hierarchical Planning | Heuristics and benchmarking (Mon), HTN in HDDL (Tue). Assessment 3 is due on the Thursday |
-| 14 | `day06` | 11 MDPs, 12 Solving MDPs | MDPs. Runs alongside the Assessment 3 demos, so it must be self-paced and interruptible. Assessment 2 takes the Tuesday slot |
+| 14 | `day06` | 11 MDPs, 12 Solving MDPs | MDPs, **one session**, run alongside the Assessment 3 demos, so it must be self-paced and interruptible. Assessment 2 takes the Tuesday slot |
 
 Folder numbering is by **teaching day**, matching the `dayNN` folders in the lectures repository.
 It is not lecture numbering: `day05` serves lectures 9 and 10.
@@ -205,7 +206,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | `day03` | **Rebuilt 2026-09-15.** Two paper tutorials and a shared notebook |
 | `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build, both handout archives build, and the leak checks pass. Reference solutions are planner-verified. Wants a prose-only third modelling task shaped like Assessment 3 |
 | `day05` | **Built 2026-09-16.** Two tutorials, both planner-verified. Never delivered |
-| `day06` | Live. Wants signposting for the L11/L12 split and an automated test |
+| `day06` | Live, and the last on pre-redesign material. Serves two lectures in one shared, interruptible session. Wants the L11/L12 signposting, an automated test, and re-sizing for the slot it actually has |
 
 `Practicals-Redesign.md` in the lectures repository carries the full analysis, the comparison
 against CS3033, and the priority order.
