@@ -1,0 +1,11 @@
+;; The same journey as pb1.hddl, stated as a goal rather than as a task.
+(define (problem pb1-classical)
+  (:domain travel-classical)
+  (:objects portoalegre saopaulo london poa gru lhr)
+  (:init (at portoalegre)
+         (airport poa portoalegre) (airport gru saopaulo) (airport lhr london)
+         (longDistance portoalegre saopaulo)
+         (longDistance portoalegre london)
+         (longDistance saopaulo london))
+  (:goal (at saopaulo))
+)

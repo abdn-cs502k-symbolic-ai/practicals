@@ -78,10 +78,11 @@ Assessment 1 is sat the following morning and asks you to transcribe a given spe
 Assessment 3 opens on the same day as this session and asks you to model a domain of your own choosing and run a real planner over it.
 Everything below is rehearsal for one or both.
 
-\textbf{Before this session, install a planner and a validator.}
-Follow the local planner setup guide released alongside this tutorial, which covers Fast Downward and VAL, and ENHSP if your Assessment 3 domain turns out to need numbers.
-The online editor at \url{http://editor.planning.domains} is fine for questions 2 to 5 and is the quicker way to start, but Assessment 3 requires a planner you built and can configure yourself, and question 6 needs one.
-Do the installation before you arrive, because it is a download and a compile, not a five minute job.
+\textbf{You do not need anything installed to start.}
+Question 1 is on paper and questions 2 to 5 run in the online editor at \url{http://editor.planning.domains}, which is the quicker way to begin.
+Question 6 is the installation itself, and it is last on purpose: this session is one block rather than two, Assessment 1 having taken tomorrow morning, and a compile that goes wrong should cost you the end of the session rather than the start of it.
+Do it before you leave, because everything in week 13 needs it and so does Assessment 3.
+If you have already built Fast Downward and VAL, skip to question 6 whenever you want the validator for question 4.
 
 \textbf{The files.}
 Questions 2 onwards edit files in \texttt{tutorial-week-4-files.zip}, released with this tutorial.
@@ -314,7 +315,7 @@ For each of the three actions in \texttt{solution.plan}, in order, write down th
 \end{enumerate}
 
 Do this on paper first, because doing it by hand once is what makes the tool's output mean anything.
-Then check yourself against VAL, which the setup guide tells you how to install:}
+Then, once you have built VAL in question 6, come back and check yourself against it:}
 
 {\footnotesize\begin{verbatim}
 Validate cup_of_tea/domain.pddl cup_of_tea/problem.pddl cup_of_tea/solution.plan
@@ -373,7 +374,7 @@ Work through these in order:
 \item What objects does \texttt{blocksworld/demo.pddl} need to gain?
 \item How does each of the four actions change?
 \item The goal of \texttt{demo.pddl} is \texttt{(on red brown)}, \texttt{(on green red)} and \texttt{(holding yellow)}. Why does the problem file no longer parse once you are done, and what do you have to decide in order to fix it?
-\item \textbf{Do this one first.} As shipped, \texttt{blocksworld.pddl} does not run under Fast Downward at all: the translator stops with a Python \texttt{AssertionError}, and it does so before it has looked at a single action, so nothing you write will run until you have dealt with it. The cause is in the requirements line, which declares \texttt{:fluents} and \texttt{:negative-preconditions}. Does the file use either? What should that line say when you are finished?
+\item \textbf{Do this one first.} As shipped, \texttt{blocksworld.pddl} does not run under Fast Downward at all: the translator stops with a Python \texttt{AssertionError}, and it does so before it has looked at a single action, so nothing you write will run until you have dealt with it. The cause is in the requirements line, which declares \texttt{:fluents} and \texttt{:negative-preconditions}. Does the file use either? What should that line say when you are finished? The online editor is more forgiving than Fast Downward here, so if you are working in the editor you may not meet this until question 6; the requirements line is wrong either way, and Tutorial 5a runs this domain under Fast Downward.
 \item Run the planner. With two grippers available, is the plan shorter than with one? Should it be?
 \end{enumerate}
 You can animate your plan on the \href{https://blocks-dot-ai-planning.appspot.com/}{blocks world animation} page.}
@@ -433,81 +434,52 @@ One more thing to notice, because it cuts the other way.
 The two-gripper model expands \emph{more} states than the one-gripper model on this problem, 176 against 166, while finding the shorter plan, because adding a gripper roughly doubles the branching factor.
 A model that admits better plans is not automatically a model that is easier to search.}
 
-%% SOURCE: Ours, 2026-09-16. The only rehearsal on the course for the Assessment 3 requirement to run two planner configurations and explain the difference. Connects to L08's heuristic search section and forward to L09.
+%% SOURCE: Ours, 2026-09-16. Last on purpose. Week 12 has one practical session rather than two, so a toolchain that will not build must not be allowed to consume the modelling half of it. Everything in week 13 and Assessment 3 depends on this working.
 \item
-\question{Assessment 3 asks you to run the same domain under two planner configurations and explain the difference.
-This question is that, in miniature, and it needs a local planner.
+\question{\textbf{Do this before you leave, whatever else you have finished.}
 
-Take your finished blocks world from question 5 and run Fast Downward on it three times:}
+Everything so far ran in the online editor.
+From here on you need your own planner: next week's tutorials both need one, Assessment 3 requires a planner you built and can configure yourself, and the editor will not do for either.
 
-{\footnotesize\begin{verbatim}
-./fast-downward.py blocksworld.pddl demo.pddl --search "astar(blind())"
-./fast-downward.py blocksworld.pddl demo.pddl --search "astar(lmcut())"
-./fast-downward.py blocksworld.pddl demo.pddl \
-    --evaluator "hff=ff()" --search "lazy_greedy([hff], preferred=[hff])"
-\end{verbatim}}
-
-\question{For each run, record the cost of the plan found, the number of expanded states, and the search time; Fast Downward prints all three.
-\begin{enumerate}
-\item Which two of the three runs return plans of the same cost, and why are those two the ones that agree?
-\item Which run expands fewest states, and which is fastest? If those are not the same run, explain why not.
-\item Add three or four more blocks to \texttt{demo.pddl} and run all three again. Which numbers grow fastest?
-\item What would you have to say about these numbers to make them an argument rather than a table?
-\end{enumerate}}
-\answer{Your numbers will differ, because they depend on your domain, your problem and your Fast Downward version.
-Ours are below, from the reference two-gripper domain on \texttt{demo.pddl} as shipped (six blocks), and on a ten-block problem of the same shape.
-Read them as the shape of the result, not as a target to reproduce.
-
-\begin{center}
-\begin{tabular}{l|rrr|rrr}
- & \multicolumn{3}{c|}{six blocks} & \multicolumn{3}{c}{ten blocks}\\
-configuration & cost & expanded & time & cost & expanded & time\\
-\hline
-\texttt{astar(blind())}  & 11 & 3\,847 & 0.007s & 21 & 43\,284\,618 & 119.7s\\
-\texttt{astar(lmcut())}  & 11 & 176    & 0.008s & 21 & 89\,387      & 13.3s\\
-greedy \texttt{ff()}     & 13 & 21     & 0.0002s & 27 & 65          & 0.009s
-\end{tabular}
-\end{center}
+Follow the local planner setup guide released with this tutorial.
+It covers Fast Downward and VAL on all three platforms, and ENHSP if your Assessment 3 domain turns out to need numeric state.
 
 \begin{enumerate}
-\item The two \texttt{astar} runs agree on cost, at both sizes.
-A\textsuperscript{*} with an admissible heuristic returns an optimal plan; \texttt{blind()} is the constant-zero heuristic, which is trivially admissible and makes the search uniform-cost, and \texttt{lmcut()} is admissible by construction.
-Both are therefore optimal, and any two optimal plans have the same cost even when they are different plans.
-The third run is greedy best-first search with the FF heuristic, which is not admissible and is not used admissibly here, so it comes back with 13 against 11, and 27 against 21.
-
-\item Fewest expansions and fastest are both the greedy FF run, and neither is \texttt{lmcut()}.
-That is worth sitting with, because the tidy story is that the informed heuristic expands fewest and everyone repeats it.
-The greedy run expands 21 states where \texttt{lmcut()} expands 176, because it is not paying for optimality at all: it dives at the goal and keeps the first plan it reaches.
-
-The comparison that actually teaches something is \texttt{blind()} against \texttt{lmcut()} at six blocks.
-\texttt{lmcut()} expands 22 times fewer states and takes \emph{the same search time}.
-Its entire advantage in expansions is eaten by what it costs to evaluate, because it solves a small optimisation problem at every state it looks at.
-At ten blocks the same pair reads 43 million expansions against 89 thousand, and 120 seconds against 13.
-So the informed heuristic is not faster at six blocks and is nine times faster at ten, and nothing about the heuristic changed in between.
-A heuristic's value is expansions saved times cost per expansion, and whether that product is worth paying depends on the size of the problem, which is why a comparison run on a toy instance tells you nothing.
-
-\item Expansions, by a long way, and \texttt{blind()}'s fastest of all: 3\,847 to 43 million, a factor of eleven thousand, for going from six blocks to ten.
-\texttt{lmcut()} grows by a factor of 508 over the same step and survives longest among the optimal configurations.
-The greedy run barely moves, 21 to 65.
-
-The number that grows slowest is the plan cost, 11 to 21, and that is the point of the exercise.
-The problems became enormously harder while the answers barely got longer, which is exactly the gap that a heuristic exists to exploit.
-Push to twelve or fourteen blocks and \texttt{blind()} stops returning anything at all, \texttt{lmcut()} follows it some way later, and greedy FF keeps returning plans of steadily worse quality long past the point where you can no longer tell how bad they are, because you have nothing optimal left to compare against.
-
-\item You would have to explain the turn in the curve in terms of \emph{this} domain and \emph{this} heuristic, rather than restating the numbers in prose.
-Two claims from the table would do it.
-
-The FF heuristic ignores delete effects, so it never charges you for unstacking a block that you will have to stack again.
-Blocks world is built almost entirely out of that kind of interference: the plan in question 5(g) parks \texttt{green} on \texttt{blue} purely to get it out of the way, and a delete-relaxed view of the world cannot see why anyone would.
-That is why greedy FF finds a plan almost instantly and finds a bad one, and why the gap widens with size, 18\% over optimal at six blocks and 29\% at ten.
-
-And \texttt{lmcut()} breaking even against \texttt{blind()} at six blocks is not a defect of \texttt{lmcut()}, it is the fixed cost of computing it against a search that is over before the cost matters.
-A table of numbers with no claim of that shape in it scores nothing in Assessment 3.
+\item Build Fast Downward and run its own test instance, which the guide gives you.
+\item Run it on your finished cup of tea domain from question 2. Does it return the plan you expected?
+\item Get VAL, either the prebuilt binary or from source, and use it to check the plan you validated by hand in question 4. Does it agree with you?
+\item If either build fails, say so now rather than next week. Bring the error to a demonstrator while there is someone in the room.
 \end{enumerate}}
+\answer{There is nothing to mark here, but two things reliably go wrong and are worth knowing before they cost you an evening.
 
+\textbf{Fast Downward stops with an \texttt{AssertionError} before it looks at your domain.}
+That is the requirements line, and it is question 5(f): the translator checks what you \emph{declared} rather than what you used, so a requirement you listed and never needed stops the build as firmly as one you need and it lacks.
+
+\textbf{VAL says \texttt{Bad plan description!} and nothing else.}
+This is a plan file it could not parse, and the usual cause is that Fast Downward writes plans without time stamps while VAL requires them.
+A plan that looks like this:
+\begin{quote}\ttfamily
+(pick-up cup-of-tea kitchen)\\
+(move kitchen living-room)
+\end{quote}
+has to look like this:
+\begin{quote}\ttfamily
+1.000: (pick-up cup-of-tea kitchen)\\
+2.000: (move kitchen living-room)
+\end{quote}
+Fast Downward's own \texttt{sas\_plan} also ends with a \texttt{; cost = ...} comment line, which goes too.
+One line converts a plan file:
+\begin{quote}\ttfamily
+grep -v '\textasciicircum;' sas\_plan {\textbar} nl -w1 -s'.000: ' > myplan.plan
+\end{quote}
+Note that the message tells you nothing about time stamps, and that a plan file which is merely unparseable and one which is genuinely invalid both come back as a failure.
+Read the message carefully enough to tell those two apart, because you will see both.}
+
+%% SOURCE: Ours, 2026-09-16. Was question 7 until the three-configuration comparison moved to Tutorial 5a; it is now the take-home half of the session.
+\item
+\question{\textbf{Take these home.}
+Two extensions to the cup of tea domain, and the place to start if you want more practice before Assessment 1 tomorrow.
 %% SOURCE: Inherited from tutorial4-pddl.md, where both appeared as unanswered "Challenges" bullets.
-\item
-\question{Two extensions to the cup of tea domain.
 \begin{enumerate}
 \item What if you have two cups and two thirsty grandparents in two different rooms? Write the problem file. How much of the domain has to change?
 \item Rooms are separated by walls. What if some rooms are not connected by a doorway? Write the domain change, and say how the initial state has to change with it.

@@ -1,0 +1,360 @@
+\DocumentMetadata{
+  lang        = en,
+%   pdfstandard = ua-2,
+%   pdfstandard = a-4f, %or a-4
+  pdfstandard = a-4,
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE}
+}
+\documentclass[11pt]{article}
+\usepackage{paralist}
+\usepackage{fullpage,graphicx}
+\usepackage{bold-extra}
+\usepackage{fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+
+%% Code is set with the `verbatim' package rather than `listings'.
+%% listings is not tagging-safe under \DocumentMetadata in TeX Live 2026: it
+%% unbalances tagpdf's paragraph hooks and the build fails, and \SuspendTagging
+%% does not rescue it. Verified 2026-09-16 on a minimal file. verbatim tags
+%% cleanly, so the cost is syntax colour and the gain is an accessible PDF.
+%%
+%% \pddlfile pulls in a real .pddl or .hddl file rather than a copy typed into
+%% this document, so the solutions PDF and the solutions archive cannot drift apart.
+%% It works inside the \answer argument because \verbatiminput sets its own
+%% catcodes when it reads the file, which \begin{verbatim} cannot do.
+\usepackage{verbatim}
+\newcommand{\pddlfile}[1]{{\footnotesize\verbatiminput{#1}}}
+
+\newcommand{\question}[1]{#1}
+
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
+\ifdefined\showanswers
+  \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
+\else
+  \newcommand{\answer}[1]{}
+\fi
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+
+\setlength{\parindent}{0pt}
+
+
+%% ---------------------------------------------------------------------------
+%% Question provenance
+%%
+%% Each question below carries a %% SOURCE: line.
+%%
+%% "Ours" marks a question written for this course.
+%% "Nau" marks material from the travel example of Lecture 10, which follows
+%% Ghallab, Nau and Traverso chapter 11.
+%%
+%% The domain is the one on L10's "Domain (HDDL)" frame, transcribed into files
+%% that run. Two corrections were needed and both are deliberate teaching points
+%% in question 3: the slide writes its ordering constraints infix, as
+%% (task0 < task2), where HDDL is prefix, (< task0 task2); and the slide orders
+%% task0 before task2 twice while never ordering task1 at all.
+%%
+%% Every plan printed in the answers below was produced by running HyperTensioN
+%% or Fast Downward on 2026-09-16, not by reasoning about the domain.
+%% ---------------------------------------------------------------------------
+
+\begin{document}
+
+\centerline{\textsc{University of Aberdeen}}
+\centerline{Symbolic AI (CS502K / CS507K)}
+\centerline{Tutorial -- Hierarchical Planning}
+\ifdefined\showanswers\centerline{\textbf{SOLUTIONS}}\fi
+
+\hrulefill
+
+This tutorial covers Lecture 10, and is the second practical session of week 13.
+It draws on Section 11.4 of Russell and Norvig's \emph{Artificial Intelligence: A Modern Approach}, on Chapter 11 of Ghallab, Nau and Traverso's \emph{Automated Planning: Theory and Practice}, and on the lecture slides.
+
+\textbf{This session stands on its own.}
+Assessment 3 is due on Thursday and hierarchical planning is not part of it, so nothing here is rehearsal for anything you are about to submit.
+It is examined only in Assessment 2, the objective test, at the end of next week.
+Each question below is self-contained: if one defeats you, the next one still works, and if you have to leave early you will have got something out of what you did.
+
+\textbf{Before you start.}
+You need Ruby, and nothing else.
+There is no compile in this session.
+{\footnotesize\begin{verbatim}
+ruby --version                                             # MacOS and Linux have it already
+git clone https://github.com/Maumagnaguagno/HyperTensioN.git
+ruby HyperTensioN/Hype.rb HyperTensioN/examples/basic/basic.hddl \
+                          HyperTensioN/examples/basic/pb1.hddl run
+\end{verbatim}}
+If that last command prints a two-action plan, you are set up.
+On Windows, install Ruby from \href{https://rubyinstaller.org/}{rubyinstaller.org}, or use WSL if you already have it working from Tutorial 4.
+
+\textbf{The files.}
+\texttt{travel/} is in \texttt{tutorial-week-5-files.zip}, released with this tutorial.
+\texttt{travel/travel.hddl} is the domain with one method missing, \texttt{travel/pb1.hddl} and \texttt{travel/pb2.hddl} are the two problems from the lecture, and \texttt{travel/travel-classical.pddl} is the same domain with the hierarchy removed, for question 5.
+
+\textbf{On generative AI.}
+A model writes the missing method in question 2 in one go.
+Question 3 is where that stops helping, because it asks what your method \emph{means} rather than what it says, and question 5 is a result that most models get wrong when asked to predict it, because the answer is surprising.
+Run the thing and see.
+
+\hrulefill
+
+\begin{enumerate}
+
+%% SOURCE: Nau, by way of L10's travel example, transcribed into runnable HDDL. The decomposition tree is the frame "Solution to the travel problem".
+\item
+\question{Open \texttt{travel/travel.hddl} and read it before running anything.
+It has four actions, \texttt{getTicket}, \texttt{fly}, \texttt{getTaxi} and \texttt{rideTaxi}, one task \texttt{travel}, and one method, \texttt{travel-by-taxi}.
+Then run the problem that method can handle:}
+
+{\footnotesize\begin{verbatim}
+ruby HyperTensioN/Hype.rb travel/travel.hddl travel/pb2.hddl run
+\end{verbatim}}
+
+\question{\begin{enumerate}
+\item What does \texttt{(:htn :subtasks (and (travel portoalegre viamao)))} in the problem file ask for, and how does it differ from the \texttt{(:goal ...)} of every problem file you wrote in Tutorial 4?
+\item The plan has two actions. Which method fired, and which of its preconditions decided that?
+\item \texttt{travel} is declared with \texttt{(:task travel :parameters (?x ?y))} and never appears in any action's effects. What is it, then, and what would a classical planner make of it?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item It asks for a \emph{task} to be performed, not for a \emph{state} to be reached.
+Every problem in Tutorial 4 named a set of facts and left the planner to find any action sequence making them true.
+This one names an activity, \texttt{travel from portoalegre to viamao}, and asks for a decomposition of it into actions, using only the methods the domain provides.
+
+The difference is not cosmetic.
+A goal is a test you can apply to a state, so any plan reaching a state that passes is a solution.
+A task has no such test: the solutions are exactly the action sequences the methods generate, and a sequence that happens to leave you in Viamao is not a solution unless the methods produced it.
+
+\item \texttt{travel-by-taxi}, giving \texttt{gettaxi(portoalegre)} then \texttt{ridetaxi(portoalegre viamao)}.
+Its precondition is \texttt{(and (at ?x) (not (longDistance ?x ?y)))}, and it is the second conjunct that decides: \texttt{pb2.hddl} lists three \texttt{longDistance} facts and none of them mentions \texttt{viamao}, so Viamao is close enough to reach by taxi.
+
+\item It is a compound task: a name for an activity, with no effects of its own, that exists only to be decomposed by the methods that declare it as their \texttt{:task}.
+What it means is whatever its methods say it means, which is why the same task name behaves differently in a domain with different methods.
+
+A classical planner can make nothing of it at all.
+It has no effects, so it changes no state, and nothing in a STRIPS-style formalism can refer to it.
+This is the representational gap between the two formalisms: classical planning has one kind of object, the action, and HTN planning has two, the primitive action and the compound task.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-16, on Nau's method. The skeleton carries the English description from L10's "Methods" frames as a comment, so the question is a transcription task in the same shape as Tutorial 4 question 2.
+\item
+\question{Now the problem the domain cannot yet solve:}
+
+{\footnotesize\begin{verbatim}
+ruby HyperTensioN/Hype.rb travel/travel.hddl travel/pb1.hddl run
+\end{verbatim}}
+
+\question{It prints \texttt{Planning failed}, because São Paulo is a long way from Porto Alegre and the only method refuses long distances.
+The missing method, \texttt{travel-by-plane}, is described in a comment at the bottom of the domain file.
+Write it.
+
+Four subtasks, and they are not totally ordered: you can buy the ticket before, after or while you are getting yourself to the airport, but you must have it before you fly.
+So use \texttt{:subtasks} with a label on each subtask and a separate \texttt{:ordering}, rather than \texttt{:ordered-subtasks}.
+Ordering constraints are written in prefix form, \texttt{(< task0 task2)}, meaning \texttt{task0} comes before \texttt{task2}.
+
+\begin{enumerate}
+\item Write the method and run \texttt{pb1.hddl} again. You should get six actions.
+\item Two of your four subtasks are \texttt{travel} again, a task decomposing into itself. Why does that terminate here?
+\item Add \texttt{(longDistance portoalegre poa)} to \texttt{pb1.hddl}, so that getting to your own airport is itself a long journey, and run it again. Predict what happens before you do. Does it loop?
+\item Run \texttt{pb2.hddl} once more, now that there are two methods. Does the answer change, and why not?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item The method, which is the one on Lecture 10's HDDL frame:
+\pddlfile{solutions/travel/travel-by-plane.hddl}
+and the plan, six actions:
+\pddlfile{solutions/travel/pb1.plan}
+Read it against the decomposition tree on the lecture's solution frame: \texttt{travel(portoalegre,saopaulo)} became four subtasks, and each of the two nested \texttt{travel} tasks became a taxi ride through \texttt{travel-by-taxi}.
+The ticket is bought first in the printed plan because HyperTensioN has to commit to some total order, and the ordering constraints permit this one; they do not require it.
+
+\item It terminates because each recursive call is on a strictly easier journey.
+\texttt{travel(?x,?ax)} is from a city to its own airport, which is not a long distance, so \texttt{travel-by-plane} cannot apply to it and \texttt{travel-by-taxi} must, and a taxi ride decomposes into two primitive actions and stops.
+The recursion is bounded by the \texttt{longDistance} facts rather than by anything structural.
+
+\item It does not loop. It fails, instantly and completely:
+\begin{quote}\ttfamily Planning failed\end{quote}
+The prediction most people make, and the one a language model will give you, is an infinite recursion, because \texttt{travel-by-plane} now seems to apply to the subtask it just generated.
+It does not apply.
+That method requires \texttt{(airport ?ay ?y)}, an airport belonging to the destination, and the destination here is \texttt{poa}, which \emph{is} an airport and does not have one of its own.
+So no method applies to \texttt{travel(portoalegre,poa)}: the taxi method is blocked by the fact you just added, the plane method is blocked by the missing airport, and the whole plan fails on that one subtask.
+
+Two things are worth taking from that.
+The first is how the failure presents: one unreachable subtask buried two levels down, and what you are told is \texttt{Planning failed}, with no indication of which task could not be decomposed.
+Debugging an HTN domain means finding that yourself, usually by running the subtask on its own, and it is the standard complaint about the formalism in practice.
+
+The second is that nothing structural saved you here, only the accident that airports have no airports.
+Methods are a grammar and a grammar can be recursive without a base case, so an HTN domain really can be made to decompose forever, and HTN planning is undecidable in general while classical planning is merely intractable.
+This domain is decidable because of a fact about airports, not because of anything in the formalism.
+
+\item It does not change: still \texttt{gettaxi} then \texttt{ridetaxi}.
+\texttt{travel-by-plane} requires \texttt{(longDistance ?x ?y)} and Viamao is close, so only one of the two methods is applicable and there is nothing to choose between.
+The planner is not comparing the two methods and picking the better one; it is finding that exactly one applies.
+Where both apply, it takes the first that leads to a solution, and it has no notion of which is cheaper.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-16. The infix form is on L10's HDDL frame and is a parse error; the deck is being corrected, and this question exists because reading a real error message is worth more than being handed correct syntax.
+\item
+\question{This question is about ordering, and it starts with a mistake that is on the lecture slide.
+
+\begin{enumerate}
+\item Rewrite your \texttt{:ordering} the way Lecture 10 writes it, \texttt{(task0 < task2)}, and run \texttt{pb1.hddl}. What happens, and what does the error tell you about where the parser gave up?
+\item Put it back, then replace your whole method with an \texttt{:ordered-subtasks} listing the four subtasks in the order they appear in your plan. Run it. Same plan?
+\item If the plan is the same, what have you lost by writing it that way?
+\item Which of the four subtasks does your \texttt{:ordering} leave genuinely unordered with respect to which others? Give the set of total orders your method permits.
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item A Ruby traceback rather than a planning failure:
+\begin{quote}\ttfamily comparison of NilClass with 1 failed\\
+parsers/HDDL\_Parser.rb:49:in 'Enumerable\#sort\_by'\end{quote}
+HDDL writes ordering constraints in prefix form, \texttt{(< task0 task2)}, like every other expression in the PDDL family.
+The parser reads each constraint as a three-element list and takes the second element to be the earlier task, so given \texttt{(task0 < task2)} it concludes that the task named \texttt{<} must come before \texttt{task2}, sorts the subtasks by an ordering in which the real labels never appear, and gets \texttt{nil} where it expected a position.
+
+It is worth seeing this error once, because it is characteristic: the message names a Ruby method, not your file, and there is nothing in it about ordering constraints or HDDL.
+\textbf{The slide is wrong and is being corrected.}
+It writes the constraint infix, and it also orders \texttt{task0} before \texttt{task2} twice while never ordering \texttt{task1} at all.
+
+\item The same plan, six actions in the same sequence.
+\pddlfile{solutions/travel/travel-by-plane-ordered.hddl}
+
+\item Every order but that one.
+\texttt{:ordered-subtasks} is shorthand for a total order, so it says that the ticket must be bought before the taxi is called, which is not true of travelling and was not what you meant.
+Nothing observable changes here because the planner returns one plan and this is the one it was returning anyway.
+What you have lost is the freedom to return any other, and a planner that cared about cost, or that had to interleave this journey with another task, would need exactly that freedom.
+
+The general point is that a partial order records what genuinely matters and a total order records an arbitrary choice, and the two are indistinguishable until something forces the planner off the choice you happened to write down.
+
+\item \texttt{task1}, travelling to the departure airport, is unordered with respect to \texttt{task0}, buying the ticket.
+Everything else is fixed: both must precede \texttt{task2}, the flight, which must precede \texttt{task3}, the onward journey.
+So the method permits two total orders,
+\begin{quote}\ttfamily task0 task1 task2 task3 \qquad and \qquad task1 task0 task2 task3\end{quote}
+and HyperTensioN returned the first.
+\end{enumerate}}
+
+%% SOURCE: Nau, by way of L10's "Solving Total-Order STN Planning Problems" frame. Done on paper, so it survives a student whose Ruby install failed.
+\item
+\question{On paper, and it needs no working installation.
+Lecture 10 gives the TFD algorithm: take the first task in the network, and if it is primitive apply the action, or if it is compound replace it by the subtasks of an applicable method.
+
+Trace TFD on \texttt{pb1.hddl} with both methods available.
+At each step write the current state, the current task network, and what you did to it.
+Stop when the network is empty.
+
+\begin{enumerate}
+\item How many decomposition steps and how many action applications did you take?
+\item At which step was there a genuine choice of method, and what would have happened had you taken the other one?
+\item Lecture 8's forward search chose among \emph{actions} at each step. TFD chooses among \emph{methods}. Which of the two is searching a smaller space here, and does that mean it is doing less work?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item Three decompositions and six action applications.
+The decompositions are \texttt{travel(portoalegre,saopaulo)} by \texttt{travel-by-plane}, then \texttt{travel(portoalegre,poa)} and \texttt{travel(gru,saopaulo)}, each by \texttt{travel-by-taxi}.
+The six actions are the plan from question 2.
+
+\item There was none.
+At \texttt{travel(portoalegre,saopaulo)} the taxi method's precondition \texttt{(not (longDistance ?x ?y))} fails, and at both nested \texttt{travel} tasks the plane method's precondition fails for want of an airport belonging to an airport.
+Exactly one method applies at every compound task in this problem, which is why the planner returns in under two milliseconds and why it never backtracks.
+
+That is unusual and it is the domain writer's doing.
+Well-written methods have preconditions that partition the cases, so that the hierarchy is a decision procedure rather than a search space, and the planner then performs no search worth the name.
+
+\item TFD's is much smaller.
+At each compound task it chooses among the methods declared for that task, of which there are two in this domain, where forward search chooses among every ground action applicable in the current state.
+Even in this tiny domain that is the difference between a branching factor of 2 and one in the dozens.
+
+But it is not doing less work, it is doing different work, and most of it was done before the planner ran.
+Someone had to know that long journeys go by plane and short ones by taxi, and write that down as two methods with the right preconditions.
+The search is small because the knowledge is already in the domain.
+That is the trade the lecture is about: Tutorial 5a had the planner derive its guidance automatically from a domain that said nothing about how to travel, and paid for it in expanded states; here the guidance is handed over, and it is paid for in the effort of writing methods and in only ever solving the problems the methods anticipated.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-16. The result was found by running it, not designed: the classical planner takes a taxi between cities because longDistance is asserted only between cities and never between a city and another city's airport. That is the same class of error as Tutorial 4 question 3, and it is the best argument on the course for what methods are actually carrying.
+\item
+\question{The last question, and the one worth staying for.
+
+\texttt{travel/travel-classical.pddl} is the same domain with the methods deleted.
+The four actions are character for character the ones in \texttt{travel.hddl}; all that is gone is the hierarchy.
+\texttt{travel/pb1-classical.pddl} asks for the same journey as a goal, \texttt{(at saopaulo)}, rather than as a task.
+
+Predict the plan before you run it, then run it:}
+
+{\footnotesize\begin{verbatim}
+./fast-downward.py travel/travel-classical.pddl travel/pb1-classical.pddl \
+    --search "astar(lmcut())"
+\end{verbatim}}
+
+\question{\begin{enumerate}
+\item How long is the plan, and how does it compare with the six actions HyperTensioN returned?
+\item Read the plan. Is it a journey you could take?
+\item The two planners were given the same four actions. Explain where the difference came from, in terms of what the methods were saying that the actions were not.
+\item Fix it, in the problem file, so that the classical planner returns something sensible. What did you have to add, and how many facts was it?
+\item Tutorial 4 question 3 gave you a domain that returned a valid plan for a model that was wrong. What is the general lesson, now that you have seen it happen a second time from the opposite direction?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item Four actions against six, and optimal:
+\pddlfile{solutions/travel/pb1-classical.plan}
+
+\item No.
+It takes a taxi from Porto Alegre to Guarulhos, which is the airport at São Paulo, roughly 1,100 kilometres away, and then a second taxi from the airport into the city.
+It never buys a ticket and never flies.
+
+\item \texttt{rideTaxi} requires \texttt{(not (longDistance ?x ?y))}, and the problem file asserts \texttt{longDistance} between \emph{cities} only: Porto Alegre and São Paulo, Porto Alegre and London, São Paulo and London.
+It never says that Porto Alegre is a long way from \texttt{gru}, because in the hierarchical version nothing ever asked.
+So as far as the action model is concerned, a taxi from Porto Alegre to Guarulhos is a short hop, and the classical planner takes the cheapest route the model permits.
+
+The hierarchical version never exposed this, because no method ever proposed a taxi between one city and another city's airport.
+\texttt{travel-by-taxi} is only ever reached on the two nested \texttt{travel} subtasks that \texttt{travel-by-plane} generates, and those go from a city to its own airport.
+The methods were carrying a constraint that the actions never stated: \emph{taxis are for getting around within a city}.
+
+This is the answer to the question of what domain knowledge in an HTN domain actually is.
+It is usually described as search control, knowledge about \emph{how} to solve the problem, and that is only half of it.
+Methods also silently restrict which action sequences are ever considered, so they can hold an incomplete action model together and hide the incompleteness.
+Take the methods away and it falls out immediately.
+
+\item Assert the missing facts, which is 24 of them in both directions over six locations:
+\pddlfile{solutions/travel/pb1-classical-fixed.pddl}
+and the classical planner then returns the six-action plan, the same one HyperTensioN returned, in the same order:
+\pddlfile{solutions/travel/pb1-classical-fixed.plan}
+Note what the fix is not.
+It is not a change to any action, because the actions were right; it is a change to the initial state, because the state was incomplete.
+And note the shape of it: 24 facts hand-written to express one idea, that locations in different cities are far apart.
+A real model would derive them, with an axiom or a derived predicate, rather than list them, and PDDL's \texttt{:derived-predicates} exists for exactly this.
+Listing them by hand is also where the \texttt{connected} trap from Tutorial 4 question 7 returns: \texttt{longDistance} is not symmetric unless you say so in both directions, and half the facts above are there only for that.
+
+\item That a plan is evidence about your model and never about the world.
+In Tutorial 4 the planner returned a valid plan for a model that permitted magic, and the plan was correct with respect to that model.
+Here the planner returned a valid plan for a model that permits a 1,100 kilometre taxi ride, and it is correct too.
+Both times the planner did its job perfectly and the model was wrong.
+
+What is new here is the direction the error came from.
+In Tutorial 4 the model was too permissive and the plan showed it immediately, because the plan was absurdly short.
+Here the model was equally permissive all along and the hierarchy hid it, so the domain looked correct for as long as nobody removed the methods.
+A test that passes because something upstream never generates the failing case is not a test, and an HTN domain whose methods are the only thing keeping its actions honest will break the day someone writes a new method.
+
+The practical habit worth taking away: if you have written a hierarchical domain, run its actions once without the hierarchy and look at what comes back.
+\end{enumerate}}
+
+\end{enumerate}
+
+\hrulefill
+
+\textbf{Where this leaves the planning block.}
+Five lectures and three practicals ago, planning was a search problem over a state space too large to enumerate.
+Tutorial 4 gave the states a structure that a program could read, Tutorial 5a had the planner exploit that structure to build its own guidance by relaxation, and this session handed the guidance over ready-made.
+Both are answers to the same question, and the last question above is the price of the second one.
+Next week the state stops being something you can be certain about at all.
+
+\textbf{Credits.}
+The travel domain and the TFD algorithm are Dana Nau's, following Chapter 11 of Ghallab, Nau and Traverso's \emph{Automated Planning: Theory and Practice}, and reach this tutorial through Lecture 10.
+HDDL is due to H\"oller and colleagues.
+\href{https://github.com/Maumagnaguagno/HyperTensioN}{HyperTensioN} is by Maur\'icio Magnaguagno, and won the total-order track of the 2020 hierarchical planning International Planning Competition.
+
+\end{document}

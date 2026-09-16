@@ -1,0 +1,11 @@
+;; Viamao is a short taxi ride from Porto Alegre, so no flight is needed.
+(define (problem pb2)
+  (:domain travel)
+  (:objects portoalegre saopaulo london viamao poa gru lhr)
+  (:htn :subtasks (and (travel portoalegre viamao)))
+  (:init (at portoalegre)
+         (airport poa portoalegre) (airport gru saopaulo) (airport lhr london)
+         (longDistance portoalegre saopaulo)
+         (longDistance portoalegre london)
+         (longDistance saopaulo london))
+)

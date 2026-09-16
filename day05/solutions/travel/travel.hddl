@@ -1,0 +1,37 @@
+(define (domain travel)
+  (:requirements :hierarchy :negative-preconditions :method-preconditions)
+  (:predicates (at ?x) (airport ?a ?c) (longDistance ?x ?y) (ticket ?x ?y) (hasTaxi ?x))
+  (:task travel :parameters (?x ?y))
+
+  (:action getTicket
+    :parameters (?x ?y ?xc ?yc)
+    :precondition (and (airport ?x ?xc) (airport ?y ?yc))
+    :effect (and (ticket ?x ?y)))
+  (:action fly
+    :parameters (?x ?y ?x1 ?y1)
+    :precondition (and (airport ?x ?x1) (airport ?y ?y1) (ticket ?x ?y) (at ?x))
+    :effect (and (not (at ?x)) (not (ticket ?x ?y)) (at ?y)))
+  (:action getTaxi
+    :parameters (?x)
+    :precondition (and (at ?x))
+    :effect (and (hasTaxi ?x)))
+  (:action rideTaxi
+    :parameters (?x ?y)
+    :precondition (and (at ?x) (not (longDistance ?x ?y)) (hasTaxi ?x))
+    :effect (and (not (at ?x)) (not (hasTaxi ?x)) (at ?y)))
+
+  (:method travel-by-taxi
+    :parameters (?x ?y)
+    :task (travel ?x ?y)
+    :precondition (and (at ?x) (not (longDistance ?x ?y)))
+    :ordered-subtasks (and (getTaxi ?x) (rideTaxi ?x ?y)))
+  (:method travel-by-plane
+    :parameters (?x ?y ?ax ?ay)
+    :task (travel ?x ?y)
+    :precondition (and (at ?x) (longDistance ?x ?y) (airport ?ax ?x) (airport ?ay ?y))
+    :subtasks (and (task0 (getTicket ?ax ?ay ?x ?y))
+                   (task1 (travel ?x ?ax))
+                   (task2 (fly ?ax ?ay ?x ?y))
+                   (task3 (travel ?ay ?y)))
+    :ordering (and (< task0 task2) (< task1 task2) (< task2 task3)))
+)

@@ -1,0 +1,6 @@
+0: getticket(poa gru portoalegre saopaulo)
+1: gettaxi(portoalegre)
+2: ridetaxi(portoalegre poa)
+3: fly(poa gru portoalegre saopaulo)
+4: gettaxi(gru)
+5: ridetaxi(gru saopaulo)

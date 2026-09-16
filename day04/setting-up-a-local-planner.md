@@ -8,9 +8,10 @@ In this guide, you will learn how to install and use planners that solve problem
 PDDL is a widely-used language for representing planning problems in artificial intelligence.
 Different planners can be used to find solutions to PDDL problems, and this guide will walk you through the steps.
 
-You should do this before the week 12 practical, since each planner is a download and a compile rather than a five minute job.
-Question 4 of Tutorial 4 uses the validator, question 6 requires a planner whose search and heuristic you can set yourself, and Assessment 3 requires the same.
-For the rest of the tutorial, the online editor at <https://editor.planning.domains> is enough, and it is quicker to start with.
+Question 6 of Tutorial 4 is this guide, and it is the last thing in that session rather than a prerequisite for it: week 12 has a single practical block, so a build that goes wrong should cost you the end of the session rather than the start of it.
+Do it before you leave that session, because both tutorials in week 13 need a local planner and so does Assessment 3.
+For questions 1 to 5 of Tutorial 4, the online editor at <https://editor.planning.domains> is enough, and it is quicker to start with.
+Question 4 of Tutorial 4 uses the validator, and Tutorial 5a needs a planner whose search and heuristic you can set yourself, as does Assessment 3.
 
 ## Prerequisites
 
@@ -33,7 +34,7 @@ Fast Downward has since accumulated a large library of heuristics and search alg
 
 It is known for its speed and ability to solve a wide range of planning problems.
 It is one of the most popular planning systems in use today, and it is used by researchers and practitioners in a variety of fields, including robotics, logistics, and scheduling.
-Its search algorithm and heuristic are chosen on the command line rather than fixed at compile time, which is what question 6 of Tutorial 4 asks you to exploit.
+Its search algorithm and heuristic are chosen on the command line rather than fixed at compile time, which is what Tutorial 5a asks you to exploit.
 
 ---
 
@@ -144,7 +145,7 @@ Note that the fast-downward planner has a few key components:
 - `--search "..."` provides the search algorithm with specific settings. For example, `--search "astar(lmcut())"` indicates the use of the A* search with the landmark-cut heuristic.
 - `--plan-file myplan.plan` writes the plan where you want it. Without it, the plan goes to `sas_plan` in the current directory.
 
-The first three of the configurations above are the ones question 6 of Tutorial 4 asks you to compare.
+The first three of the configurations above are the ones question 5 of Tutorial 5a asks you to compare.
 Each run prints the plan cost, the number of expanded states and the search time, so record those three numbers as you go rather than running everything twice.
 
 Several common configurations also have short names, which are easier to remember and to report:
@@ -239,7 +240,13 @@ Adding `-v` reports every fact each action adds and deletes, which is what to us
 
 ### Troubleshooting
 
-* VAL reads the number in front of each action as a time stamp rather than as a step counter, and treats actions less than `0.01` apart as simultaneous. Two sequential actions timed `0.001` and `0.002` are therefore rejected with a message about a mutex violation rather than executed in order. Some planners and editors write plans in that format. If you see this, renumber the steps `1`, `2`, `3` and run it again. Plans produced by Fast Downward carry no time stamps and need no change.
+* **`Bad plan description!`, and nothing else, on a plan Fast Downward has just produced.** VAL requires a time stamp in front of every action and Fast Downward writes none, so `sas_plan` does not parse at all. The message says nothing about time stamps, and a plan file that cannot be parsed and a plan that is genuinely invalid both come back as a failure, so read it carefully enough to tell the two apart. Fast Downward also ends the file with a `; cost = ...` comment, which has to go as well. One line converts a plan:
+
+    ```bash
+    grep -v '^;' sas_plan | nl -w1 -s'.000: ' > myplan.plan
+    ```
+
+* VAL reads the number in front of each action as a time stamp rather than as a step counter, and treats actions less than `0.01` apart as simultaneous. Two sequential actions timed `0.001` and `0.002` are therefore rejected with a message about a mutex violation rather than executed in order. Some planners and editors write plans in that format. If you see this, renumber the steps `1`, `2`, `3` and run it again.
 * **MacOS:** If your compiler doesn't find flex or bison when building VAL, your include directories might be in a non-standard location. In this case you probably have to specify where to look for includes and libraries in VAL's
   Makefile (probably `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr`).
 
@@ -255,7 +262,7 @@ ENHSP is a forward heuristic search planner, but it is expressive in that it can
 
 You only need ENHSP if your Assessment 3 domain has numeric state in it, such as fuel that drains, a capacity that fills, or a quantity compared against a threshold.
 Fast Downward handles none of those, although it does handle `:action-costs`, so if all you want is for some actions to cost more than others then you already have what you need.
-Nothing in Tutorial 4 requires ENHSP.
+Nothing in Tutorial 4 or Tutorial 5 requires ENHSP.
 
 The planner reads in input a PDDL domain and problem file, and if you are lucky and your problem is not too complex, it provides you with a plan (a sequence of actions).
 In the case of planning with processes, the plan is a time-stamped plan (associated to each action, you find the time at which that instance of the action has to be executed).
@@ -309,7 +316,7 @@ Should you wish to run the planner with specific search options, you can add opt
 java -jar path/to/enhsp/enhsp.jar -o /path/to/domain/<domain_file> -f /path/to/problem/<problem_file> -planner "<configuration>"
 ```
 Where `<configuration>` can be replaced with one of `"sat" "opt" "aibr" "lm_opt" "sat-hmrp" "sat-hmrph" "sat-hmrphj" "sat-hadd" "sat-hradd" "sat-aibr" "sat-haddabs" "opt-hmax" "opt-hrmax" "opt-hlm" "opt-hlmrc"`.
-Those beginning `opt` search for an optimal plan and those beginning `sat` for any plan, so they are the two ends of the comparison question 6 of Tutorial 4 asks about, in a different planner.
+Those beginning `opt` search for an optimal plan and those beginning `sat` for any plan, so they are the two ends of the comparison Tutorial 5a asks about, in a different planner.
 The configurations are documented on the [ENHSP site](https://sites.google.com/view/enhsp/), which is the authority on them rather than this guide.
 
 If you are finding that you are running out of heap space, feel free to add the maximum memory allocation flag to your command.

@@ -1,0 +1,7 @@
+(define (problem pb1)
+  (:domain travel)
+  (:objects portoalegre saopaulo london poa gru lhr)
+  (:htn :subtasks (and (travel portoalegre saopaulo)))
+  (:init (at portoalegre) (airport poa portoalegre) (airport gru saopaulo) (airport lhr london)
+         (longDistance portoalegre saopaulo) (longDistance portoalegre london) (longDistance saopaulo london))
+)

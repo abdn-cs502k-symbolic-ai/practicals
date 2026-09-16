@@ -1,0 +1,10 @@
+move(?x,?y)        pre: (room ?x) (room ?y) (at-robby ?x)
+                   eff: (at-robby ?y)
+
+pick-up(?x,?y,?z)  pre: (ball ?x) (room ?y) (gripper ?z)
+                        (at-ball ?x ?y) (at-robby ?y) (free ?z)
+                   eff: (carry ?z ?x)
+
+drop(?x,?y,?z)     pre: (ball ?x) (room ?y) (gripper ?z)
+                        (carry ?z ?x) (at-robby ?y)
+                   eff: (at-ball ?x ?y) (free ?z)

@@ -1,0 +1,2 @@
+level 1: pick-up(ball1,rooma,left)  pick-up(ball2,rooma,left)  move(rooma,roomb)
+level 2: drop(ball1,roomb,left)     drop(ball2,roomb,left)
