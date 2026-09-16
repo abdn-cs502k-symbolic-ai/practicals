@@ -1,3 +1,8 @@
+> **Superseded, 2026-09-16.** The student-facing version of this tutorial is now
+> `CS502K-tutorial-week-4.tex`, which builds a handout PDF and a separate solutions PDF
+> through the repository `Makefile`. This file is kept as the record of where the material
+> came from; **edit the LaTeX, not this**, or the two will drift.
+
 # CS502K: Symbolic Artificial Intelligence
 
 ## Tutorial 04: Planning Formalisms

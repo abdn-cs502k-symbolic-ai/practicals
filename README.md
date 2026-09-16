@@ -71,16 +71,26 @@ No code of our own. The last question of each tutorial sends students to `aima-p
 
 ### `day04`: Planning Formalisms
 
+Converted from markdown to the LaTeX student/solutions build on 2026-09-16, so that it can be
+released through MyAberdeen on a timer like the other tutorials.
+
 | File | What it is |
 | --- | --- |
-| `tutorial4-pddl.md` | The walkthrough. Two modelling tasks, with links to the editor and to video tutorials |
-| `setting-up-a-local-planner.md` | Offline route, via the VSCode PDDL plugin |
+| `CS502K-tutorial-week-4.tex` | The tutorial. Seven questions: grounding and typing on the lecture's gripper domain, completing the cup-of-tea domain, diagnosing the `cheating/` model, validating a plan by hand and with VAL, extending blocksworld to two grippers, comparing three Fast Downward configurations, and two extensions |
+| `setting-up-a-local-planner.md` | Fast Downward and ENHSP, on all three platforms. On the critical path: question 6 needs a local planner and so does Assessment 3 |
 | `cup_of_tea/` | Deliver a cup of tea to grandpa. `domain.pddl` is a skeleton with `pick-up` blank and two TODO actions; `problem.pddl` and `solution.plan` are given |
-| `cup_of_tea/cheating/` | A deliberately broken model kept as a teaching example: an action that achieves the goal in one step, and a `pick-up` with no delete effects. Shows that a returned plan is not evidence the model is right |
+| `cup_of_tea/cheating/` | A deliberately broken model, now question 3: an action that achieves the goal in one step, and a `pick-up` with no delete effects. Shows that a returned plan is not evidence the model is right |
 | `blocksworld/` | Extend blocksworld to two or more grippers. `blocksworld.pddl`, `demo.pddl`, and a JS visualiser |
+| `solutions/` | Reference PDDL for questions 1, 2, 5 and 7. The tutorial `\verbatiminput`s these files into the solutions PDF, so the PDF and the solutions archive cannot drift apart |
+| `tutorial4-pddl.md` | **Superseded** by the `.tex`. Kept as the record of where the material came from |
 
 This is the assessment-critical practical: Assessments 1 and 3 both examine PDDL modelling.
-There is currently **no reference solution** for either task.
+Every reference solution was run under Fast Downward and checked with VAL on 2026-09-16 rather
+than reasoned about.
+
+Note that the handout is a PDF **plus** an archive of the skeleton files, because the deliverable
+is partly files the student edits. The solutions release is likewise a PDF plus an archive of
+`solutions/`. Nothing in the `Makefile` builds those archives yet.
 
 ### `day05`: Local Search (retired)
 
@@ -140,13 +150,21 @@ and `ipython`.
 Note that the Colab bootstrap cells hard-code the day folder in a `%cd`, so **renaming or
 renumbering a day folder breaks them silently**. Grep for `%cd` before moving anything.
 
+## Generative AI notice
+
+Every student-facing artefact carries the University of Aberdeen **Level 0** statement, no
+AI-generated content, alongside an instruction telling a coding assistant not to answer the
+exercises. One wording serves all of them, and it lives in
+[student-ai-instructions.md](student-ai-instructions.md): the verbatim policy text, ready-to-paste
+blocks for markdown, notebook metadata and LaTeX, and the list of files already using it. Copy from
+there rather than rewriting, and add a line to that list when you apply it somewhere new.
+
 ## Solutions
 
 Inconsistent, and being settled as part of the redesign:
 
-- `day01`, `day02` and `day03` build a separate `-solutions.pdf` from the same source. All are
-  gitignored.
-- `day04` has no reference solution at all.
+- `day01` to `day04` build a separate `-solutions.pdf` from the same source. All are gitignored.
+- `day04` also carries `solutions/`, reference PDDL that the solutions PDF includes verbatim.
 - `day06` ships worked code inline, since it is a walkthrough rather than an exercise.
 
 The sibling course CS3033 keeps a public practicals repository and a private solutions
@@ -159,7 +177,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | `day01` | **Reworked 2026-08-27.** Problem formulation now covered and the notebook rebuilt. No worked solution for the notebook yet |
 | `day02` | Live, paper only. Wants a coding half |
 | `day03` | **Rebuilt 2026-09-15**, paper only. Wants a coded half of its own rather than pointing at `aima-python` |
-| `day04` | Live. Assessment-critical, and missing the challenge/solution structure it needs |
+| `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build and the leak check passes. Reference solutions now exist and are planner-verified. Wants the handout archives built by the `Makefile` |
 | `day05` | Retired content in place, replacement not designed |
 | `day06` | Live. Wants signposting for the L11/L12 split and an automated test |
 

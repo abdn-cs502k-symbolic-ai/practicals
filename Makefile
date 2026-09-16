@@ -13,7 +13,8 @@
 # them into a student PDF before, so there is nothing left to edit.
 
 TUTORIALS := day01/CS502K-tutorial-week-1 day02/CS502K-tutorial-week-2 \
-             day03/CS502K-tutorial-week-3a day03/CS502K-tutorial-week-3b
+             day03/CS502K-tutorial-week-3a day03/CS502K-tutorial-week-3b \
+             day04/CS502K-tutorial-week-4
 
 STUDENT   := $(addsuffix .pdf,$(TUTORIALS))
 SOLUTIONS := $(addsuffix -solutions.pdf,$(TUTORIALS))

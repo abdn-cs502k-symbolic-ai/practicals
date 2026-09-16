@@ -1,0 +1,549 @@
+\DocumentMetadata{
+  lang        = en,
+%   pdfstandard = ua-2,
+%   pdfstandard = a-4f, %or a-4
+  pdfstandard = a-4,
+  tagging=on,
+  tagging-setup={math/setup=mathml-SE}
+}
+\documentclass[11pt]{article}
+\usepackage{paralist}
+\usepackage{fullpage,graphicx}
+\usepackage{bold-extra}
+\usepackage{fancyhdr}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{hyperref}
+
+%% Code is set with the `verbatim' package rather than `listings'.
+%% listings is not tagging-safe under \DocumentMetadata in TeX Live 2026: it
+%% unbalances tagpdf's paragraph hooks and the build fails, and \SuspendTagging
+%% does not rescue it. Verified 2026-09-16 on a minimal file. verbatim tags
+%% cleanly, so the cost is syntax colour and the gain is an accessible PDF.
+%%
+%% \pddlfile pulls in a real .pddl file rather than a copy typed into this
+%% document, so the solutions PDF and the solutions archive cannot drift apart.
+%% It works inside the \answer argument because \verbatiminput sets its own
+%% catcodes when it reads the file, which \begin{verbatim} cannot do.
+\usepackage{verbatim}
+\newcommand{\pddlfile}[1]{{\footnotesize\verbatiminput{#1}}}
+
+\newcommand{\question}[1]{#1}
+
+%% Answers are OFF by default.
+%% Do not edit this block to turn them on: the Makefile builds the solutions variant by passing \def\showanswers{} on the command line, so `make' cannot ship answers in the student PDF by accident.
+\ifdefined\showanswers
+  \newcommand{\answer}[1]{\ \\ \noindent\textbf{Answer: }#1}
+\else
+  \newcommand{\answer}[1]{}
+\fi
+
+\renewcommand{\headrulewidth}{0pt}
+\pagestyle{fancy}
+
+\setlength{\parindent}{0pt}
+
+%% ---------------------------------------------------------------------------
+%% Question provenance
+%%
+%% Each question below carries a %% SOURCE: line.
+%%
+%% "Ours" marks a question written for this course.
+%% "Inherited" marks material carried over from tutorial4-pddl.md, which this file
+%% replaces. That walkthrough was adapted from the AI Planning Community's
+%% modeling-in-pddl repository, and credits Maria Fox, Derek Long and Jan Dolejsi
+%% of the Schlumberger AI Planning course. The credits are reproduced at the end.
+%%
+%% Reference answers in PDDL are not typed into this file. They live in
+%% day04/solutions/ as runnable files and are pulled in with \lstinputlisting, so
+%% the solutions PDF and the solutions archive cannot drift apart.
+%% ---------------------------------------------------------------------------
+
+\begin{document}
+
+\centerline{\textsc{University of Aberdeen}}
+\centerline{Symbolic AI (CS502K / CS507K)}
+\centerline{Tutorial -- Planning Formalisms}
+\ifdefined\showanswers\centerline{\textbf{SOLUTIONS}}\fi
+
+\hrulefill
+
+This tutorial covers Lectures 7 and 8, and is the practical session of week 12.
+It draws on Chapter 11 of Russell and Norvig's \emph{Artificial Intelligence: A Modern Approach}, on Chapters 2 and 9 of Ghallab, Nau and Traverso's \emph{Automated Planning: Theory and Practice}, and on the lecture slides.
+
+\textbf{This is the practical that the assessments rest on.}
+Assessment 1 is sat the following morning and asks you to transcribe a given specification into PDDL under invigilation.
+Assessment 3 opens on the same day as this session and asks you to model a domain of your own choosing and run a real planner over it.
+Everything below is rehearsal for one or both.
+
+\textbf{Before this session, install a planner.}
+Follow the local planner setup guide released alongside this tutorial.
+The online editor at \url{http://editor.planning.domains} is fine for questions 2 to 5 and is the quicker way to start, but Assessment 3 requires a planner you built and can configure yourself, and question 6 needs one.
+Do the installation before you arrive, because it is a download and a compile, not a five minute job.
+
+\textbf{The files.}
+Questions 2 onwards edit files in \texttt{tutorial-week-4-files.zip}, released with this tutorial.
+Unpack it somewhere you can find again.
+Worked answers, including complete PDDL for every modelling question, are released at the end of the week as \texttt{CS502K-tutorial-week-4-solutions.pdf} and \texttt{tutorial-week-4-solutions.zip}.
+
+\textbf{A note on typing.}
+The lecture writes PDDL in the untyped \texttt{:strips} subset, where a type is just a unary predicate: \texttt{(room ?r)} is a precondition asserting that \texttt{?r} is a room.
+The files here use the typed subset instead, which declares types once and attaches them to variables:
+
+{\footnotesize\begin{verbatim}
+(:requirements :typing)
+(:types cup person room)
+(:action pick-up
+    :parameters (?c - cup ?r - room)
+\end{verbatim}}
+
+Read \texttt{?c - cup} as ``the parameter \texttt{?c}, which is a cup''.
+This is one of the extensions Lecture 7 lists under ADL, it is what both assessments use, and question 1 shows you what it buys.
+Everything else about the language is exactly as lectured.
+
+\textbf{On generative AI.}
+A language model writes every domain below, correctly, in seconds.
+We know, and we set the questions anyway.
+Assessment 1 is invigilated and you will have no model available when you sit it, so the only thing that helps you there is having written PDDL yourself, with the errors and the confusion that go with it.
+Assessment 3 permits generative AI and ends in a defence where you explain what you submitted, and the students who cannot explain their own domain are visible immediately.
+Use a model to argue with, not to answer for you.
+
+\hrulefill
+
+\begin{enumerate}
+
+%% SOURCE: Ours, 2026-09-16. Built on the gripper domain of L07 (slides "Gripper Task: Objects" through "Gripper Task: Drop Operator"), so it needs no tools and can be done on paper before anyone's planner is working.
+\item
+\question{This question is on paper, and uses the four-ball gripper domain of Lecture 7.
+There are two rooms \texttt{rooma} and \texttt{roomb}, four balls \texttt{ball1} to \texttt{ball4}, and two grippers \texttt{left} and \texttt{right}, so eight objects in all.
+The initial state is the one from the lecture: every ball and the robot are in \texttt{rooma} and both grippers are free.
+The three action schemas are:}
+
+{\footnotesize\begin{verbatim}
+(:action move :parameters (?x ?y)
+   :precondition (and (room ?x) (room ?y) (at-robby ?x))
+   :effect       (and (at-robby ?y) (not (at-robby ?x))))
+
+(:action pick-up :parameters (?x ?y ?z)
+   :precondition (and (ball ?x) (room ?y) (gripper ?z)
+                      (at-ball ?x ?y) (at-robby ?y) (free ?z))
+   :effect       (and (carry ?z ?x)
+                      (not (at-ball ?x ?y)) (not (free ?z))))
+
+(:action drop :parameters (?x ?y ?z)
+   :precondition (and (ball ?x) (room ?y) (gripper ?z)
+                      (carry ?z ?x) (at-robby ?y))
+   :effect       (and (at-ball ?x ?y) (free ?z)
+                      (not (carry ?z ?x))))
+\end{verbatim}}
+
+\question{\begin{enumerate}
+\item How many ground actions does each schema have over these eight objects, and how many of them could ever have all their preconditions satisfied?
+\item Rewrite the three schemas in the typed subset, declaring types \texttt{room}, \texttt{ball} and \texttt{gripper}. How many ground actions are there now? What has typing bought, and what has it not?
+\item Give the state that results from applying \texttt{(pick-up ball1 rooma left)} to the initial state.
+\item Suppose you forget the effect \texttt{(not (free ?z))} in \texttt{pick-up}. Give a sequence of actions that the broken domain allows and the correct one does not, and say what the planner will do with it.
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item A schema with $k$ parameters has $8^k$ ground instances, because nothing stops a parameter taking any object at all.
+So \texttt{move} has $8^2 = 64$, and \texttt{pick-up} and \texttt{drop} have $8^3 = 512$ each: 1088 ground actions in total.
+Almost all of them are nonsense, and the type predicates in the preconditions are what rules them out.
+\texttt{(pick-up left roomb ball3)} exists as a ground action, but \texttt{(ball left)} is false in every reachable state, so it is never applicable.
+The ones that can ever be applicable are the $2 \times 2 = 4$ instances of \texttt{move}, and the $4 \times 2 \times 2 = 16$ instances each of \texttt{pick-up} and \texttt{drop}: 36 out of 1088.
+
+\item The types are declared once and attached to the parameters, and the type predicates then disappear from the preconditions, because the parameter declaration says the same thing:
+\pddlfile{solutions/gripper-typed.pddl}
+Now there are exactly 36 ground actions, the same 36 that could ever be applicable.
+
+What typing bought: the planner never builds the other 1052, so grounding is cheaper, and a typing error in your domain is caught by the parser rather than showing up as a problem the planner reports unsolvable.
+That second point is the one that matters to you: a mistyped parameter is a compile-time error, and a missing type predicate is a silent bug.
+
+What it did not buy: correctness.
+\texttt{(move rooma rooma)} survives typing, because moving from a room to itself is type-correct and merely pointless.
+Typing constrains what an object \emph{is}, never what a state \emph{is}, so everything that depends on the current state still has to be a precondition.
+
+\item Delete the effects that are negated and add the rest.
+The action deletes \texttt{(at-ball ball1 rooma)} and \texttt{(free left)}, and adds \texttt{(carry left ball1)}.
+Everything else is unchanged, by the STRIPS assumption.
+The resulting state is
+\begin{quote}\ttfamily
+room(rooma), room(roomb),\\
+ball(ball1), ball(ball2), ball(ball3), ball(ball4),\\
+gripper(left), gripper(right), free(right),\\
+at-robby(rooma),\\
+at-ball(ball2, rooma), at-ball(ball3, rooma), at-ball(ball4, rooma),\\
+carry(left, ball1)
+\end{quote}
+and every other ground atom is false.
+
+\item Without \texttt{(not (free ?z))}, picking a ball up leaves the gripper free, so the robot can pick up another with the same gripper:
+\begin{quote}\ttfamily
+(pick-up ball1 rooma left)\\
+(pick-up ball2 rooma left)\\
+(pick-up ball3 rooma left)\\
+(pick-up ball4 rooma left)\\
+(move rooma roomb)\\
+(drop ball1 roomb left) \ldots
+\end{quote}
+One gripper now carries all four balls at once.
+
+What the planner does with it is the point of the question: it returns a plan, quickly, and the plan is \emph{shorter} than the correct one, because carrying four balls at a time beats carrying two.
+It looks better by every measure the planner has.
+Nothing warns you, because the planner is not checking your domain against the world, it is searching the domain you gave it, and you told it that a gripper stays free while holding a ball.
+Missing delete effects are the most common modelling error there is, and they never announce themselves.
+Question 3 is the same failure, set up deliberately.
+\end{enumerate}}
+
+%% SOURCE: Inherited from tutorial4-pddl.md, which credits Maria Fox and Derek Long, Schlumberger AI Planning course. The incremental-testing hint is theirs and is reproduced.
+\item
+\question{You have a robot and a grandpa.
+The robot can pick up a cup of tea in the kitchen and deliver it to grandpa, who deserves it.
+Grandpa may be in either the kitchen or the living room.
+The robot can move through the doorway between the kitchen and the living room.
+
+Open \texttt{cup\_of\_tea/domain.pddl}.
+The types and predicates are given, \texttt{pick-up} is an empty shell, and the other two actions are not written at all:}
+
+\pddlfile{cup_of_tea/domain.pddl}
+
+\question{Complete the three actions so that the planner solves \texttt{cup\_of\_tea/problem.pddl}.
+The plan our own model produces is in \texttt{cup\_of\_tea/solution.plan}, so you know what you are aiming at:
+\begin{quote}\ttfamily
+(pick-up cup-of-tea kitchen)\\
+(move kitchen living-room)\\
+(deliver cup-of-tea grandpa living-room)
+\end{quote}
+Note that \texttt{(in ?r)} says which room \emph{the robot} is in.
+There is no robot object because there is only one robot, so this is the lecture's \texttt{at-robby} under another name.
+
+\textbf{Build it one action at a time.}
+Do not write all three and then run the planner, because if it fails you will not know which action is wrong.
+Instead, change the goal in the problem file to something only the action you just wrote can achieve.
+To test \texttt{pick-up}:
+}
+
+{\footnotesize\begin{verbatim}
+(:goal
+    ;(delivered cup-of-tea grandpa)
+    (and
+        (holding cup-of-tea)
+        (not (handempty))
+    )
+)
+\end{verbatim}}
+
+\question{and to test \texttt{move}:}
+
+{\footnotesize\begin{verbatim}
+(:goal
+    ;(delivered cup-of-tea grandpa)
+    (and
+        (in living-room)
+        (not (in kitchen))
+    )
+)
+\end{verbatim}}
+
+\question{Put the real goal back when all three work.}
+\answer{
+\pddlfile{solutions/cup_of_tea/domain.pddl}
+
+Three things are worth saying about it.
+
+\texttt{pick-up} needs \texttt{(in ?r)} as well as \texttt{(ontable ?c ?r)}.
+Without it the robot picks up cups in rooms it is not in, and the problem is still solved, so the bug is invisible on this problem.
+Any predicate that mentions a room is a hint that the robot's own location has to appear too.
+
+\texttt{move} has no precondition tying \texttt{?to} to anything.
+That is correct for this problem, where the two rooms are joined, and wrong in general: see question 7(b).
+
+\texttt{deliver} restores \texttt{(handempty)} and deletes \texttt{(holding ?c)}.
+If you left the delete effect out, question 1(d) tells you what happens.
+The test that catches it is to ask for two deliveries, which is question 7(a).}
+
+%% SOURCE: Ours, 2026-09-16, promoting cup_of_tea/cheating/ from an undocumented directory to a question. The directory was recovered from a live demo.
+\item
+\question{In \texttt{cup\_of\_tea/cheating/domain.pddl} there is a model of the same domain that somebody else submitted.
+Run it against the original \texttt{cup\_of\_tea/problem.pddl}, not against a modified one.
+It returns a plan.
+\begin{enumerate}
+\item What plan does it return, and how long is it?
+\item There are two separate modelling errors in that file. Find both, and say what each one lets the planner do that the domain description does not.
+\item The plan is valid. The model is wrong. Explain precisely what ``valid'' is being claimed about, and what it is not.
+\item What would have caught each of the two errors?
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item One action: \texttt{(magic\_everything cup-of-tea grandpa)}.
+
+\item The first error is \texttt{magic\_everything} itself, an action whose only precondition is \texttt{(handempty)} and whose effect is \texttt{(delivered ?c ?p)}.
+Nothing in it mentions where the cup is, where the person is, or where the robot is, so it delivers any cup to any person from anywhere, without the cup ever being picked up or the robot ever moving.
+An action whose preconditions do not mention the objects it claims to act on is almost always a modelling error, and it is worth learning to spot that shape on sight.
+
+The second is that \texttt{pick-up} has no delete effects.
+It adds \texttt{(holding ?c)} and leaves \texttt{(handempty)} and \texttt{(ontable ?c ?r)} true, so the robot can hold every cup at once, and the cups stay on the table while it holds them.
+This is exactly question 1(d) in a different domain.
+
+\item The plan is valid \emph{with respect to this domain}: each action's preconditions hold in the state it is applied to, and applying them in sequence reaches a state satisfying the goal.
+A planner guarantees that and nothing else.
+What is not being claimed is that the domain describes the world.
+The planner never saw the paragraph about a robot carrying tea through a doorway, it only saw your formalisation of it, and it will exploit anything you left under-constrained, because an under-constrained model has cheaper plans in it and the planner is looking for cheap plans.
+
+So a returned plan is evidence that your domain is solvable, not that it is right.
+A suspiciously short plan is evidence that it is wrong.
+
+\item The first error is caught by reading the plan, which is one action long for a task that obviously needs three, and by reading each action's parameters against its preconditions.
+The second is caught by asking for two deliveries, or two cups, and noticing that the robot never puts the first one down: a model that is wrong in a way this problem cannot expose is wrong in a way the next problem will.
+
+Both are caught mechanically by a plan validator such as VAL, which takes a domain, a problem and a plan, and reports which precondition fails at which step.
+A validator checks the plan against the domain, so it catches step 2, where the plan uses a state the domain should not have allowed.
+No tool catches step 1 for you, because \texttt{magic\_everything} is a perfectly consistent action that you should not have written.
+That distinction is what Assessment 3 marks.
+\end{enumerate}}
+
+%% SOURCE: Ours, 2026-09-16. Practicals-Redesign.md asks for validation to be taught here rather than assumed; this is the by-hand version, so it works with no tools installed.
+\item
+\question{Validate the reference plan by hand, against \emph{your} domain from question 2.
+For each of the three actions in \texttt{solution.plan}, in order, write down the state before it, the precondition it needs, and the state after it.
+\begin{enumerate}
+\item Does every precondition hold?
+\item Now do the same for the plan with the second and third actions swapped. Which precondition fails, and at which step?
+\item Lecture 8 describes forward search, which applies actions to states, and backward search, which regresses goals through actions. Which of the two is what you just did?
+\end{enumerate}
+
+Do this on paper first, because doing it by hand once is what makes the tool's output mean anything.
+Then, if you have VAL built, check yourself against it:}
+
+{\footnotesize\begin{verbatim}
+Validate cup_of_tea/domain.pddl cup_of_tea/problem.pddl cup_of_tea/solution.plan
+\end{verbatim}}
+
+\question{VAL takes a domain, a problem and a plan, and reports which precondition fails at which step, which is more than a planner will ever tell you.
+One trap: it reads the timestamps on a plan file as a schedule, so two actions less than 0.01 apart are treated as simultaneous and rejected as a mutex violation rather than executed in order.
+If you write your own plan file, number the steps 1, 2, 3.}
+\answer{
+\begin{enumerate}
+\item Every precondition holds, so the plan is valid.
+\texttt{inperson(grandpa, living-room)} is in every state below and is never touched by anything, since no action moves a person; it is left in to show that it is still there when \texttt{deliver} needs it.
+
+\begin{quote}\ttfamily\footnotesize
+\textrm{\textbf{start}}\\
+ontable(cup-of-tea, kitchen), handempty, in(kitchen),\\
+inperson(grandpa, living-room)\\[4pt]
+\textrm{\textbf{(pick-up cup-of-tea kitchen)}} \textrm{needs} in(kitchen),\\
+\phantom{xx}ontable(cup-of-tea, kitchen), handempty\\
+holding(cup-of-tea), in(kitchen), inperson(grandpa, living-room)\\[4pt]
+\textrm{\textbf{(move kitchen living-room)}} \textrm{needs} in(kitchen)\\
+holding(cup-of-tea), in(living-room), inperson(grandpa, living-room)\\[4pt]
+\textrm{\textbf{(deliver cup-of-tea grandpa living-room)}} \textrm{needs} in(living-room),\\
+\phantom{xx}inperson(grandpa, living-room), holding(cup-of-tea)\\
+delivered(cup-of-tea, grandpa), handempty, in(living-room),\\
+inperson(grandpa, living-room)
+\end{quote}
+
+The goal \texttt{delivered(cup-of-tea, grandpa)} holds in the final state, so the plan achieves it.
+
+\item Swapping gives \texttt{pick-up}, then \texttt{deliver}, then \texttt{move}.
+The failure is at step 2.
+\texttt{(deliver cup-of-tea grandpa living-room)} needs \texttt{in(living-room)}, and after \texttt{pick-up} the robot is still in the kitchen, so \texttt{in(living-room)} is false.
+Note which precondition fails and which does not: \texttt{holding(cup-of-tea)} is fine, and \texttt{inperson(grandpa, living-room)} is fine, so the error message from a validator names the robot's location specifically.
+That is the level of detail a validator gives you, and it is why it beats rerunning the planner and squinting at the output.
+
+\item Forward search.
+You started from the initial state and applied actions to it, which is progression.
+Backward search would have started from \texttt{delivered(cup-of-tea, grandpa)} and asked what state would have to hold for \texttt{deliver} to produce it, giving \texttt{in(living-room)}, \texttt{inperson(grandpa, living-room)} and \texttt{holding(cup-of-tea)} as the new subgoal.
+Validation is always progression, because you are given the plan and only have to check it, and checking one fixed sequence forwards is linear in its length.
+\end{enumerate}}
+
+%% SOURCE: Inherited from tutorial4-pddl.md, which credits Jan Dolejsi, Schlumberger AI Planning course. The domain file is the 4-action blocks world of the modeling-in-pddl repository.
+\item
+\question{Objective: change the blocks world domain in \texttt{blocksworld/blocksworld.pddl} so that there are two or more grippers, instead of the one implicit gripper it has now.
+
+Note first that this is not the blocks world of Lecture 7.
+The lecture uses a two-action encoding, \texttt{move} and \texttt{moveToTable}, in which a block goes straight from one place to another and no gripper appears.
+This file uses the four-action encoding, \texttt{pickup}, \texttt{unstack}, \texttt{putdown} and \texttt{stack}, in which a block is held between the two, and \texttt{(handempty)} and \texttt{(holding ?a)} track the gripper that never appears as an object.
+They model the same world and neither is more correct than the other, but only the second has a gripper to multiply.
+
+Work through these in order:
+\begin{enumerate}
+\item What types do you need to add?
+\item Which predicates change, and how? Two of them mention the gripper.
+\item What objects does \texttt{blocksworld/demo.pddl} need to gain?
+\item How does each of the four actions change?
+\item The goal of \texttt{demo.pddl} is \texttt{(on red brown)}, \texttt{(on green red)} and \texttt{(holding yellow)}. Why does the problem file no longer parse once you are done, and what do you have to decide in order to fix it?
+\item \textbf{Do this one first.} As shipped, \texttt{blocksworld.pddl} does not run under Fast Downward at all: the translator stops with a Python \texttt{AssertionError}, and it does so before it has looked at a single action, so nothing you write will run until you have dealt with it. The cause is in the requirements line, which declares \texttt{:fluents} and \texttt{:negative-preconditions}. Does the file use either? What should that line say when you are finished?
+\item Run the planner. With two grippers available, is the plan shorter than with one? Should it be?
+\end{enumerate}
+You can animate your plan on the \href{https://blocks-dot-ai-planning.appspot.com/}{blocks world animation} page.}
+\answer{
+\pddlfile{solutions/blocksworld/blocksworld.pddl}
+
+\pddlfile{solutions/blocksworld/demo.pddl}
+
+Taking the sub-questions in order.
+
+(a) and (b): one new type, \texttt{gripper}.
+The two predicates that mention the gripper are \texttt{(handempty)}, which becomes \texttt{(free ?g - gripper)}, and \texttt{(holding ?a - block)}, which becomes \texttt{(holding ?g - gripper ?a - block)}.
+\texttt{on}, \texttt{clear} and \texttt{ontable} are properties of blocks alone and do not change.
+The general move is worth naming: making something implicit into an object means finding every predicate that silently referred to it and giving it an argument.
+
+(c) and (d): the problem gains \texttt{left} and \texttt{right} of type \texttt{gripper}, and \texttt{(handempty)} in the initial state becomes \texttt{(free left)} and \texttt{(free right)}.
+All four actions gain a \texttt{?g - gripper} parameter and thread it through, since all four either use or release the gripper.
+
+(e) \texttt{(holding yellow)} no longer parses because \texttt{holding} now takes two arguments.
+What you have to decide is which gripper ends up holding the block, and the fact that you have to decide is the interesting part: the goal as written was only unambiguous because there was one gripper to be the answer.
+\texttt{(holding left yellow)} is the direct translation.
+If you would rather not care which gripper it is, that is an existential goal, \texttt{(exists (?g - gripper) (holding ?g yellow))}, which needs \texttt{:existential-preconditions} and is the more faithful reading of the original.
+
+(f) Neither is used, and \texttt{:fluents} is the one that stops the build.
+There are no numeric functions anywhere in the file, and Fast Downward's translator does not accept \texttt{:fluents} at all, so it fails an internal assertion on the requirements line:
+\begin{quote}\ttfamily\footnotesize
+AssertionError: :fluents
+\end{quote}
+which is an unhandled Python traceback rather than a message about your domain, and is thoroughly unhelpful if you do not know where to look.
+Delete it and the file runs.
+There are no negated preconditions either; the negations in the file are all in effects, which need no requirement flag, so that one is merely untrue rather than fatal.
+
+The finished line is \texttt{(:requirements :typing)}, plus \texttt{:existential-preconditions} if you took the existential goal in (e).
+The lesson generalises past this file: a requirements line is a claim about which language features your domain uses, planners hold you to it in both directions, and declaring features you do not use narrows the set of planners that will accept your domain for no benefit.
+That matters directly in Assessment 3, where you choose your own planner.
+
+(g) Yes, it is shorter.
+On \texttt{demo.pddl} the one-gripper model needs 13 actions and the two-gripper model needs 11, both measured under \texttt{astar(lmcut())} so both are optimal.
+Most people predict no change, and the reason they give for it is half right, so it is worth being precise about which half.
+
+A classical plan is a \emph{sequence}.
+The planner applies one action at a time, so the second gripper buys no parallelism whatsoever and the plan takes no less time to execute.
+What it buys is \emph{storage}.
+Look at where the two actions go.
+The one-gripper plan contains
+\begin{quote}\ttfamily
+(stack green blue) \ldots{} (unstack green blue)
+\end{quote}
+because \texttt{green} has to be put down somewhere while the hand is needed for \texttt{red}, and the only surface available is another block.
+Parking it and retrieving it costs two actions, and the second gripper removes them by holding \texttt{green} while the other hand stacks \texttt{red}.
+
+So the saving is real, and it is a saving in actions rather than in time.
+Getting two grippers to work simultaneously would need actions with duration that can overlap, which is temporal planning and outside PDDL's classical fragment.
+Lecture 8's planning graphs are the nearest thing you have seen: their layers do hold sets of non-mutex actions, but that is a relaxation used to compute a bound, not a schedule you can execute.
+
+One more thing to notice, because it cuts the other way.
+The two-gripper model expands \emph{more} states than the one-gripper model on this problem, 176 against 166, while finding the shorter plan, because adding a gripper roughly doubles the branching factor.
+A model that admits better plans is not automatically a model that is easier to search.}
+
+%% SOURCE: Ours, 2026-09-16. The only rehearsal on the course for the Assessment 3 requirement to run two planner configurations and explain the difference. Connects to L08's heuristic search section and forward to L09.
+\item
+\question{Assessment 3 asks you to run the same domain under two planner configurations and explain the difference.
+This question is that, in miniature, and it needs a local planner.
+
+Take your finished blocks world from question 5 and run Fast Downward on it three times:}
+
+{\footnotesize\begin{verbatim}
+./fast-downward.py blocksworld.pddl demo.pddl --search "astar(blind())"
+./fast-downward.py blocksworld.pddl demo.pddl --search "astar(lmcut())"
+./fast-downward.py blocksworld.pddl demo.pddl \
+    --evaluator "hff=ff()" --search "lazy_greedy([hff], preferred=[hff])"
+\end{verbatim}}
+
+\question{For each run, record the cost of the plan found, the number of expanded states, and the search time; Fast Downward prints all three.
+\begin{enumerate}
+\item Which two of the three runs return plans of the same cost, and why are those two the ones that agree?
+\item Which run expands fewest states, and which is fastest? If those are not the same run, explain why not.
+\item Add three or four more blocks to \texttt{demo.pddl} and run all three again. Which numbers grow fastest?
+\item What would you have to say about these numbers to make them an argument rather than a table?
+\end{enumerate}}
+\answer{Your numbers will differ, because they depend on your domain, your problem and your Fast Downward version.
+Ours are below, from the reference two-gripper domain on \texttt{demo.pddl} as shipped (six blocks), and on a ten-block problem of the same shape.
+Read them as the shape of the result, not as a target to reproduce.
+
+\begin{center}
+\begin{tabular}{l|rrr|rrr}
+ & \multicolumn{3}{c|}{six blocks} & \multicolumn{3}{c}{ten blocks}\\
+configuration & cost & expanded & time & cost & expanded & time\\
+\hline
+\texttt{astar(blind())}  & 11 & 3\,847 & 0.007s & 21 & 43\,284\,618 & 119.7s\\
+\texttt{astar(lmcut())}  & 11 & 176    & 0.008s & 21 & 89\,387      & 13.3s\\
+greedy \texttt{ff()}     & 13 & 21     & 0.0002s & 27 & 65          & 0.009s
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+\item The two \texttt{astar} runs agree on cost, at both sizes.
+A\textsuperscript{*} with an admissible heuristic returns an optimal plan; \texttt{blind()} is the constant-zero heuristic, which is trivially admissible and makes the search uniform-cost, and \texttt{lmcut()} is admissible by construction.
+Both are therefore optimal, and any two optimal plans have the same cost even when they are different plans.
+The third run is greedy best-first search with the FF heuristic, which is not admissible and is not used admissibly here, so it comes back with 13 against 11, and 27 against 21.
+
+\item Fewest expansions and fastest are both the greedy FF run, and neither is \texttt{lmcut()}.
+That is worth sitting with, because the tidy story is that the informed heuristic expands fewest and everyone repeats it.
+The greedy run expands 21 states where \texttt{lmcut()} expands 176, because it is not paying for optimality at all: it dives at the goal and keeps the first plan it reaches.
+
+The comparison that actually teaches something is \texttt{blind()} against \texttt{lmcut()} at six blocks.
+\texttt{lmcut()} expands 22 times fewer states and takes \emph{the same search time}.
+Its entire advantage in expansions is eaten by what it costs to evaluate, because it solves a small optimisation problem at every state it looks at.
+At ten blocks the same pair reads 43 million expansions against 89 thousand, and 120 seconds against 13.
+So the informed heuristic is not faster at six blocks and is nine times faster at ten, and nothing about the heuristic changed in between.
+A heuristic's value is expansions saved times cost per expansion, and whether that product is worth paying depends on the size of the problem, which is why a comparison run on a toy instance tells you nothing.
+
+\item Expansions, by a long way, and \texttt{blind()}'s fastest of all: 3\,847 to 43 million, a factor of eleven thousand, for going from six blocks to ten.
+\texttt{lmcut()} grows by a factor of 508 over the same step and survives longest among the optimal configurations.
+The greedy run barely moves, 21 to 65.
+
+The number that grows slowest is the plan cost, 11 to 21, and that is the point of the exercise.
+The problems became enormously harder while the answers barely got longer, which is exactly the gap that a heuristic exists to exploit.
+Push to twelve or fourteen blocks and \texttt{blind()} stops returning anything at all, \texttt{lmcut()} follows it some way later, and greedy FF keeps returning plans of steadily worse quality long past the point where you can no longer tell how bad they are, because you have nothing optimal left to compare against.
+
+\item You would have to explain the turn in the curve in terms of \emph{this} domain and \emph{this} heuristic, rather than restating the numbers in prose.
+Two claims from the table would do it.
+
+The FF heuristic ignores delete effects, so it never charges you for unstacking a block that you will have to stack again.
+Blocks world is built almost entirely out of that kind of interference: the plan in question 5(g) parks \texttt{green} on \texttt{blue} purely to get it out of the way, and a delete-relaxed view of the world cannot see why anyone would.
+That is why greedy FF finds a plan almost instantly and finds a bad one, and why the gap widens with size, 18\% over optimal at six blocks and 29\% at ten.
+
+And \texttt{lmcut()} breaking even against \texttt{blind()} at six blocks is not a defect of \texttt{lmcut()}, it is the fixed cost of computing it against a search that is over before the cost matters.
+A table of numbers with no claim of that shape in it scores nothing in Assessment 3.
+\end{enumerate}}
+
+%% SOURCE: Inherited from tutorial4-pddl.md, where both appeared as unanswered "Challenges" bullets.
+\item
+\question{Two extensions to the cup of tea domain.
+\begin{enumerate}
+\item What if you have two cups and two thirsty grandparents in two different rooms? Write the problem file. How much of the domain has to change?
+\item Rooms are separated by walls. What if some rooms are not connected by a doorway? Write the domain change, and say how the initial state has to change with it.
+\end{enumerate}}
+\answer{
+\begin{enumerate}
+\item None of the domain changes, and that is the answer.
+Actions are schemas over typed variables, so a domain written for one cup and one person already covers any number of either; only the problem file names objects.
+\pddlfile{solutions/cup_of_tea/problem-two-cups.pddl}
+This is also the problem that exposes a \texttt{deliver} with no \texttt{(not (holding ?c))} effect, or a \texttt{pick-up} with no \texttt{(not (handempty))}: with one delivery those bugs are invisible, and with two the robot delivers both cups without going back for the second.
+If your question 2 domain solves this without change, it is probably right. If it produces a two-action plan, re-read question 3.
+
+\item The robot may no longer walk between arbitrary rooms, so \texttt{move} needs a precondition saying that a doorway exists.
+Add a predicate \texttt{(connected ?from - room ?to - room)} and require it:
+\pddlfile{solutions/cup_of_tea/domain-connected.pddl}
+The initial state now has to list the doorways, and this is where people go wrong: \texttt{connected} is not symmetric unless you say so.
+A doorway between the kitchen and the living room is two facts, not one:
+\begin{quote}\ttfamily
+(connected kitchen living-room)\\
+(connected living-room kitchen)
+\end{quote}
+List only the first and the robot walks to the living room and is stuck there, and the planner will report the problem unsolvable rather than telling you that your map is one-way.
+The alternative is to keep one fact per doorway and write the precondition as a disjunction over both orders, which needs \texttt{:disjunctive-preconditions} and is more trouble than it saves.
+
+Notice also that this change makes the domain honest about something the two-room version hid.
+With two rooms, \texttt{move} with no precondition on \texttt{?to} was indistinguishable from the correct model.
+That is the general trap: a problem small enough to check by eye is usually too small to expose the bug.
+\end{enumerate}}
+
+\end{enumerate}
+
+\hrulefill
+
+\textbf{Credits.}
+The cup of tea domain is due to Maria Fox and Derek Long, and the extended blocks world to Jan Dolej\v{s}\'{i}, both from the Schlumberger AI Planning course, by way of the AI Planning Community's \href{https://github.com/AI-Planning/modeling-in-pddl}{modeling-in-pddl} repository.
+Two video walkthroughs are worth your time if you would rather watch than read: the \href{https://abdn.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=844eabf4-dbb8-4570-a4e7-b37100c2afa0}{micro tutorial} on the web based editor, and \href{https://youtu.be/_NOVa4i7Us8}{Modeling in PDDL, Episode 1}, which live-codes question 5.
+The PDDL reference at \href{https://planning.wiki/}{planning.wiki} is the place to look up syntax, in particular its pages on \href{https://planning.wiki/ref/pddl/domain\#object-types}{object types} and \href{https://planning.wiki/ref/pddl/problem\#objects}{objects}.
+
+\end{document}
