@@ -43,6 +43,7 @@ sessions of week 9.
 | File | What it is |
 | --- | --- |
 | `CS502K-tutorial-week-1.tex` | Session 1, pen and paper. Twelve questions: five on AIMA Ch 1 (what counts as AI, the Turing test, evolution and rationality, science or engineering, "computers only do what they are told"), four on Ch 2 (true/false on rationality, PEAS, agent functions versus agent programs, stochastic vacuum worlds), one comparing the Wumpus World with the vacuum world, and one pointing at the notebook |
+| `tutorial1-problem-formulation-solutions.ipynb` | The worked version of the notebook, instructor copy |
 | `tutorial1-problem-formulation.ipynb` | Session 2, and **self-contained**: it defines the `Problem` class in a cell and imports nothing from this repository. Read a formulation of the 8-puzzle, write one for the vacuum world of Lecture 2, check the resulting state space against the lecture's graph, then generalise to n rooms. Carries **no search algorithm**, because students implement those in Tutorial 2 |
 
 The notebook replaces `8-Puzzle.ipynb`, which was eight code cells of AIMA 4e with no markdown,
@@ -178,9 +179,10 @@ renumbering a day folder breaks them silently**. Grep for `%cd` before moving an
 
 ## Generative AI notice
 
-Every student-facing artefact carries the University of Aberdeen **Level 0** statement, no
-AI-generated content, alongside an instruction telling a coding assistant not to answer the
-exercises. One wording serves all of them, and it lives in
+Every student-facing tutorial and notebook carries the University of Aberdeen **Level 0**
+statement, no AI-generated content, alongside an instruction telling a coding assistant not to
+answer the exercises. Applied across all six days on 2026-09-25. One wording serves all of them,
+and it lives in
 [student-ai-instructions.md](student-ai-instructions.md): the verbatim policy text, ready-to-paste
 blocks for markdown, notebook metadata and LaTeX, and the list of files already using it. Copy from
 there rather than rewriting, and add a line to that list when you apply it somewhere new.
@@ -201,7 +203,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 
 | Day | State |
 | --- | --- |
-| `day01` | **Reworked 2026-08-27.** Problem formulation now covered and the notebook rebuilt. No worked solution for the notebook yet |
+| `day01` | **Reworked 2026-08-27.** Problem formulation covered, the notebook rebuilt, and a worked notebook alongside it |
 | `day02` | Live. Paper tutorial plus a coding notebook, written 2026-09-14 |
 | `day03` | **Rebuilt 2026-09-15.** Two paper tutorials and a shared notebook |
 | `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build, both handout archives build, and the leak checks pass. Reference solutions are planner-verified. Wants a prose-only third modelling task shaped like Assessment 3 |

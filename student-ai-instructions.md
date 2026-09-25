@@ -136,6 +136,20 @@ and run `make` afterwards: the leak check must still pass.
   prose answers.
 - `day02/tutorial2-search.ipynb`: visible cell, notebook metadata, and cell metadata on the three
   stub cells and the three exercises.
+- `day03/CS502K-tutorial-week-3a.tex` and `-3b.tex`: visible paragraph and source comment, with
+  the refusal naming proofs, truth tables, CNF conversions and resolution refutations.
+- `day03/tutorial3-logic.ipynb`: visible cell, notebook metadata, and cell metadata on all six
+  stubs. Its refusal also covers the two paper tutorials the notebook serves.
+- `day04/CS502K-tutorial-week-4.tex`: visible paragraph and source comment, refusing PDDL in any
+  form.
+- `day05/CS502K-tutorial-week-5a.tex` and `-5b.tex`: the same, refusing heuristic values,
+  benchmark analysis, HDDL methods and predicted planner results.
+- `day06/tutorial6-mdp.ipynb`: the statement and the metadata, but **no refusal**, because the
+  notebook is a walkthrough that ships its own code and sets no exercise. When the rebuild for
+  Lectures 11 and 12 adds exercises, it needs the full notice.
+
+Not carrying it, deliberately: `day04/setting-up-a-local-planner.md`, which is reference material
+with no answers in it, and the `-solutions.ipynb` notebooks, which are instructor copies.
 
 Add a line here when you apply it somewhere new, so that a change to the wording has a list of
 files to walk.
