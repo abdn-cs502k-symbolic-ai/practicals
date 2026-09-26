@@ -2,8 +2,8 @@
 
 ## Tutorial 04: Planning Formalisms
 
-Follows Lecture 7 (Planning Formalism) and Lecture 8 (Planning Algorithms), and runs in the single practical session of week 12.
-Week 12 has one session rather than two, because Assessment 1 takes the Tuesday slot the following morning.
+Follows Lecture 7 (Planning Formalism) and Lecture 8 (Planning Algorithms), and runs in the single practical session of its week.
+That week has one session rather than two, because Assessment 1 takes the Tuesday slot the following morning.
 
 Converted from markdown to the LaTeX student and solutions build on 2026-09-16, and trimmed the same day when the benchmark question moved to Tutorial 5a.
 
@@ -14,8 +14,7 @@ Converted from markdown to the LaTeX student and solutions build on 2026-09-16, 
 - Diagnose a domain that returns a valid plan for a model that is wrong
 - Validate a plan by hand, step by step, and then against VAL
 - Extend a domain to a resource it did not have, and deal with what that breaks
-- **Model a domain from prose alone**, choosing the predicates, representing a resource without
-  numbers, and writing an instance that makes the resource bite
+- Model a domain from prose alone, choosing the predicates, representing a resource without numbers, and writing an instance that constrains the plan
 - Build a local planner and validator, and know the two errors that most often stop them working
 
 ### The session
@@ -28,12 +27,11 @@ Two hours, split since 2026-09-25.
 | Hour 2 | Question 6, the warehouse, on its own | The same editor, but from an empty file |
 | Home | Questions 7 and 8 | Their own machine |
 
-Question 6 is the Assessment 1 rehearsal and the reason the session is split. It gives a prose
-scenario and no skeleton, names the same four deliverables Assessment 1 names, and times the hour
-on the page. Question 7, the toolchain build, is stated as an expectation rather than a task:
-students arrive in week 13 having built it or having brought the error to a demonstrator, and this
-session is their last demonstrator contact before then. Anyone who finishes question 6 early
-should start the build in the room.
+Question 6 is the Assessment 1 rehearsal and the reason the session is split.
+It gives a prose scenario and no skeleton, names the same four deliverables Assessment 1 names, and times the hour on the page.
+Question 7, the toolchain build, is stated as an expectation rather than a task.
+Students arrive at the next tutorial having built it or having brought the error to a demonstrator, and this session is their last demonstrator contact before then.
+Anyone who finishes question 6 early should start the build in the room.
 
 Work through `CS502K-tutorial-week-4.pdf`.
 Build the PDFs and the handout archives from the repository root:
@@ -43,7 +41,7 @@ make            # the student PDFs and archives, then verify no answers leaked
 make solutions  # the worked answers and the solutions archive, for the lecturer
 ```
 
-The handout is a PDF **plus** `tutorial-week-4-files.zip`, because the deliverable is partly files the student edits.
+The handout is a PDF and `tutorial-week-4-files.zip`, because the deliverable is partly files the student edits.
 
 ### Files
 
@@ -54,9 +52,9 @@ The handout is a PDF **plus** `tutorial-week-4-files.zip`, because the deliverab
 | `cup_of_tea/` | Deliver a cup of tea to grandpa. `domain.pddl` is a skeleton with `pick-up` blank and two TODO actions; `problem.pddl` and `solution.plan` are given |
 | `cup_of_tea/cheating/` | A deliberately broken model, question 3: an action that achieves the goal in one step, and a `pick-up` with no delete effects |
 | `blocksworld/` | Extend blocksworld to two or more grippers. `blocksworld.pddl`, `demo.pddl`, and a JS visualiser |
-| `solutions/` | Reference PDDL for questions 1, 2, 5, 6 and 8, pulled into the solutions PDF with `\verbatiminput` |
+| `solutions/` | Reference PDDL for questions 1, 2, 5, 6 and 8, pulled into the solutions PDF with `\pddlfile` |
 | `solutions/warehouse/` | Question 6's reference. `domain.pddl` keeps the battery as level objects with a `next` predicate, in pure STRIPS; `domain-adl.pddl` does the same job with conditional effects and a resetting recharge, which is the encoding the Assessment 1 reference itself uses. `problem1.pddl` is the scale-floor instance, `problem2.pddl` the two-pallet check, `problem3-unsolvable.pddl` the one students should be able to call unsolvable before running it |
-| `tutorial4-pddl.md` | **Superseded** by the `.tex`. Kept as the record of where the material came from |
+| `tutorial4-pddl.md` | Superseded by the `.tex`. Kept as the record of where the material came from |
 
 ### Notes for the lecturer
 
@@ -80,3 +78,10 @@ It requires a time stamp in front of every action and Fast Downward writes none,
 The setup guide said the opposite until 2026-09-16.
 Question 6's answer and the guide's troubleshooting section both now give the one-line conversion.
 This matters more than it looks, because question 4 sends students to VAL and the error names nothing that would help them.
+
+### On generative AI
+
+A language model writes every domain in this tutorial correctly and in seconds.
+We know, and we set the exercises anyway, because Assessment 1 is invigilated and you will write PDDL the next morning with no model available.
+Assessment 3 permits a model and ends in a defence, where a student who cannot explain their own domain is visible immediately.
+Argue with a model if it helps; do not let it answer for you.

@@ -2,7 +2,7 @@
 
 ## Tutorial 05: Planning Heuristics and Hierarchical Planning
 
-Follows Lecture 9 (Planning Heuristics) and Lecture 10 (Hierarchical Planning), and runs over both practical sessions of week 13.
+Follows Lecture 9 (Planning Heuristics) and Lecture 10 (Hierarchical Planning), and runs over both practical sessions of its week.
 There is one tutorial per session: 5a covers heuristics, 5b covers HTN planning.
 
 Built 2026-09-16, and new: this is the slot the retired local search practical used to occupy.
@@ -18,7 +18,7 @@ Built 2026-09-16, and new: this is the slot the retired local search practical u
 - Read an HDDL domain, and say what a task, a method and a task network are
 - Write a method with partially ordered subtasks, and say what an ordering constraint buys
 - Trace TFD by hand over a decomposition
-- Say what domain knowledge in an HTN domain actually carries, beyond search control
+- Say what domain knowledge in an HTN domain gives you, beyond search control
 
 ### Session 1: Planning heuristics
 
@@ -49,7 +49,7 @@ MacOS and Linux ship Ruby; Windows needs RubyInstaller or WSL.
 | `CS502K-tutorial-week-5b.tex` | Session 2, HTN. Reading an HDDL domain, writing a partially ordered method, ordering constraints, TFD on paper, and the same domain with the hierarchy removed |
 | `gripper/` | The gripper domain of Lecture 7 and a two-ball instance, small enough to compute a heuristic by hand and large enough for Fast Downward to confirm it |
 | `travel/` | The travel domain of Lecture 10 in HDDL, with `travel-by-plane` removed for question 2, its two problems, and the same domain as classical PDDL for question 5 |
-| `solutions/` | Reference method, plans and worked fragments. The tutorials `\verbatiminput` these into the solutions PDFs, so the PDFs and the solutions archive cannot drift apart |
+| `solutions/` | Reference method, plans and worked fragments. The tutorials print these into the solutions PDFs, so the PDFs and the solutions archive cannot drift apart |
 
 Each tutorial builds to a student PDF and a solutions PDF from one source.
 The variant is chosen on the command line, never in the source.
@@ -62,7 +62,7 @@ The heuristic values in 5a questions 2 and 3 were computed by fixpoint iteration
 Every plan in 5b came out of HyperTensioN or Fast Downward on 2026-09-16.
 
 Tutorial 5a question 5 was question 6 of Tutorial 4 until 2026-09-16.
-It moved because week 12 has one practical session rather than two, Assessment 1 having taken the Tuesday slot, and because interpreting a benchmark belongs after the heuristics lecture rather than before it.
+It moved because Tutorial 4's week has one practical session rather than two, Assessment 1 having taken the Tuesday slot, and because interpreting a benchmark belongs after the heuristics lecture rather than before it.
 Tutorial 4 is now formalisation and debugging, and ends with the toolchain setup.
 
 Lecture 10's HDDL frame had two errors, found by making the domain run.
@@ -73,10 +73,10 @@ Question 3(a) of tutorial 5b now has students reproduce the parse error delibera
 Question 5 of tutorial 5b is the one to protect if the session runs short.
 Removing the methods from the travel domain and running it classically returns a four-action plan that takes a taxi from Porto Alegre to São Paulo's airport, 1,100 kilometres, because `longDistance` is asserted between cities and never between a city and another city's airport.
 The hierarchy had been hiding an incomplete action model, and no method ever proposed the journey that exposes it.
-This was found by running it rather than designed, it is the best argument on the course for what methods actually carry, and it pairs exactly with Tutorial 4's `cheating/` domain: there the plan was absurd and visible, here it was hidden by the hierarchy.
+This was found by running it rather than designed, it is the best argument on the course for what methods actually contribute, and it pairs exactly with Tutorial 4's `cheating/` domain: there the plan was absurd and visible, here it was hidden by the hierarchy.
 
 Tutorial 5b is deliberately self-contained, question by question.
-It runs on the Tuesday of week 13, two days before Assessment 3 is due, and it is examined only in the objective test.
+It runs in the second session of its week, two days before Assessment 3 is due, and it is examined only in the objective test.
 Students will be triaging their time, so no question depends on the previous one having worked, and a student pulled away after question 2 has still had the point of the lecture.
 
 Neither tutorial has been delivered.

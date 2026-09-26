@@ -8,8 +8,9 @@ In this guide, you will learn how to install and use planners that solve problem
 PDDL is a widely-used language for representing planning problems in artificial intelligence.
 Different planners can be used to find solutions to PDDL problems, and this guide will walk you through the steps.
 
-Question 6 of Tutorial 4 is this guide, and it is the last thing in that session rather than a prerequisite for it: week 12 has a single practical block, so a build that goes wrong should cost you the end of the session rather than the start of it.
-Do it before you leave that session, because both tutorials in week 13 need a local planner and so does Assessment 3.
+Question 7 of Tutorial 4 is this guide, and it is the last question of that session rather than a prerequisite for it.
+That session is a single practical block, so a build that goes wrong should cost you the end of it rather than the start.
+The question goes home with you, and the expectation is that you arrive at the next tutorial having built the toolchain, or having brought the error to a demonstrator, because both sessions of that tutorial need a local planner and so does Assessment 3.
 For questions 1 to 5 of Tutorial 4, the online editor at <https://editor.planning.domains> is enough, and it is quicker to start with.
 Question 4 of Tutorial 4 uses the validator, and Tutorial 5a needs a planner whose search and heuristic you can set yourself, as does Assessment 3.
 
@@ -240,7 +241,7 @@ Adding `-v` reports every fact each action adds and deletes, which is what to us
 
 ### Troubleshooting
 
-* **`Bad plan description!`, and nothing else, on a plan Fast Downward has just produced.** VAL requires a time stamp in front of every action and Fast Downward writes none, so `sas_plan` does not parse at all. The message says nothing about time stamps, and a plan file that cannot be parsed and a plan that is genuinely invalid both come back as a failure, so read it carefully enough to tell the two apart. Fast Downward also ends the file with a `; cost = ...` comment, which has to go as well. One line converts a plan:
+* `Bad plan description!`, and nothing else, on a plan Fast Downward has just produced. VAL requires a time stamp in front of every action and Fast Downward writes none, so `sas_plan` does not parse at all. The message says nothing about time stamps, and a plan file that cannot be parsed and a plan that is genuinely invalid both come back as a failure, so read it carefully enough to tell the two apart. Fast Downward also ends the file with a `; cost = ...` comment, which has to go as well. One line converts a plan:
 
     ```bash
     grep -v '^;' sas_plan | nl -w1 -s'.000: ' > myplan.plan

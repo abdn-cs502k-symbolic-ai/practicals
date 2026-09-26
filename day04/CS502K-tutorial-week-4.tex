@@ -40,10 +40,18 @@
 \lstdefinelanguage{PDDL}{
   alsoletter={:-},
   morekeywords={define,domain,problem,and,or,not,when,forall,exists,imply,either,increase,decrease,assign},
-  morekeywords=[2]{:domain,:requirements,:types,:constants,:predicates,:functions,:action,:parameters,:precondition,:effect,:objects,:init,:goal,:metric,:method,:task,:tasks,:htn,:subtasks,:ordering,:ordered-subtasks,:duration,:derived},
-  morekeywords=[3]{:strips,:typing,:adl,:equality,:negative-preconditions,:disjunctive-preconditions,:conditional-effects,:universal-preconditions,:quantified-preconditions,:existential-preconditions,:fluents,:action-costs,:hierarchy},
+  morekeywords=[2]{:domain,:requirements,:types,:constants,:predicates,:functions,:action,:parameters,:precondition,:effect,:objects,:init,:goal,:metric,:duration,:derived},
+  morekeywords=[3]{:strips,:typing,:adl,:equality,:negative-preconditions,:disjunctive-preconditions,:conditional-effects,:universal-preconditions,:quantified-preconditions,:existential-preconditions,:fluents,:action-costs},
   sensitive=false,
   morecomment=[l]{;},
+  moredelim=[s][\color{RedOrange}]{?}{\ },
+}
+%% HDDL is PDDL plus the hierarchy, so it inherits the definition above and adds
+%% the constructs Lecture 10 introduces, in their own colour. \pddlfile selects it
+%% on the .hddl extension, so a file cannot be printed in the wrong language.
+\lstdefinelanguage{HDDL}[]{PDDL}{
+  morekeywords=[3]{:hierarchy,:method-preconditions,:typeof-predicate},
+  morekeywords=[4]{:task,:tasks,:method,:htn,:subtasks,:ordered-subtasks,:ordering},
 }
 \lstdefinestyle{pddl}{
   language=PDDL,
@@ -51,8 +59,8 @@
   keywordstyle=\color{RoyalBlue},
   keywordstyle=[2]\bfseries\color{RoyalBlue},
   keywordstyle=[3]\color{Purple},
+  keywordstyle=[4]\bfseries\color{Violet},
   commentstyle=\itshape\color{ForestGreen},
-  moredelim=[s][\color{RedOrange}]{?}{\ },
   columns=fullflexible,
   keepspaces=true,
   breaklines=true,
@@ -61,7 +69,12 @@
   belowskip=\medskipamount,
 }
 \newsavebox{\pddlbox}
-\newcommand{\pddlfile}[2][]{\par\SuspendTagging{pddl}\begin{lrbox}{\pddlbox}\begin{minipage}{\linewidth}\lstinputlisting[style=pddl,#1]{#2}\end{minipage}\end{lrbox}\ResumeTagging{pddl}\noindent\usebox{\pddlbox}\par}
+\newcommand{\pddlfilebox}[2][]{\par\SuspendTagging{pddl}\begin{lrbox}{\pddlbox}\begin{minipage}{\linewidth}\lstinputlisting[style=pddl,#1]{#2}\end{minipage}\end{lrbox}\ResumeTagging{pddl}\noindent\usebox{\pddlbox}\par}
+\ExplSyntaxOn
+\NewDocumentCommand{\pddlfile}{O{}m}{
+  \str_if_in:nnTF {#2} {.hddl} { \pddlfilebox[language=HDDL,#1]{#2} } { \pddlfilebox[#1]{#2} }
+}
+\ExplSyntaxOff
 
 \newcommand{\question}[1]{#1}
 

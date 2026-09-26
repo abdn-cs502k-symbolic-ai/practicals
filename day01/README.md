@@ -2,7 +2,7 @@
 
 ## Tutorial 01: Agents, Rationality and Problem Formulation
 
-Follows Lecture 1 (Introduction) and Lecture 2 (Agents and Environments), and runs over both practical sessions of week 9.
+Follows Lecture 1 (Introduction) and Lecture 2 (Agents and Environments), and runs over both practical sessions of its week.
 
 ### Goals
 
@@ -51,7 +51,7 @@ The notebook contains its own checks. Run them, and get all six to pass.
 Every question in the `.tex` has a `%% SOURCE:` comment giving its Russell and Norvig third-edition exercise number, checked against the 3e Instructor's Manual on 2026-09-15.
 Do not cite numbers from the online exercise set at `aimacode.github.io/aima-exercises`: that is the fourth edition and numbers the same exercises differently.
 
-The vacuum-world solution offers all three actions in every state, which gives **8 states and 24 transitions** and matches the lecture's state-space figure exactly, self-loops included.
+The vacuum-world solution offers all three actions in every state, which gives 8 states and 24 transitions and matches the lecture's state-space figure exactly, self-loops included.
 A student who offers only the actions that change something gets 13 transitions instead.
 Both formulations are correct and admit the same solutions; Exercise 3 is written to make the difference surface.
 

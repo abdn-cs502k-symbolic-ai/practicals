@@ -2,7 +2,7 @@
 
 ## Tutorial 03: Logic and Inference
 
-Follows Lecture 5 (Propositional Logic) and Lecture 6 (First-Order Logic), and runs over both practical sessions of week 11.
+Follows Lecture 5 (Propositional Logic) and Lecture 6 (First-Order Logic), and runs over both practical sessions of its week.
 There is one tutorial per session: Logic 1 covers propositional logic, Logic 2 covers first-order logic.
 Both sessions share a single notebook.
 
@@ -50,15 +50,15 @@ The variant is chosen on the command line, never in the source.
 
 ### Notes for the lecturer
 
-Every question has a `%% SOURCE:` comment, as in day 1 and day 2, but the provenance here is weaker and the header block of each file says so.
-Days 1 and 2 cite 3rd-edition exercise numbers checked against the 3e Instructor's Manual.
-That manual could not be obtained when day 3 was annotated, so nothing here claims a printed exercise number.
-The `aima-exercises` labels that are cited were checked by matching the exercise text and are reliable.
-Filling in the printed numbers from the book is a ten-minute job for whoever has it to hand.
+Every question has a `%% SOURCE:` comment, as in day 1 and day 2.
+The manual was not to hand when day 3 was annotated, so these comments first cited `aima-exercises` labels, which are fourth-edition numbering.
+Tutorial 3b's axioms question was checked against the 3e Instructor's Manual on 2026-09-26 and is Exercise 9.9, not the 9.11 it had been given, and its answer is AIMA's proof reformatted rather than AIMA's text.
+The remaining `aima-exercises` labels were checked by matching the exercise text and are reliable, but none of them is a printed third-edition number.
+Converting the rest is a ten-minute job against the manual.
 
 Five question groups had no lecture behind them before 2026-09-15.
 Resolution was commented out of Lecture 5, and CNF, the propositional grammar, validity and satisfiability, and Skolemisation appeared nowhere in either deck, while the tutorials assumed all five.
-Both lectures are already over budget, so the material went into a **bonus deck** in `../../lectures/day03` rather than into the lectures:
+Both lectures are already over budget, so the material went into a bonus deck in `../../lectures/day03` rather than into the lectures:
 `ai-lecture05-bonus-slides-normal-forms` (18pp, 8 content frames in three sections).
 It was briefly two decks, one per session, and was merged the same day: both lectures precede both sessions, so no student ever needs half of it.
 
