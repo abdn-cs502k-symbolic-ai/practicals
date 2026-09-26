@@ -50,34 +50,34 @@ The variant is chosen on the command line, never in the source.
 
 ### Notes for the lecturer
 
-**Every question carries a `%% SOURCE:` comment**, as in day 1 and day 2, but the provenance here is weaker and the header block of each file says so.
+Every question carries a `%% SOURCE:` comment, as in day 1 and day 2, but the provenance here is weaker and the header block of each file says so.
 Days 1 and 2 cite 3rd-edition exercise numbers checked against the 3e Instructor's Manual.
 That manual could not be obtained when day 3 was annotated, so nothing here claims a printed exercise number.
 The `aima-exercises` labels that are cited were checked by matching the exercise text and are reliable.
 Filling in the printed numbers from the book is a ten-minute job for whoever has it to hand.
 
-**Five question groups had no lecture behind them before 2026-09-15.**
+Five question groups had no lecture behind them before 2026-09-15.
 Resolution was commented out of Lecture 5, and CNF, the propositional grammar, validity and satisfiability, and Skolemisation appeared nowhere in either deck, while the tutorials assumed all five.
 Both lectures are already over budget, so the material went into a **bonus deck** in `../../lectures/day03` rather than into the lectures:
 `ai-lecture05-bonus-slides-normal-forms` (18pp, 8 content frames in three sections).
 It was briefly two decks, one per session, and was merged the same day: both lectures precede both sessions, so no student ever needs half of it.
 
-**The bonus deck is self-study, and this practical is the enforcement mechanism.**
+The bonus deck is self-study, and this practical is the enforcement mechanism.
 Both tutorials open by naming it and saying how long it takes, its second frame lists which tutorial question needs which slide across both sessions, and the questions genuinely cannot be answered without it.
 A student who arrives without having read the deck will be stuck rather than merely underprepared, which costs session time.
 Worth saying out loud in the lecture beforehand.
 
-**The bonus deck is not examined**, settled 2026-09-15.
+The bonus deck is not examined, settled 2026-09-15.
 The objective test covers the lectures only, and `../../mcq/topics` has no question on resolution, CNF, Skolemisation, the occurs check or factoring, so nothing there needs changing.
 It is offered as depth; this practical is the only place it is required, which is worth saying in the lecture beforehand.
 
-**Lecture 6's summary frame advertised resolution** under propositional inference, which Lecture 5 did not deliver.
+Lecture 6's summary frame advertised resolution under propositional inference, which Lecture 5 did not deliver.
 That line now points at the bonus deck.
 
-**The forward-chaining half of the arithmetic question is AIMA's, restored.**
+The forward-chaining half of the arithmetic question is AIMA's, restored.
 The inherited tutorial kept only the backward-chaining half, so nothing exercised the forward-chaining algorithm that Lecture 6 teaches.
 
-**The notebook's `to_cnf` is tested by equivalence, not by string comparison.**
+The notebook's `to_cnf` is tested by equivalence, not by string comparison.
 Several correct CNFs exist for one input and they differ in clause order, so a string test would fail correct work.
 The final test in that section checks that resolution and model enumeration agree, which is the one most likely to catch a real bug.
 

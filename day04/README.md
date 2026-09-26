@@ -3,7 +3,7 @@
 ## Tutorial 04: Planning Formalisms
 
 Follows Lecture 7 (Planning Formalism) and Lecture 8 (Planning Algorithms), and runs in the single practical session of week 12.
-**Week 12 has one session rather than two**, because Assessment 1 takes the Tuesday slot the following morning.
+Week 12 has one session rather than two, because Assessment 1 takes the Tuesday slot the following morning.
 
 Converted from markdown to the LaTeX student and solutions build on 2026-09-16, and trimmed the same day when the benchmark question moved to Tutorial 5a.
 
@@ -60,22 +60,22 @@ The handout is a PDF **plus** `tutorial-week-4-files.zip`, because the deliverab
 
 ### Notes for the lecturer
 
-**This is the assessment-critical practical.** Assessments 1 and 3 both examine PDDL modelling, and between them they carry 70% of the course.
+This is the assessment-critical practical. Assessments 1 and 3 both examine PDDL modelling, and between them they carry 70% of the course.
 Every reference solution was run under Fast Downward and checked with VAL on 2026-09-16, and question 6's on 2026-09-25, rather than reasoned about.
 For the record on question 6: Fast Downward returns a 30-step plan for `problem1.pddl` under the STRIPS encoding with seven recharges, and 27 steps with four under the ADL one, both validated; `problem3-unsolvable.pddl` is proved unsolvable by exhaustion rather than timing out.
 
-**Question 6 answers the gap that mattered.** Until 2026-09-25 nothing in this practical asked a student to choose a predicate vocabulary from prose, to model a resource without numbers, or to write a word about why they modelled something the way they did. Assessment 1 marks all three. Question 2 hands over the vocabulary and question 5 hands over a working domain to edit, so both rehearse the easier half.
+Question 6 closes three gaps. Until 2026-09-25 nothing in this practical asked a student to choose a predicate vocabulary from prose, to model a resource without numbers, or to write a word about why they modelled something the way they did, and Assessment 1 marks all three. Question 2 hands over the vocabulary and question 5 hands over a working domain to edit, so both rehearse the easier half.
 
-**The toolchain setup is question 7, and it goes home.**
+The toolchain setup is question 7, and it goes home.
 It was question 6 and in-session until 2026-09-25, when the second hour became the modelling rehearsal.
-A build that goes wrong must eat neither hour, so it leaves the room with them, with the expectation stated in the question and again in the preamble: arrive in week 13 having built it, or having brought the error to a demonstrator.
+A failed build must cost neither hour, so it leaves the room with them. The question and the preamble both state the expectation, which is to arrive at the next tutorial having built it, or having brought the error to a demonstrator.
 Questions 1 to 6 all run in the online editor, so nothing in the session depends on the build.
 This is the second revision of that instruction: students were told to install before arriving until 2026-09-16, when the session lost its second half.
 
-**The blocks-world benchmark question moved to Tutorial 5a** on the same day.
+The blocks-world benchmark question moved to Tutorial 5a on the same day.
 It was the only question here that needed a built planner and multiple runs, and it asks students to interpret heuristics that Lecture 9 had not yet taught when this session runs.
 
-**VAL rejects Fast Downward's plan files outright.**
+VAL rejects Fast Downward's plan files outright.
 It requires a time stamp in front of every action and Fast Downward writes none, so `sas_plan` fails to parse and VAL reports `Bad plan description!` and nothing else.
 The setup guide said the opposite until 2026-09-16.
 Question 6's answer and the guide's troubleshooting section both now carry the one-line conversion.

@@ -62,7 +62,7 @@ The ordering is the point, and the ordering is stable.
 Question 5(e) and Exercise 3 both turn on counting expansions the same way the lectures do: a node is expanded when its successors are generated, so the goal node is selected and returned without ever being expanded.
 Most disagreements with the lecture's figures are this off-by-one.
 
-**Lecture 4 contradicts itself on two heuristic values, and the tutorial follows the table.** The `h_SLD` table printed beside the Romania map gives Fagaras 178 and Pitesti 98, which are the AIMA 2e values.
+Lecture 4 contradicts itself on two heuristic values, and the tutorial follows the table. The `h_SLD` table printed beside the Romania map gives Fagaras 178 and Pitesti 98, which are the AIMA 2e values.
 The four A\* tree figures in the same lecture print `415 = 239 + 176` and `417 = 317 + 100`, which are the 3e values.
 The tutorial and the notebook both use the table's numbers, because the table is what students read `h` off.
 

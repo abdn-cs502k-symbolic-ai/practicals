@@ -30,14 +30,14 @@ make            # the student PDFs and handout archives, then verify no answers 
 make solutions  # the worked answers, for the lecturer
 ```
 
-**This session needs Fast Downward**, which students build in question 6 of Tutorial 4.
+This session needs Fast Downward, which students build in question 7 of Tutorial 4.
 It also needs their two-gripper blocks world from question 5 of that tutorial; the reference version in `../day04/solutions/blocksworld/` covers anyone who did not finish it.
 
 ### Session 2: Hierarchical planning
 
 Work through `CS502K-tutorial-week-5b.pdf`, which draws on Section 11.4 of Russell and Norvig and Chapter 11 of Ghallab, Nau and Traverso.
 
-**This session needs Ruby and nothing else.**
+This session needs Ruby and nothing else.
 The planner is [HyperTensioN](https://github.com/Maumagnaguagno/HyperTensioN), which students clone and run directly: it is pure Ruby with no dependencies and no compile step.
 MacOS and Linux ship Ruby; Windows needs RubyInstaller or WSL.
 
@@ -57,29 +57,29 @@ Both sessions share one handout archive, `tutorial-week-5-files.zip`, which the 
 
 ### Notes for the lecturer
 
-**Every number in both solutions PDFs was produced by running the tools.**
+Every number in both solutions PDFs was produced by running the tools.
 The heuristic values in 5a questions 2 and 3 were computed by fixpoint iteration and then confirmed against Fast Downward's own `hmax()`, `add()` and `ff()` evaluators: 2, 6 and 5 respectively against an optimal cost of 7.
 Every plan in 5b came out of HyperTensioN or Fast Downward on 2026-09-16.
 
-**Tutorial 5a question 5 was question 6 of Tutorial 4 until 2026-09-16.**
+Tutorial 5a question 5 was question 6 of Tutorial 4 until 2026-09-16.
 It moved because week 12 has one practical session rather than two, Assessment 1 having taken the Tuesday slot, and because interpreting a benchmark belongs after the heuristics lecture rather than before it.
 Tutorial 4 is now formalisation and debugging, and ends with the toolchain setup.
 
-**Lecture 10's HDDL frame had two errors, found by making the domain run.**
+Lecture 10's HDDL frame had two errors, found by making the domain run.
 It wrote ordering constraints infix, `(task0 < task2)`, where HDDL is prefix, `(< task0 task2)`; and it ordered `task0` before `task2` twice while never ordering `task1` at all.
 The deck was corrected on 2026-09-16.
 Question 3(a) of tutorial 5b now has students reproduce the parse error deliberately, because the traceback it produces names a Ruby method and says nothing about ordering, and reading an error of that shape once is worth more than being handed the right syntax.
 
-**Question 5 of tutorial 5b is the one to protect if the session runs short.**
+Question 5 of tutorial 5b is the one to protect if the session runs short.
 Removing the methods from the travel domain and running it classically returns a four-action plan that takes a taxi from Porto Alegre to São Paulo's airport, 1,100 kilometres, because `longDistance` is asserted between cities and never between a city and another city's airport.
 The hierarchy had been hiding an incomplete action model, and no method ever proposed the journey that exposes it.
 This was found by running it rather than designed, it is the best argument on the course for what methods actually carry, and it pairs exactly with Tutorial 4's `cheating/` domain: there the plan was absurd and visible, here it was hidden by the hierarchy.
 
-**Tutorial 5b is deliberately self-contained, question by question.**
+Tutorial 5b is deliberately self-contained, question by question.
 It runs on the Tuesday of week 13, two days before Assessment 3 is due, and it is examined only in the objective test.
 Students will be triaging their time, so no question depends on the previous one having worked, and a student pulled away after question 2 has still had the point of the lecture.
 
-**Neither tutorial has been delivered.**
+Neither tutorial has been delivered.
 So has neither lecture, in this shape. Treat the first delivery as the measurement.
 
 ### On generative AI

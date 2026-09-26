@@ -17,7 +17,7 @@ The lecture decks and the course-wide planning documents live in a separate repo
 
 ## Schedule
 
-**Two practical slots a week, Monday and Tuesday**, and each assessment sat in a slot costs one of
+Two practical slots a week, Monday and Tuesday, and each assessment sat in a slot costs one of
 them. Weeks 12 and 14 therefore run a single practical each, and the other four run two. Ten
 sessions in all. `Lectures-2026.md` has the slot table and is the authority.
 
@@ -78,11 +78,11 @@ Converted from markdown to the LaTeX student/solutions build on 2026-09-16, and 
 day to fit a single session: week 12 has one practical block, because Assessment 1 takes the
 Tuesday slot the next morning.
 
-**The two hours are split, since 2026-09-25.** The first is questions 1 to 5, in the online
-editor. The second is question 6 on its own, the Assessment 1 rehearsal: a warehouse given in
-prose, no skeleton, written against the clock and handed in as the four files Assessment 1 asks
-for. Questions 7 and 8 go home, and the toolchain build is stated as an expectation rather than a
-task: arrive in week 13 having built it or having brought the error to a demonstrator.
+The two hours are split, since 2026-09-25. The first is questions 1 to 5, in the online
+editor. The second is question 6 on its own, the Assessment 1 rehearsal, which gives a warehouse
+in prose and no skeleton and asks for the four files Assessment 1 asks for, written against the
+clock. Questions 7 and 8 go home. The toolchain build is an expectation rather than a task, which
+is to arrive at the next tutorial having built it or having brought the error to a demonstrator.
 
 | File | What it is |
 | --- | --- |
@@ -100,9 +100,9 @@ Every reference solution was run under Fast Downward and checked with VAL on 202
 than reasoned about.
 
 The toolchain setup went home on 2026-09-25, when the second hour became the modelling
-rehearsal: a build that goes wrong must eat neither hour. Demonstrators are available during
-question 6 for anyone who finishes early, and that is the last demonstrator contact before week
-13. The three-configuration benchmark question moved to `day05` on 2026-09-16, because it needs
+rehearsal, because a failed build must cost neither hour. Demonstrators are free during question 6
+for anyone who finishes early, and that is the last demonstrator contact before the next
+tutorial. The three-configuration benchmark question moved to `day05` on 2026-09-16, because it needs
 Lecture 9.
 
 ### `day05`: Planning Heuristics and Hierarchical Planning
