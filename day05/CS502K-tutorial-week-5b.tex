@@ -133,7 +133,7 @@ Assistive technologies that do not generate content, such as screen readers, tex
 
 \item A model writes the missing method in question~\ref{q:method} in one go.
 Question~\ref{q:ordering} is where that stops helping, because it asks what your method \emph{means} rather than what it says, and question~\ref{q:classical} is a result that most models get wrong when asked to predict it, because the answer is surprising.
-Run the thing and see.
+Run it and see.
 
 \end{itemize}
 \hrulefill
@@ -218,7 +218,7 @@ It does not apply.
 That method requires \texttt{(airport ?ay ?y)}, an airport belonging to the destination, and the destination here is \texttt{poa}, which \emph{is} an airport and does not have one of its own.
 So no method applies to \texttt{travel(portoalegre,poa)}: the taxi method is blocked by the fact you just added, the plane method is blocked by the missing airport, and the whole plan fails on that one subtask.
 
-Two things are worth taking from that.
+Two conclusions follow from that.
 The first is how the failure presents: one unreachable subtask buried two levels down, and what you are told is \texttt{Planning failed}, with no indication of which task could not be decomposed.
 Debugging an HTN domain means finding that yourself, usually by running the subtask on its own, and it is the standard complaint about the formalism in practice.
 
@@ -370,7 +370,7 @@ Both times the planner did its job perfectly and the model was wrong.
 What is new here is the direction the error came from.
 There the model was too permissive and the plan showed it immediately, because the plan was absurdly short.
 Here the model was equally permissive all along and the hierarchy hid it, so the domain looked correct for as long as nobody removed the methods.
-A test that passes because something upstream never generates the failing case is not a test, and an HTN domain whose methods are the only thing keeping its actions honest will break the day someone writes a new method.
+A test that passes because something upstream never generates the failing case is not a test, and an HTN domain whose methods are the only check on its actions will break the day someone writes a new method.
 
 The practical habit worth taking away: if you have written a hierarchical domain, run its actions once without the hierarchy and look at what comes back.
 \end{enumerate}}

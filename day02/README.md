@@ -48,7 +48,7 @@ The checks compare the result against the hand trace from session 1.
 | `tutorial2-search.ipynb` | Session 2, with the algorithms left as stubs |
 | `tutorial2-search-solutions.ipynb` | Session 2 worked, including answers to the discussion questions. Release after the session |
 
-Every question in the `.tex` carries a `%% SOURCE:` comment giving its Russell and Norvig third-edition exercise number, checked against the 3e Instructor's Manual on 2026-09-15.
+Every question in the `.tex` has a `%% SOURCE:` comment giving its Russell and Norvig third-edition exercise number, checked against the 3e Instructor's Manual on 2026-09-15.
 
 ### Notes for the lecturer
 
@@ -66,8 +66,8 @@ Lecture 4 contradicts itself on two heuristic values, and the tutorial follows t
 The four A\* tree figures in the same lecture print `415 = 239 + 176` and `417 = 317 + 100`, which are the 3e values.
 The tutorial and the notebook both use the table's numbers, because the table is what students read `h` off.
 
-The only thing this changes is which of Fagaras and Pitesti A\* expands fourth.
+This changes only which of Fagaras and Pitesti A\* expands fourth.
 With the table, Pitesti (415) comes before Fagaras (417); the tree figures draw the reverse.
 A\* expands the same five nodes, takes the same five expansions and returns the same 418 km path either way, so every count asserted above holds regardless.
 Question 5(c) states the caveat to students and tells them to accept either order.
-Left in place by decision on 2026-09-15; the deck carries a `%% FRM NOTE` comment recording it.
+Left in place by decision on 2026-09-15; the deck contains a `%% FRM NOTE` comment recording it.

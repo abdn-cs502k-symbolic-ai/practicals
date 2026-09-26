@@ -162,14 +162,14 @@ make distclean  # also remove the PDFs and the archives
 
 Days 4 and 5 hand out a PDF **plus** an archive of the files the student edits, and release a
 solutions PDF plus an archive of the reference files. `make` builds all four, and `verify-archive`
-fails the build if a student archive ever carries a reference solution or a completed skeleton.
+fails the build if a student archive ever contains a reference solution or a completed skeleton.
 
 `make verify` extracts the text of each student PDF and **fails the build** if the string
 `Answer:` appears. Take that check seriously: a student-facing PDF did once ship with five worked
 answers in it, after someone left the answer toggle switched on.
 
 All PDFs are gitignored. Distribution happens through MyAberdeen, so **the leak check is the only
-thing standing between an edit and the cohort**. Run `make`, not `pdflatex`.
+check standing between an edit and the cohort**. Run `make`, not `pdflatex`.
 
 ## Running the notebooks
 
@@ -188,7 +188,7 @@ renumbering a day folder breaks them silently**. Grep for `%cd` before moving an
 
 ## Generative AI notice
 
-Every student-facing tutorial and notebook carries the University of Aberdeen **Level 0**
+Every student-facing tutorial and notebook states the University of Aberdeen **Level 0**
 statement, no AI-generated content, alongside an instruction telling a coding assistant not to
 answer the exercises. Applied across all six days on 2026-09-25. One wording serves all of them,
 and it lives in
@@ -201,7 +201,7 @@ there rather than rewriting, and add a line to that list when you apply it somew
 Inconsistent, and being settled as part of the redesign:
 
 - `day01` to `day05` build a separate `-solutions.pdf` from the same source. All are gitignored.
-- `day04` and `day05` also carry `solutions/`, reference files that the solutions PDF includes
+- `day04` and `day05` also have `solutions/`, reference files that the solutions PDF includes
   verbatim and that ship as a second archive.
 - `day06` ships worked code inline, since it is a walkthrough rather than an exercise.
 
@@ -219,5 +219,5 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | `day05` | **Built 2026-09-16.** Two tutorials, both planner-verified. Never delivered |
 | `day06` | Live, and the last on pre-redesign material. Serves two lectures in one shared, interruptible session. Wants the L11/L12 signposting, an automated test, and re-sizing for the slot it actually has |
 
-`Practicals-Redesign.md` in the lectures repository carries the full analysis, the comparison
+`Practicals-Redesign.md` in the lectures repository has the full analysis, the comparison
 against CS3033, and the priority order.

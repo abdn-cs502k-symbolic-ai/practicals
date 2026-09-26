@@ -36,7 +36,7 @@ The notebook is self-contained.
 Everything it uses is defined in its own cells, so it runs wherever you open it, whether you clone this repository or download the notebook by itself.
 
 You read a complete formulation of the 8-puzzle, write your own formulation of the two-room vacuum world, and check the state space you get against the graph on the *Example: Vacuum world state space graph* slide.
-The notebook carries its own checks: run them, and get all six to pass.
+The notebook contains its own checks. Run them, and get all six to pass.
 
 ### Files
 
@@ -48,7 +48,7 @@ The notebook carries its own checks: run them, and get all six to pass.
 
 ### Notes for the lecturer
 
-Every question in the `.tex` carries a `%% SOURCE:` comment giving its Russell and Norvig third-edition exercise number, checked against the 3e Instructor's Manual on 2026-09-15.
+Every question in the `.tex` has a `%% SOURCE:` comment giving its Russell and Norvig third-edition exercise number, checked against the 3e Instructor's Manual on 2026-09-15.
 Do not cite numbers from the online exercise set at `aimacode.github.io/aima-exercises`: that is the fourth edition and numbers the same exercises differently.
 
 The vacuum-world solution offers all three actions in every state, which gives **8 states and 24 transitions** and matches the lecture's state-space figure exactly, self-loops included.

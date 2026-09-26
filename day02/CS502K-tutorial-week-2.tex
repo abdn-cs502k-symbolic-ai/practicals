@@ -151,7 +151,9 @@ Argue with a model if you find that useful, but do not let it answer for you.
 \begin{enumerate}
 
 \item
-%% SOURCE: AIMA 3e Ex 3.11, verbatim, with AIMA's answer.
+%% SOURCE: AIMA 3e Ex 3.11. The question is AIMA's. The answer is adapted from AIMA's rather than
+%% quoted: it was reworded here before 2026-09-26, and Felipe rewrote the reworded version against
+%% the manual on that date. Do not label it verbatim.
 \question{What is the difference between a world state, a state description, and a search node?
 Why is this distinction useful?
 }
@@ -163,14 +165,15 @@ A state description is an agent's internal description of a world state.
 Examples are $\mathit{In}(\mathit{Arad})$ and $\mathit{In}(\mathit{Bucharest})$.
 Such a description only ever approximates the world state, recording some of its aspects and discarding the rest.
 
-Three reasons make the distinction worth keeping.
-The agent may be mistaken about how the world is.
-The agent may want to imagine things that do not hold but that it could bring about.
-And the agent cares about the world itself, not about its own representation of the world.
+There are three key reasons to make this distinction:
+1) the agent may be mistaken about how the world is;
+2) the agent may want to imagine states that do not hold but that it could bring about; and 
+3) the agent cares about the world itself, not about its own representation of the world.
 
 A search node is something the search process creates, and it stands for a state that the process knows how to reach.
-A node carries more than a state description: it also records the sequence of actions that reached the state.
-The distinction earns its keep because one search can create several different nodes that all describe the same state.
+A node contains more than a state description. 
+It also records the sequence of actions that reached the state.
+The distinction is useful because one search can create several nodes that all describe the same state.
 }
 
 \item 
@@ -281,11 +284,11 @@ Solution: Arad, Sibiu, Rimnicu Vilcea, Pitesti, Bucharest, at cost \textbf{418},
 
 The last two items need a caveat.
 The A$^{*}$ tree figure in Lecture 4 expands Fagaras before Pitesti, which is the opposite order.
-The two figures in that lecture carry different heuristic values for these two cities: the table says Fagaras 178 and Pitesti 98, while the trees print $415 = 239 + 176$ and $417 = 317 + 100$.
+The two figures in that lecture give different heuristic values for these two cities: the table says Fagaras 178 and Pitesti 98, while the trees print $415 = 239 + 176$ and $417 = 317 + 100$.
 Accept either order.
 A$^{*}$ expands the same five nodes, takes the same five expansions and returns the same 418 km path whichever pair you use, and nothing in the lecture's argument turns on it.
 \item The algorithm tests for the goal when it \emph{selects} a node to expand, and not when it generates one.
-Expanding Fagaras generates Bucharest at $f = 450$, and at that moment Pitesti still sits on the frontier at $f = 417$.
+Expanding Fagaras generates Bucharest at $f = 450$, and at that moment Pitesti is still on the frontier at $f = 417$.
 The search therefore takes Pitesti next, and expanding Pitesti generates the cheaper Bucharest at $f = 418$.
 A goal node has $h = 0$, so its $f$ equals its path cost, and any frontier node with a smaller $f$ may still lead to a cheaper solution.
 An algorithm that tested on generation would return the 450 path and would forfeit optimality.
@@ -304,7 +307,7 @@ The blank counts in neither.
 \begin{enumerate}
     \item Show that $h_{1}$ is admissible by naming the relaxed problem that it solves exactly.
     \item Do the same for $h_{2}$.
-    \item Show that $h_{2}$ dominates $h_{1}$, and say what domination buys you in the number of nodes A$^{*}$ expands.
+    \item Show that $h_{2}$ dominates $h_{1}$, and say what domination gains you in the number of nodes A$^{*}$ expands.
     \item $h_{3}(n) = h_{1}(n) + h_{2}(n)$ is at least as large as either.
     Is it admissible?
     Give a state that settles the question.
@@ -329,7 +332,7 @@ Then $h_{1} = 1$, $h_{2} = 1$, and $h_{3} = 2$, which exceeds the true cost of 1
 Adding two admissible heuristics counts the same work twice, so the sum is not admissible in general.
 \item Yes: the maximum of admissible heuristics is admissible, because if every member never exceeds the true cost then neither does the largest of them.
 It is not worth using here, because part (c) established $h_{2} \geq h_{1}$ everywhere, so $\mathit{max}(h_{1}, h_{2})$ equals $h_{2}$ at every state and you pay for computing $h_{1}$ to no effect.
-The maximum earns its keep when neither heuristic dominates the other, so each is the stronger one somewhere.
+The maximum is useful when neither heuristic dominates the other, so each is the stronger one somewhere.
 \end{enumerate}
 }
 

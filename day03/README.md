@@ -50,7 +50,7 @@ The variant is chosen on the command line, never in the source.
 
 ### Notes for the lecturer
 
-Every question carries a `%% SOURCE:` comment, as in day 1 and day 2, but the provenance here is weaker and the header block of each file says so.
+Every question has a `%% SOURCE:` comment, as in day 1 and day 2, but the provenance here is weaker and the header block of each file says so.
 Days 1 and 2 cite 3rd-edition exercise numbers checked against the 3e Instructor's Manual.
 That manual could not be obtained when day 3 was annotated, so nothing here claims a printed exercise number.
 The `aima-exercises` labels that are cited were checked by matching the exercise text and are reliable.

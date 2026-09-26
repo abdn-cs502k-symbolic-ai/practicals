@@ -123,7 +123,7 @@ Question~\ref{q:notebook} sends you to the notebook \texttt{tutorial3-logic.ipyn
 Lecture 5 has no room for the grammar of propositional logic, the interpretation function $I(m, \alpha)$, validity and satisfiability, conjunctive normal form, or resolution, and questions~\ref{q:grammar}, \ref{q:truthtables}, \ref{q:enumerate}, \ref{q:items}, \ref{q:cnfprocedure} and~\ref{q:resolution} below all depend on them.
 They are in \emph{Bonus: Normal Forms and Resolution} (\texttt{ai-lecture05-bonus-slides-normal-forms.pdf} in the lecture repository), which is self-study and takes about twenty minutes.
 Its second frame lists which question needs which slide, for this session and the next.
-None of it is examined; it is there for depth, and this tutorial is where it pays off.
+None of it is examined. It is there for depth, and this tutorial is where you need it.
 
 \item The University of Aberdeen sets this tutorial at AI Level 0, which permits no AI-generated content.
 Do not use generative AI capabilities on it.
@@ -321,7 +321,7 @@ The right disjunct $(Q \lor \lnot Q)$ is true in every model, so the whole disju
 \medskip
 
 \noindent show how the algorithm computes $\textsc{TT-Entails}(((P \land \lnot P) \land \lnot Q), Q)$.
-Lecture 5 writes the test on line 4 as $\textsc{PL-True?}(\alpha, \mi{model})$; it computes the same thing as $I(\mi{model}, \alpha)$, which the bonus deck defines.}
+Lecture 5 writes the test on line 4 as $\textsc{PL-True?}(\alpha, \mi{model})$; it computes the same value as $I(\mi{model}, \alpha)$, which the bonus deck defines.}
 \answer{Your answer should say how each variable in the algorithm was instantiated and how the instructions changed it.
 The original invocation $\textsc{TT-Entails}(((P \land \lnot P) \land \lnot Q), Q)$ makes $KB = (P \land \lnot P) \land \lnot Q$ and $\alpha = Q$; line 2 computes $\mi{symbols} = \{P, Q\}$, and line 3 invokes $\textsc{TT-Check-All}((P \land \lnot P) \land \lnot Q,\ Q,\ \{P, Q\},\ \emptyset)$.
 
@@ -355,7 +355,7 @@ The premise here is weaker than in the previous item, since ``not a contradictio
 \item $KB \models \alpha$ means that $\alpha$ is true in every model of $KB$, so no model makes $KB$ true and $\alpha$ false.
 A model makes $(KB \land \lnot \alpha)$ true exactly when it makes $KB$ true and $\alpha$ false, so there is no such model, and having no model is exactly unsatisfiability.
 Reading the argument in the other direction gives the converse.
-Resolution rests on this equivalence.
+Resolution depends on this equivalence.
 \end{enumerate}}
 
 \item\label{q:interpretation}
@@ -424,7 +424,7 @@ The usual shape is four passes over the formula:
 \begin{enumerate}
 \item eliminate $\Leftrightarrow$, rewriting $\alpha \Leftrightarrow \beta$ as $(\alpha \Rightarrow \beta) \land (\beta \Rightarrow \alpha)$;
 \item eliminate $\Rightarrow$, rewriting $\alpha \Rightarrow \beta$ as $\lnot \alpha \lor \beta$;
-\item push $\lnot$ inwards using De Morgan's laws and double-negation elimination, until every negation sits on a proposition symbol;
+\item push $\lnot$ inwards using De Morgan's laws and double-negation elimination, until every negation applies to a proposition symbol;
 \item distribute $\lor$ over $\land$, rewriting $\alpha \lor (\beta \land \gamma)$ as $(\alpha \lor \beta) \land (\alpha \lor \gamma)$, until the formula is a conjunction of disjunctions of literals.
 \end{enumerate}
 The order of the passes matters, because distributing before the negations are pushed in leaves negated conjunctions in the way.
@@ -496,7 +496,7 @@ The proofs complete in the order $W, Y, V, X, Z, U$.
 
 \item Rule $r_5$ fires under forward chaining, adding $T$, and backward chaining never considers it, because $T$ appears in no subgoal on the way to $U$.
 Forward chaining is data-driven and derives everything the knowledge base supports, which suits a fixed set of facts queried many times.
-Backward chaining is goal-driven and touches only what the query needs, which suits a large knowledge base queried about one thing.
+Backward chaining is goal-driven and touches only what the query needs, which suits a large knowledge base queried about a single conclusion.
 The cost is the mirror image: forward chaining pays for conclusions nobody asked for, and backward chaining repeats work across separate queries unless it caches.
 \end{enumerate}}
 
@@ -511,7 +511,7 @@ The notebook gives you a representation for propositional sentences and a set of
 \item Implement \texttt{pl\_resolution} and use it to reproduce the refutation of question~\ref{q:resolution}.
 \end{enumerate}}
 \answer{The worked implementation is \texttt{tutorial3-logic-solutions.ipynb}, released at the end of the week.
-Two things are worth checking as you go.
+Two checks are worth making as you go.
 Your \texttt{to\_cnf} should be tested by equivalence rather than by string comparison, because several correct CNFs exist for one input and they differ in clause order.
 And \texttt{tt\_entails} and \texttt{pl\_resolution} should agree on every query you try; where they disagree, the bug is almost always a missing case in \texttt{to\_cnf}.}
 

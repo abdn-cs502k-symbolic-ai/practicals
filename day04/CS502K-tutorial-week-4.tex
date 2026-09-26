@@ -196,10 +196,11 @@ The ones that can ever be applicable are the $2 \times 2 = 4$ instances of \text
 \pddlfile{solutions/gripper-typed.pddl}
 Now there are exactly 36 ground actions, the same 36 that could ever be applicable.
 
-What typing bought: the planner never builds the other 1052, so grounding is cheaper, and a typing error in your domain is caught by the parser rather than showing up as a problem the planner reports unsolvable.
-That second point is the one that matters to you: a mistyped parameter is a compile-time error, and a missing type predicate is a silent bug.
+The key advantages of typing are twofold. 
+The planner never builds the other 1052, so grounding is cheaper, and the parser catches a typing error in your domain rather than showing up as a problem the planner reports unsolvable.
+The parser assistance is the key advantage because it catches a mistyped parameter at compile-time, whereas missing a type predicate becomes a silent bug.
 
-What it did not buy: correctness.
+However, typing does not guarantee correctness.
 Typing accepts \texttt{(move rooma rooma)}, because moving from a room to itself breaks no type rule and is merely pointless.
 Typing constrains what an object \emph{is}, never what a state \emph{is}, so everything that depends on the current state still has to be a precondition.
 
@@ -289,7 +290,7 @@ To test \texttt{pick-up}:
 \answer{
 \pddlfile{solutions/cup_of_tea/domain.pddl}
 
-Three things are worth saying about it.
+Three of its decisions are worth naming.
 
 \texttt{pick-up} needs \texttt{(in ?r)} as well as \texttt{(ontable ?c ?r)}.
 Without it the robot picks up cups in rooms it is not in, and the problem is still solved, so the bug is invisible on this problem.
@@ -467,9 +468,9 @@ Parking it and retrieving it costs two actions, and the second gripper removes t
 
 So the saving is real, and it is a saving in actions rather than in time.
 Getting two grippers to work simultaneously would need actions with duration that can overlap, which is temporal planning and outside PDDL's classical fragment.
-Lecture 8's planning graphs are the nearest thing you have seen: their layers do hold sets of non-mutex actions, but that is a relaxation used to compute a bound, not a schedule you can execute.
+Lecture 8's planning graphs are the nearest equivalent you have seen: their layers do hold sets of non-mutex actions, but that is a relaxation used to compute a bound, not a schedule you can execute.
 
-One more thing to notice, because it cuts the other way.
+One more result points the other way.
 The two-gripper model expands \emph{more} states than the one-gripper model on this problem, 176 against 166, while finding the shorter plan, because adding a gripper roughly doubles the branching factor.
 A model that admits better plans is not automatically a model that is easier to search.}
 
@@ -561,7 +562,7 @@ Five bays in a line, no charger anywhere, a full battery worth three drives and 
 Fast Downward explores the state space and reports no solution.
 That differs from a planner that has not finished yet, and it is worth seeing the difference once.
 
-Four things usually go wrong.
+Four errors are common.
 Forgetting \texttt{(not (free ?f))} on pick-up, which the two-pallet instance catches.
 Writing \texttt{connected} in one direction only, so that the forklift reaches the dock and cannot come back; an aisle is two facts, as the doorway in question~\ref{q:takehome-doors} is.
 Declaring \texttt{:requirements :adl} while using only STRIPS, or the reverse, which the translator rejects, as in question~\ref{q:blocks-requirements}.
@@ -587,7 +588,7 @@ It covers Fast Downward and VAL on all three platforms, and ENHSP if your Assess
 Builds fail often enough that the guide has a troubleshooting section, and it covers the two failures that account for most of them.
 If that does not get you past it, bring the error to a demonstrator rather than leaving it until next week.
 Today is the last session with demonstrators in the room, so if you finish question~\ref{q:warehouse} early, start the build while there is someone to ask.}
-\answer{There is nothing to mark here, but two things reliably go wrong and are worth knowing before they cost you an evening.
+\answer{There is nothing to mark here, but two failures recur and are worth knowing before they cost you an evening.
 
 Fast Downward stops with an \texttt{AssertionError} before it looks at your domain.
 That is the requirements line, and question~\ref{q:blocks-requirements} covers it.

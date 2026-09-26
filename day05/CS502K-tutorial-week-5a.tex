@@ -349,7 +349,7 @@ So the informed heuristic is not faster at six blocks and is nine times faster a
 A heuristic's value is expansions saved times cost per expansion, and whether that product is worth paying depends on the size of the problem, which is why a comparison run on a toy instance tells you nothing.
 
 \item Expansions, by a long way, and \texttt{blind()}'s fastest of all: 3\,847 to 43 million, a factor of eleven thousand, for going from six blocks to ten.
-\texttt{lmcut()} grows by a factor of 508 over the same step and survives longest among the optimal configurations.
+\texttt{lmcut()} grows by a factor of 508 over the same step, and it is the optimal configuration that scales furthest.
 The greedy run barely moves, 21 to 65.
 
 The number that grows slowest is the plan cost, 11 to 21, and that is the point of the exercise.
@@ -381,7 +381,7 @@ If your own Assessment 3 domain is one where achieving one goal routinely undoes
 
 %% SOURCE: Ours, 2026-09-16. Deliberately unanswerable in the solutions PDF: the domain is the student's own. This is the question the session exists for, and it is due on Thursday of the same week.
 \item\label{q:owndomain}
-\question{Your own Assessment 3 domain, and the last thing you do before the deadline on Thursday.
+\question{Your own Assessment 3 domain, and the last question before Thursday's deadline.
 
 Run the same three configurations on it, at three problem sizes that you generate yourself, and record cost, expansions and search time for each of the nine runs.
 Then write the paragraph.

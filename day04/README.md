@@ -60,7 +60,7 @@ The handout is a PDF **plus** `tutorial-week-4-files.zip`, because the deliverab
 
 ### Notes for the lecturer
 
-This is the assessment-critical practical. Assessments 1 and 3 both examine PDDL modelling, and between them they carry 70% of the course.
+This is the assessment-critical practical. Assessments 1 and 3 both examine PDDL modelling, and between them they are 70% of the course.
 Every reference solution was run under Fast Downward and checked with VAL on 2026-09-16, and question 6's on 2026-09-25, rather than reasoned about.
 For the record on question 6: Fast Downward returns a 30-step plan for `problem1.pddl` under the STRIPS encoding with seven recharges, and 27 steps with four under the ADL one, both validated; `problem3-unsolvable.pddl` is proved unsolvable by exhaustion rather than timing out.
 
@@ -78,5 +78,5 @@ It was the only question here that needed a built planner and multiple runs, and
 VAL rejects Fast Downward's plan files outright.
 It requires a time stamp in front of every action and Fast Downward writes none, so `sas_plan` fails to parse and VAL reports `Bad plan description!` and nothing else.
 The setup guide said the opposite until 2026-09-16.
-Question 6's answer and the guide's troubleshooting section both now carry the one-line conversion.
+Question 6's answer and the guide's troubleshooting section both now give the one-line conversion.
 This matters more than it looks, because question 4 sends students to VAL and the error names nothing that would help them.
