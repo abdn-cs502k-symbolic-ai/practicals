@@ -125,10 +125,9 @@ The notebook predates the redesign and gained its solutions copy the same day.
 | File | What it is |
 | --- | --- |
 | `CS502K-tutorial-week-6.tex` | The paper tutorial. Reachability under stochastic actions, stationary preferences, the three reward formulations, the contraction proof, a $3 \times 3$ world under four rewards, the pollution world and its threshold discount, policy iteration by hand, dominant strategy versus Nash, and the Fed versus the politicians |
-| `tutorial6-mdp.ipynb` | `MDP` and `GridMDP` defined inline, then three stubs to fill: the body of `value_iteration`, `best_policy` and `expected_utility`. Around them, the value-iteration visualisation, the effect of the discount factor, policy iteration, and four comparison cases |
+| `tutorial6-mdp.ipynb` | Self-contained since 2026-09-26. `MDP` and `GridMDP` defined inline, then three stubs to fill: the body of `value_iteration`, `best_policy` and `expected_utility`. Around them, the value-iteration visualisation, the effect of the discount factor, policy iteration, and four comparison cases |
 | `tutorial6-mdp-solutions.ipynb` | The notebook with the stubs filled, every cell run |
-| `utils4e.py`, `notebook.py` | Vendored from `aimacode/aima-python` |
-| `img/` | Figures |
+| `img/` | The figure sources. The notebook embeds renderings of them |
 
 The strongest coded practical here.
 The notebook is not yet signposted for which half serves which lecture, and CS3033's `test_mdp.py` has not been taken.
@@ -167,7 +166,8 @@ Run `make`, not `pdflatex`.
 
 ## Running the notebooks
 
-The notebooks open in Colab and bootstrap themselves by cloning this repository, or run locally from within their day folder, since they import sibling modules by relative import:
+Every notebook is self-contained: it defines what it uses in its own cells, so it runs wherever a student opens it.
+Each opens in Colab from its badge, or locally:
 
 ```sh
 cd day06 && jupyter notebook tutorial6-mdp.ipynb

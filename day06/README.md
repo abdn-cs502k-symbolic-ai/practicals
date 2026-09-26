@@ -43,10 +43,9 @@ cd day06 && jupyter notebook tutorial6-mdp.ipynb
 | File | What it is |
 | --- | --- |
 | `CS502K-tutorial-week-6.tex` | The paper tutorial. Builds to a student PDF and a solutions PDF from one source. Nine questions from AIMA Chapter 17 and one pointing at the notebook: reachability under stochastic actions, stationary preferences, the three reward formulations, the contraction proof, a $3 \times 3$ world under four rewards, the $101 \times 3$ pollution world, policy iteration by hand on a three-state MDP, dominant strategy versus Nash equilibrium, and the Fed versus the politicians |
-| `tutorial6-mdp.ipynb` | The notebook. `MDP` and `GridMDP` are given; the bodies of `value_iteration`, `best_policy` and `expected_utility` are left as `### Your code here` stubs |
+| `tutorial6-mdp.ipynb` | The notebook, self-contained since 2026-09-26. `MDP` and `GridMDP` are given; the bodies of `value_iteration`, `best_policy` and `expected_utility` are left as `### Your code here` stubs |
 | `tutorial6-mdp-solutions.ipynb` | The notebook with the three stubs filled. Every cell runs, and the `expected_utility` check passes. Release after the session |
-| `utils4e.py`, `notebook.py` | Vendored from `aima-python`. Library code, not coursework: do not refactor it |
-| `img/` | The two grid-world figures the notebook shows |
+| `img/` | The sources of the two grid-world figures, an OmniGraffle file and the SVGs exported from it. The notebook embeds PNG renderings of them, so it does not read this folder |
 
 ### Notes for the lecturer
 
@@ -66,6 +65,10 @@ The vendored code is left as it is.
 The notebook had no solutions before 2026-09-26, and was recorded everywhere as a walkthrough with nothing to solve.
 It has three stubs, and the same belief had left it as the only notebook without an instruction to AI assistants.
 Both are fixed.
+
+The notebook imported six grid helpers from a vendored `utils4e.py`, two plotting helpers from a vendored `notebook.py`, fetched its two pseudocode boxes from GitHub at run time, and showed two SVG files from `img/`, so the file on its own failed at its first import.
+On 2026-09-26 the helpers went into the cells that use them, the pseudocode became markdown, the figures became embedded PNGs, and the two vendored modules were deleted.
+The notebook now runs from an empty directory, which is how a student who downloads it from MyAberdeen opens it.
 
 Still outstanding from `Practicals-Redesign.md`: CS3033's `week08/test_mdp.py` has not been taken, and the notebook is not signposted for which of its halves serves which lecture.
 
