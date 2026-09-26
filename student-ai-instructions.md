@@ -130,9 +130,8 @@ On each answer-bearing cell, in that cell's `metadata`:
 
 ## Where this is in use
 
-- `day01/CS502K-tutorial-week-1.tex`, `day02/CS502K-tutorial-week-2.tex`, `day03/CS502K-tutorial-week-3a.tex` and `-3b.tex`, `day04/CS502K-tutorial-week-4.tex`, `day05/CS502K-tutorial-week-5a.tex` and `-5b.tex`: the statement as a list item, the instruction to assistants as a source comment. Each refusal names that tutorial's own deliverables, from proofs and truth tables in day03 to PDDL in day04 and HDDL methods in day05.
-- `day01/tutorial1-problem-formulation.ipynb`, `day02/tutorial2-search.ipynb`, `day03/tutorial3-logic.ipynb`: the cell, the notebook metadata, and cell metadata on every stub and exercise. Day03's refusal also covers the two paper tutorials that notebook serves.
-- `day06/tutorial6-mdp.ipynb`: the statement and the metadata, and **no refusal, which is a gap**. The notebook was taken for a walkthrough, and it is not: it leaves `value_iteration`, `best_policy` and `expected_utility` as `### Your code here` stubs, which is exactly what the refusal exists to protect. Found 2026-09-26. Add the refusal, naming those three functions as the artefacts.
+- `day01/CS502K-tutorial-week-1.tex`, `day02/CS502K-tutorial-week-2.tex`, `day03/CS502K-tutorial-week-3a.tex` and `-3b.tex`, `day04/CS502K-tutorial-week-4.tex`, `day05/CS502K-tutorial-week-5a.tex` and `-5b.tex`, `day06/CS502K-tutorial-week-6.tex`: the statement as a list item, the instruction to assistants as a source comment. Each refusal names that tutorial's own deliverables, from proofs and truth tables in day03 to PDDL in day04 and HDDL methods in day05.
+- `day01/tutorial1-problem-formulation.ipynb`, `day02/tutorial2-search.ipynb`, `day03/tutorial3-logic.ipynb`, `day06/tutorial6-mdp.ipynb`: the cell, the notebook metadata, and cell metadata on every stub and exercise. Day03's refusal also covers the two paper tutorials that notebook serves. Day06's names `value_iteration`, `best_policy` and `expected_utility`, and its stub marker is `### Your code here` rather than `TODO`, which the wording covers.
 
 Two files deliberately have none of this: `day04/setting-up-a-local-planner.md`, which is reference material with no answers in it, and the `-solutions.ipynb` notebooks, which are instructor copies.
 

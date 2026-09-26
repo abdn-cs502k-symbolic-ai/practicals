@@ -12,7 +12,7 @@ Two files there govern this one:
 This repository is mid-redesign.
 The 2026-27 catalogue dropped Local Search, Adversarial Search and Reinforcement Learning, and added Planning Heuristics, HTN and Solving MDPs.
 Day 5 was rebuilt for the new lectures on 2026-09-16 and the local-search notebook moved to [`archive/`](archive/).
-Day 6 is the last one still to be revised, and [Status](#status) has the detail.
+Day 6 gained a paper tutorial and a solutions notebook on 2026-09-26, and [Status](#status) has what is still open there.
 
 ## Schedule
 
@@ -119,14 +119,19 @@ Ordering constraints were written infix where HDDL is prefix, and one of the thr
 
 ### `day06`: MDPs
 
+Paper tutorial built 2026-09-26 from AIMA Chapter 17, with the answers copied verbatim from the third-edition Instructor's Manual and every recomputable number recomputed.
+The notebook predates the redesign and gained its solutions copy the same day.
+
 | File | What it is |
 | --- | --- |
+| `CS502K-tutorial-week-6.tex` | The paper tutorial. Reachability under stochastic actions, stationary preferences, the three reward formulations, the contraction proof, a $3 \times 3$ world under four rewards, the pollution world and its threshold discount, policy iteration by hand, dominant strategy versus Nash, and the Fed versus the politicians |
 | `tutorial6-mdp.ipynb` | `MDP` and `GridMDP` defined inline, then three stubs to fill: the body of `value_iteration`, `best_policy` and `expected_utility`. Around them, the value-iteration visualisation, the effect of the discount factor, policy iteration, and four comparison cases |
+| `tutorial6-mdp-solutions.ipynb` | The notebook with the stubs filled, every cell run |
 | `utils4e.py`, `notebook.py` | Vendored from `aimacode/aima-python` |
 | `img/` | Figures |
 
 The strongest coded practical here.
-It predates the split of Lectures 11 and 12 and is not yet signposted for it.
+The notebook is not yet signposted for which half serves which lecture, and CS3033's `test_mdp.py` has not been taken.
 
 ### `archive/`
 
@@ -185,9 +190,9 @@ Copy from there rather than rewriting, and add a line to that list when you appl
 
 Inconsistent, and being settled as part of the redesign:
 
-- `day01` to `day05` build a separate `-solutions.pdf` from the same source. All are gitignored.
+- `day01` to `day06` build a separate `-solutions.pdf` from the same source. All are gitignored.
 - `day04` and `day05` also have `solutions/`, reference files that the solutions PDF prints and that ship as a second archive.
-- `day06` has no solutions at all, and never has. Its notebook leaves `value_iteration`, `best_policy` and `expected_utility` as `### Your code here` stubs, so it is the only exercise in the repository with no worked version anywhere.
+- `day06` had no solutions at all until 2026-09-26, because its notebook was taken for a walkthrough. It leaves `value_iteration`, `best_policy` and `expected_utility` as stubs, and `tutorial6-mdp-solutions.ipynb` now fills them.
 
 The sibling course CS3033 keeps a public practicals repository and a private solutions repository.
 Adopting that split is an open question in `Practicals-Redesign.md` section 5.
@@ -201,6 +206,6 @@ Adopting that split is an open question in `Practicals-Redesign.md` section 5.
 | `day03` | **Rebuilt 2026-09-15.** Two paper tutorials and a shared notebook |
 | `day04` | **Complete, 2026-09-25.** Converted to LaTeX 2026-09-16; the prose-only modelling task is now question 6 and fills the second hour. Both PDFs and both archives build, leak checks pass, and every reference domain is planner-verified. Outstanding: the planner setup guide has still not been tested on student machines |
 | `day05` | **Built 2026-09-16.** Two tutorials, both planner-verified. Never delivered |
-| `day06` | Live, and the last on pre-redesign material. Serves two lectures in one shared, interruptible session. Wants the signposting for Lectures 11 and 12, an automated test, and re-sizing for the slot it actually has |
+| `day06` | **Paper tutorial built 2026-09-26**, from AIMA Chapter 17 with the manual's answers, and the notebook gained its solutions copy. Serves two lectures in one shared, interruptible session, and the tutorial is written for that. Still wants the notebook signposted for Lectures 11 and 12 and CS3033's automated test |
 
 `Practicals-Redesign.md` in the lectures repository has the full analysis, the comparison against CS3033, and the priority order.

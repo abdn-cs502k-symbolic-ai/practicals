@@ -1,9 +1,9 @@
 # Build the LaTeX tutorials in two variants from one source.
 #
-#   make            student PDFs and the day04 student archive, then verify
-#   make solutions  instructor PDFs, suffixed -solutions, and the day04 solutions archive
+#   make            student PDFs and the day04 and day05 student archives, then verify
+#   make solutions  instructor PDFs, suffixed -solutions, and the solutions archives
 #   make all        both
-#   make archives   just the two day04 archives
+#   make archives   just the four day04 and day05 archives
 #   make verify     re-run the leak check on the student PDFs
 #   make clean      remove latexmk auxiliary files
 #   make distclean  also remove the PDFs
@@ -16,7 +16,8 @@
 TUTORIALS := day01/CS502K-tutorial-week-1 day02/CS502K-tutorial-week-2 \
              day03/CS502K-tutorial-week-3a day03/CS502K-tutorial-week-3b \
              day04/CS502K-tutorial-week-4 \
-             day05/CS502K-tutorial-week-5a day05/CS502K-tutorial-week-5b
+             day05/CS502K-tutorial-week-5a day05/CS502K-tutorial-week-5b \
+             day06/CS502K-tutorial-week-6
 
 STUDENT   := $(addsuffix .pdf,$(TUTORIALS))
 SOLUTIONS := $(addsuffix -solutions.pdf,$(TUTORIALS))
