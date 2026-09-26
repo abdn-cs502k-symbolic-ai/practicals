@@ -78,11 +78,16 @@ Assessment 1 is sat the following morning and asks you to transcribe a given spe
 Assessment 3 opens on the same day as this session and asks you to model a domain of your own choosing and run a real planner over it.
 Everything below is rehearsal for one or both.
 
-\textbf{You do not need anything installed to start.}
-Question 1 is on paper and questions 2 to 5 run in the online editor at \url{http://editor.planning.domains}, which is the quicker way to begin.
-Question 6 is the installation itself, and it is last on purpose: this session is one block rather than two, Assessment 1 having taken tomorrow morning, and a compile that goes wrong should cost you the end of the session rather than the start of it.
-Do it before you leave, because everything in week 13 needs it and so does Assessment 3.
-If you have already built Fast Downward and VAL, skip to question 6 whenever you want the validator for question 4.
+\textbf{How the two hours run.}
+The first hour is questions 1 to 5.
+Question 1 is on paper and questions 2 to 5 run in the online editor at \url{http://editor.planning.domains}, so you need nothing installed to start.
+The second hour is question 6 on its own: a warehouse described in prose, with no skeleton to fill in, written against the clock and handed in as the four files Assessment 1 asks for.
+That is the rehearsal, and it is the part of tomorrow morning that this session exists to prepare.
+
+\textbf{Questions 7 and 8 go home with you.}
+Question 7 builds your own planner and validator, and question 8 is two extensions to the cup of tea domain.
+Neither is optional in any sense that matters: both tutorials in week 13 open assuming you have a working Fast Downward, and Assessment 3 requires one you built and can configure yourself.
+The expectation is that you arrive next week having either built it or brought the error to a demonstrator, and this session is the last one with demonstrators in the room before then.
 
 \textbf{The files.}
 Questions 2 onwards edit files in \texttt{tutorial-week-4-files.zip}, released with this tutorial.
@@ -279,11 +284,11 @@ Without it the robot picks up cups in rooms it is not in, and the problem is sti
 Any predicate that mentions a room is a hint that the robot's own location has to appear too.
 
 \texttt{move} has no precondition tying \texttt{?to} to anything.
-That is correct for this problem, where the two rooms are joined, and wrong in general: see question 7(b).
+That is correct for this problem, where the two rooms are joined, and wrong in general: see question 8(b).
 
 \texttt{deliver} restores \texttt{(handempty)} and deletes \texttt{(holding ?c)}.
 If you left the delete effect out, question 1(d) tells you what happens.
-The test that catches it is to ask for two deliveries, which is question 7(a).}
+The test that catches it is to ask for two deliveries, which is question 8(a).}
 
 %% SOURCE: Ours, 2026-09-16, promoting cup_of_tea/cheating/ from an undocumented directory to a question. The directory was recovered from a live demo.
 \item
@@ -336,7 +341,7 @@ For each of the three actions in \texttt{solution.plan}, in order, write down th
 \end{enumerate}
 
 Do this on paper first, because doing it by hand once is what makes the tool's output mean anything.
-Then, once you have built VAL in question 6, come back and check yourself against it:}
+Then, once you have built VAL at home, come back and check yourself against it:}
 
 {\footnotesize\begin{verbatim}
 Validate cup_of_tea/domain.pddl cup_of_tea/problem.pddl cup_of_tea/solution.plan
@@ -395,7 +400,7 @@ Work through these in order:
 \item What objects does \texttt{blocksworld/demo.pddl} need to gain?
 \item How does each of the four actions change?
 \item The goal of \texttt{demo.pddl} is \texttt{(on red brown)}, \texttt{(on green red)} and \texttt{(holding yellow)}. Why does the problem file no longer parse once you are done, and what do you have to decide in order to fix it?
-\item \textbf{Do this one first.} As shipped, \texttt{blocksworld.pddl} does not run under Fast Downward at all: the translator stops with a Python \texttt{AssertionError}, and it does so before it has looked at a single action, so nothing you write will run until you have dealt with it. The cause is in the requirements line, which declares \texttt{:fluents} and \texttt{:negative-preconditions}. Does the file use either? What should that line say when you are finished? The online editor is more forgiving than Fast Downward here, so if you are working in the editor you may not meet this until question 6; the requirements line is wrong either way, and Tutorial 5a runs this domain under Fast Downward.
+\item \textbf{Do this one first.} As shipped, \texttt{blocksworld.pddl} does not run under Fast Downward at all: the translator stops with a Python \texttt{AssertionError}, and it does so before it has looked at a single action, so nothing you write will run until you have dealt with it. The cause is in the requirements line, which declares \texttt{:fluents} and \texttt{:negative-preconditions}. Does the file use either? What should that line say when you are finished? The online editor is more forgiving than Fast Downward here, so if you are working in the editor you may not meet this until you build the planner at home; the requirements line is wrong either way, and Tutorial 5a runs this domain under Fast Downward.
 \item Run the planner. With two grippers available, is the plan shorter than with one? Should it be?
 \end{enumerate}
 You can animate your plan on the \href{https://blocks-dot-ai-planning.appspot.com/}{blocks world animation} page.}
@@ -455,12 +460,102 @@ One more thing to notice, because it cuts the other way.
 The two-gripper model expands \emph{more} states than the one-gripper model on this problem, 176 against 166, while finding the shorter plan, because adding a gripper roughly doubles the branching factor.
 A model that admits better plans is not automatically a model that is easier to search.}
 
-%% SOURCE: Ours, 2026-09-16. Last on purpose. Week 12 has one practical session rather than two, so a toolchain that will not build must not be allowed to consume the modelling half of it. Everything in week 13 and Assessment 3 depends on this working.
+%% SOURCE: Ours, 2026-09-25. The Assessment 1 rehearsal that Practicals-Redesign.md asks for: a prose scenario, no skeleton, and deliverables named exactly as Assessment 1 names them. Every reference file in solutions/warehouse/ was run under Fast Downward and checked with VAL on 2026-09-25.
 \item
-\question{\textbf{Do this before you leave, whatever else you have finished.}
+\question{\textbf{This question is the second hour of the session, and it is the one that rehearses tomorrow morning.}
+Everything above gave you a vocabulary: question 2 handed you the types and predicates and left the action bodies blank, and question 5 handed you a working domain to edit.
+Assessment 1 hands you a paragraph and an empty file, and choosing the predicates is the part that takes the time.
+So this question hands you a paragraph and an empty file.
 
-Everything so far ran in the online editor.
-From here on you need your own planner: next week's tutorials both need one, Assessment 3 requires a planner you built and can configure yourself, and the editor will not do for either.
+\textbf{The warehouse.}
+A warehouse is divided into bays, and some pairs of bays are joined by an aisle.
+Pallets rest in bays.
+A forklift can drive along an aisle to a bay that aisle joins, pick up a pallet from the bay it is standing in, and put a pallet down in the bay it is standing in.
+A forklift carries one pallet at a time and there is more than one forklift on shift.
+Every drive runs a forklift's battery down by one step.
+The battery has four levels, full, half, low and empty, and a forklift whose battery is empty cannot drive at all.
+Some bays have a charging point, and a forklift standing in such a bay can put one step back into its battery.
+Nothing else charges it.
+
+\textbf{What to hand in}, and note that these are the deliverables of Assessment 1, named the same way:
+\begin{enumerate}
+\item \texttt{domain.pddl}: the types, the predicates and the actions.
+\item \texttt{problem.pddl}: at least five pallets, at least two forklifts, at least four bays, at least one charging point, and a goal that cannot be reached without recharging at least once.
+\item \texttt{solution.plan}: the plan the editor returns for it.
+\item Three or four sentences on your modelling choices, and in particular on how you represented the battery.
+\end{enumerate}
+
+\textbf{Spend the hour roughly like this.}
+Ten minutes on paper, listing the types and the predicates before you write any PDDL.
+Twenty-five minutes on the domain.
+Ten on the problem file.
+Ten running it and fixing what the editor tells you.
+Five on the modelling note.
+Nobody finishes comfortably, which is the point: Assessment 1 is also timed.
+
+\textbf{Two checks you can run without any tools installed.}
+\begin{enumerate}
+\setcounter{enumii}{4}
+\item Write a second problem file with two pallets in one bay, both wanted in another, and one forklift.
+A correct domain ferries them one at a time.
+If your planner brings back a plan that moves both at once, you have the bug from question 3 and you have found it yourself.
+\item Write a third problem file that is \emph{unsolvable}, and be able to say why before you run it.
+The battery gives you an easy way to do this.
+\end{enumerate}
+No numeric fluents.
+Assessment 1 forbids them and so does this question: the battery is symbolic, and working out how to make it symbolic is most of the exercise.}
+\answer{Two encodings follow. The first is the one most people reach, and it is pure STRIPS. The second is what ADL buys you, and it is the shape the Assessment 1 reference solution itself uses. Both were run under Fast Downward and validated with VAL on 2026-09-25.
+
+\textbf{What this question is really marking.}
+Not the action bodies, which follow mechanically once the predicates are right, but the four decisions taken before any of them: that a bay is an object and an aisle is a fact about a pair of them, that carrying is a relation between a forklift and a pallet with a companion predicate saying the forks are empty, that a battery level is an \emph{object} rather than a number, and that the order of the levels is itself data the problem file supplies.
+A student who gets those four right writes the rest in ten minutes. A student who does not is still fighting the domain when the hour ends.
+
+\textbf{The symbolic battery, encoding one: levels as objects.}
+\pddlfile{solutions/warehouse/domain.pddl}
+The whole trick is \texttt{(next ?above ?below)}.
+The levels are objects like any other, and the fact that full sits above half sits above low sits above empty is three facts in the initial state, not anything the domain knows.
+\texttt{drive} then asks for a level below the current one and moves to it, and it cannot fire at empty because no \texttt{next} fact matches.
+\texttt{recharge} is the same action with the two levels the other way round.
+Nothing here counts, and that is what makes it STRIPS: the planner is matching facts, not doing arithmetic.
+
+\textbf{The reference instance}, at the scale floor the question asks for:
+\pddlfile{solutions/warehouse/problem1.pddl}
+Note why this instance makes the battery bite.
+The dock and the goods-in bay are the only chargers and they are two aisles apart, so a full charge carries a forklift to the other end but not back, and every run of this instance recharges.
+An instance whose bays are all adjacent to a charger would parse, solve, and rehearse nothing.
+Designing the instance is part of the modelling, which is the lesson Assessment 3 Stage 1 will ask you for again.
+Fast Downward returns a 30-step plan for it, of which seven steps are recharges.
+
+\textbf{Encoding two: conditional effects.}
+\pddlfile{solutions/warehouse/domain-adl.pddl}
+Here the levels are constants of the domain rather than objects of the problem, the drain lives in three \texttt{when} clauses, and recharging resets to full in one action instead of stepping up.
+The \texttt{when} clauses do not cascade, because every condition is evaluated in the state before the action, so a forklift at full drops to half and stops there.
+This is shorter, it needs \texttt{:adl} in the requirements, and it produces shorter plans: 27 steps on the same instance, of which four are recharges, because one recharge action buys a full battery.
+Either encoding is correct. Being able to say why you picked one is what the modelling note is for.
+
+\textbf{The two-pallet check.}
+\pddlfile{solutions/warehouse/problem2.pddl}
+Eight actions if the domain is right: pick up, drive, put down, drive back, recharge, pick up, drive, put down.
+A \texttt{pick-up} missing \texttt{(not (free ?f))} carries both pallets at once and returns something shorter.
+This is question 3's lesson arriving a second time, except that this time the student built the instance that exposes it, which is the habit worth leaving the room with.
+
+\textbf{The unsolvable instance.}
+\pddlfile{solutions/warehouse/problem3-unsolvable.pddl}
+Five bays in a line, no charger anywhere, a full battery worth three drives and a dock four drives away.
+Fast Downward explores the state space and reports no solution, which is a different thing from a planner that has not finished yet, and students should see the difference once.
+
+\textbf{What goes wrong, in the order it goes wrong.}
+Forgetting \texttt{(not (free ?f))} on pick-up, which the two-pallet instance catches.
+Writing \texttt{connected} in one direction only and then wondering why the forklift can reach the dock and not come back: an aisle is two facts, exactly as the doorway in question 8 is.
+Declaring \texttt{:requirements :adl} and using only STRIPS, or the reverse, which the translator rejects as firmly as question 5(f) does.
+And putting the battery in a numeric fluent, which the online editor will happily parse and Assessment 1 forbids.}
+
+%% SOURCE: Ours, 2026-09-16, made take-home 2026-09-25 when the session was split into an hour of questions and an hour of modelling. A build that goes wrong must not eat either hour, so it goes home, with the expectation stated plainly and the demonstrators available during question 6 for anyone who finishes early.
+\item
+\question{\textbf{Take this home, and treat it as expected rather than optional.}
+
+Everything in this session ran in the online editor.
+From here on you need your own planner: both tutorials in week 13 open assuming one, Assessment 3 requires a planner you built and can configure yourself, and the editor will not do for either.
 
 Follow the local planner setup guide released with this tutorial.
 It covers Fast Downward and VAL on all three platforms, and ENHSP if your Assessment 3 domain turns out to need numeric state.
@@ -469,8 +564,12 @@ It covers Fast Downward and VAL on all three platforms, and ENHSP if your Assess
 \item Build Fast Downward and run its own test instance, which the guide gives you.
 \item Run it on your finished cup of tea domain from question 2. Does it return the plan you expected?
 \item Get VAL, either the prebuilt binary or from source, and use it to check the plan you validated by hand in question 4. Does it agree with you?
-\item If either build fails, say so now rather than next week. Bring the error to a demonstrator while there is someone in the room.
-\end{enumerate}}
+\item Then run VAL on your warehouse domain from question 6, against the two-pallet instance you wrote for it. This is the one that finds a missing delete effect, and it is worth doing before the domain matters.
+\end{enumerate}
+
+We expect you to arrive at the week 13 tutorial with this working.
+If a build defeats you, that is ordinary and the guide's troubleshooting section covers the two failures that account for most of it, but do not let it sit: bring the error to a demonstrator.
+Today's session is the last one with demonstrators in the room before week 13, so if you finish question 6 early, start the build while there is someone to ask.}
 \answer{There is nothing to mark here, but two things reliably go wrong and are worth knowing before they cost you an evening.
 
 \textbf{Fast Downward stops with an \texttt{AssertionError} before it looks at your domain.}

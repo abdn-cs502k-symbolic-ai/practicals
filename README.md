@@ -78,23 +78,32 @@ Converted from markdown to the LaTeX student/solutions build on 2026-09-16, and 
 day to fit a single session: week 12 has one practical block, because Assessment 1 takes the
 Tuesday slot the next morning.
 
+**The two hours are split, since 2026-09-25.** The first is questions 1 to 5, in the online
+editor. The second is question 6 on its own, the Assessment 1 rehearsal: a warehouse given in
+prose, no skeleton, written against the clock and handed in as the four files Assessment 1 asks
+for. Questions 7 and 8 go home, and the toolchain build is stated as an expectation rather than a
+task: arrive in week 13 having built it or having brought the error to a demonstrator.
+
 | File | What it is |
 | --- | --- |
-| `CS502K-tutorial-week-4.tex` | The tutorial. Seven questions: grounding and typing on the lecture's gripper domain, completing the cup-of-tea domain, diagnosing the `cheating/` model, validating a plan by hand and with VAL, extending blocksworld to two grippers, building the toolchain, and two take-home extensions |
-| `setting-up-a-local-planner.md` | Fast Downward, VAL and ENHSP, on all three platforms. On the critical path: question 6 is this guide, and so is Assessment 3 |
+| `CS502K-tutorial-week-4.tex` | The tutorial. Eight questions: grounding and typing on the lecture's gripper domain, completing the cup-of-tea domain, diagnosing the `cheating/` model, validating a plan by hand, extending blocksworld to two grippers, **modelling the warehouse from prose**, building the toolchain, and two take-home extensions |
+| `setting-up-a-local-planner.md` | Fast Downward, VAL and ENHSP, on all three platforms. On the critical path: question 7 is this guide, and so is Assessment 3 |
 | `cup_of_tea/` | Deliver a cup of tea to grandpa. `domain.pddl` is a skeleton with `pick-up` blank and two TODO actions; `problem.pddl` and `solution.plan` are given |
 | `cup_of_tea/cheating/` | A deliberately broken model, question 3: an action that achieves the goal in one step, and a `pick-up` with no delete effects. Shows that a returned plan is not evidence the model is right |
 | `blocksworld/` | Extend blocksworld to two or more grippers. `blocksworld.pddl`, `demo.pddl`, and a JS visualiser |
-| `solutions/` | Reference PDDL for questions 1, 2, 5 and 7. The tutorial `\verbatiminput`s these files into the solutions PDF, so the PDF and the solutions archive cannot drift apart |
+| `solutions/` | Reference PDDL for questions 1, 2, 5, 6 and 8. The tutorial `\verbatiminput`s these files into the solutions PDF, so the PDF and the solutions archive cannot drift apart |
+| `solutions/warehouse/` | Question 6's reference, in both encodings: `domain.pddl` with the battery as levels and a `next` predicate, `domain-adl.pddl` with conditional effects, the scale-floor instance, the two-pallet check, an unsolvable instance, and the plans |
 | `tutorial4-pddl.md` | **Superseded** by the `.tex`. Kept as the record of where the material came from |
 
 This is the assessment-critical practical: Assessments 1 and 3 both examine PDDL modelling.
 Every reference solution was run under Fast Downward and checked with VAL on 2026-09-16 rather
 than reasoned about.
 
-The toolchain setup is the last question rather than a prerequisite, so that a build that goes
-wrong costs the end of a single-session week rather than the start of it. The three-configuration
-benchmark question moved to `day05` on 2026-09-16, because it needs Lecture 9.
+The toolchain setup went home on 2026-09-25, when the second hour became the modelling
+rehearsal: a build that goes wrong must eat neither hour. Demonstrators are available during
+question 6 for anyone who finishes early, and that is the last demonstrator contact before week
+13. The three-configuration benchmark question moved to `day05` on 2026-09-16, because it needs
+Lecture 9.
 
 ### `day05`: Planning Heuristics and Hierarchical Planning
 
@@ -206,7 +215,7 @@ repository. Adopting that split is an open question in `Practicals-Redesign.md` 
 | `day01` | **Reworked 2026-08-27.** Problem formulation covered, the notebook rebuilt, and a worked notebook alongside it |
 | `day02` | Live. Paper tutorial plus a coding notebook, written 2026-09-14 |
 | `day03` | **Rebuilt 2026-09-15.** Two paper tutorials and a shared notebook |
-| `day04` | **Converted to LaTeX 2026-09-16.** Student and solutions PDFs build, both handout archives build, and the leak checks pass. Reference solutions are planner-verified. Wants a prose-only third modelling task shaped like Assessment 3 |
+| `day04` | **Complete, 2026-09-25.** Converted to LaTeX 2026-09-16; the prose-only modelling task is now question 6 and fills the second hour. Both PDFs and both archives build, leak checks pass, and every reference domain is planner-verified. Outstanding: the planner setup guide has still not been tested on student machines |
 | `day05` | **Built 2026-09-16.** Two tutorials, both planner-verified. Never delivered |
 | `day06` | Live, and the last on pre-redesign material. Serves two lectures in one shared, interruptible session. Wants the L11/L12 signposting, an automated test, and re-sizing for the slot it actually has |
 
