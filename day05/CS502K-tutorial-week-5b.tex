@@ -17,18 +17,51 @@
 \usepackage{url}
 \usepackage{hyperref}
 
-%% Code is set with the `verbatim' package rather than `listings'.
+%% Code is set with `listings', for the syntax colour.
 %% listings is not tagging-safe under \DocumentMetadata in TeX Live 2026: it
-%% unbalances tagpdf's paragraph hooks and the build fails, and \SuspendTagging
-%% does not rescue it. Verified 2026-09-16 on a minimal file. verbatim tags
-%% cleanly, so the cost is syntax colour and the gain is an accessible PDF.
+%% unbalances tagpdf's marked-content hooks and the build fails. \pddlfile
+%% therefore typesets the listing into a box with tagging suspended, so the
+%% listing reaches the PDF as decoration rather than as tagged text. Felipe
+%% decided on 2026-09-26 that this is the right trade: a screen reader reads a
+%% code block poorly in any case, and the colour is worth more to the students
+%% who read it. The box does not break across a page, so a listing longer than
+%% a page overprints the bottom margin and the log says `Overfull \vbox'.
 %%
-%% \pddlfile pulls in a real .pddl or .hddl file rather than a copy typed into
-%% this document, so the solutions PDF and the solutions archive cannot drift apart.
-%% It works inside the \answer argument because \verbatiminput sets its own
+%% \pddlfile pulls in a real .pddl or .hddl file rather than a copy typed into this
+%% document, so the solutions PDF and the solutions archive cannot drift apart.
+%% It works inside the \answer argument because \lstinputlisting sets its own
 %% catcodes when it reads the file, which \begin{verbatim} cannot do.
+%% The optional argument passes listings keys through, so a file that is valid
+%% on its own can be printed in part: \pddlfile[firstline=6,lastline=26]{...}.
+%% Say in the file itself which lines the tutorial prints, because nothing here
+%% catches a range that has gone stale.
 \usepackage{verbatim}
-\newcommand{\pddlfile}[1]{{\footnotesize\verbatiminput{#1}}}
+\usepackage{listings}
+\lstdefinelanguage{PDDL}{
+  alsoletter={:-},
+  morekeywords={define,domain,problem,and,or,not,when,forall,exists,imply,either,increase,decrease,assign},
+  morekeywords=[2]{:domain,:requirements,:types,:constants,:predicates,:functions,:action,:parameters,:precondition,:effect,:objects,:init,:goal,:metric,:method,:task,:tasks,:htn,:subtasks,:ordering,:ordered-subtasks,:duration,:derived},
+  morekeywords=[3]{:strips,:typing,:adl,:equality,:negative-preconditions,:disjunctive-preconditions,:conditional-effects,:universal-preconditions,:quantified-preconditions,:existential-preconditions,:fluents,:action-costs,:hierarchy},
+  sensitive=false,
+  morecomment=[l]{;},
+}
+\lstdefinestyle{pddl}{
+  language=PDDL,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{RoyalBlue},
+  keywordstyle=[2]\bfseries\color{RoyalBlue},
+  keywordstyle=[3]\color{Purple},
+  commentstyle=\itshape\color{ForestGreen},
+  moredelim=[s][\color{RedOrange}]{?}{\ },
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=2em,
+  aboveskip=\medskipamount,
+  belowskip=\medskipamount,
+}
+\newsavebox{\pddlbox}
+\newcommand{\pddlfile}[2][]{\par\SuspendTagging{pddl}\begin{lrbox}{\pddlbox}\begin{minipage}{\linewidth}\lstinputlisting[style=pddl,#1]{#2}\end{minipage}\end{lrbox}\ResumeTagging{pddl}\noindent\usebox{\pddlbox}\par}
 
 \newcommand{\question}[1]{#1}
 

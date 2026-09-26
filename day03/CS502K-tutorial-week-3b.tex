@@ -331,8 +331,7 @@ With eight axioms the waste is invisible; with a large knowledge base it is the 
 \end{enumerate}}
 \answer{
 \begin{enumerate}
-\item $\exists x \forall y\, [M(x, y) \Leftrightarrow \lnot M(y, y)]$, that is
-\[\exists x \forall y\, ([M(x, y) \Rightarrow \lnot M(y, y)] \land [\lnot M(y, y) \Rightarrow M(x, y)])\]
+\item $\exists x \forall y\, [M(x, y) \Leftrightarrow \lnot M(y, y)]$, that is \[\exists x \forall y\, ([M(x, y) \Rightarrow \lnot M(y, y)] \land [\lnot M(y, y) \Rightarrow M(x, y)])\]
 We introduce a Skolem constant to replace the existentially quantified variable $x$:
 \[\forall y\, ([M(\mi{Sk}_1, y) \Rightarrow \lnot M(y, y)] \land [\lnot M(y, y) \Rightarrow M(\mi{Sk}_1, y)])\]
 We drop the universal quantifier, since we take all remaining variables to be universally quantified:
@@ -349,10 +348,8 @@ C_1&: \lnot M(\mi{Sk}_1, y) \lor \lnot M(y, y)\\
 C_2&: M(\mi{Sk}_1, y) \lor M(y, y)
 \end{align*}
 
-\item Applying factoring to $C_1$ with the substitution $\{y/\mi{Sk}_1\}$ gives
-\[C_3: \lnot M(\mi{Sk}_1, \mi{Sk}_1)\]
-Applying factoring to $C_2$ with the substitution $\{y/\mi{Sk}_1\}$ gives
-\[C_4: M(\mi{Sk}_1, \mi{Sk}_1)\]
+\item Applying factoring to $C_1$ with the substitution $\{y/\mi{Sk}_1\}$ gives \[C_3: \lnot M(\mi{Sk}_1, \mi{Sk}_1)\]
+Applying factoring to $C_2$ with the substitution $\{y/\mi{Sk}_1\}$ gives \[C_4: M(\mi{Sk}_1, \mi{Sk}_1)\]
 Resolving $C_3$ with $C_4$ gives the empty clause, so the two clauses are inconsistent.
 The sentence is Russell's paradox in first-order form.
 It asks for a barber who shaves exactly those people who do not shave themselves, and no such person can exist.

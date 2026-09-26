@@ -17,18 +17,51 @@
 \usepackage{url}
 \usepackage{hyperref}
 
-%% Code is set with the `verbatim' package rather than `listings'.
+%% Code is set with `listings', for the syntax colour.
 %% listings is not tagging-safe under \DocumentMetadata in TeX Live 2026: it
-%% unbalances tagpdf's paragraph hooks and the build fails, and \SuspendTagging
-%% does not rescue it. Verified 2026-09-16 on a minimal file. verbatim tags
-%% cleanly, so the cost is syntax colour and the gain is an accessible PDF.
+%% unbalances tagpdf's marked-content hooks and the build fails. \pddlfile
+%% therefore typesets the listing into a box with tagging suspended, so the
+%% listing reaches the PDF as decoration rather than as tagged text. Felipe
+%% decided on 2026-09-26 that this is the right trade: a screen reader reads a
+%% code block poorly in any case, and the colour is worth more to the students
+%% who read it. The box does not break across a page, so a listing longer than
+%% a page overprints the bottom margin and the log says `Overfull \vbox'.
 %%
 %% \pddlfile pulls in a real .pddl file rather than a copy typed into this
 %% document, so the solutions PDF and the solutions archive cannot drift apart.
-%% It works inside the \answer argument because \verbatiminput sets its own
+%% It works inside the \answer argument because \lstinputlisting sets its own
 %% catcodes when it reads the file, which \begin{verbatim} cannot do.
+%% The optional argument passes listings keys through, so a file that is valid
+%% on its own can be printed in part: \pddlfile[firstline=6,lastline=26]{...}.
+%% Say in the file itself which lines the tutorial prints, because nothing here
+%% catches a range that has gone stale.
 \usepackage{verbatim}
-\newcommand{\pddlfile}[1]{{\footnotesize\verbatiminput{#1}}}
+\usepackage{listings}
+\lstdefinelanguage{PDDL}{
+  alsoletter={:-},
+  morekeywords={define,domain,problem,and,or,not,when,forall,exists,imply,either,increase,decrease,assign},
+  morekeywords=[2]{:domain,:requirements,:types,:constants,:predicates,:functions,:action,:parameters,:precondition,:effect,:objects,:init,:goal,:metric,:method,:task,:tasks,:htn,:subtasks,:ordering,:ordered-subtasks,:duration,:derived},
+  morekeywords=[3]{:strips,:typing,:adl,:equality,:negative-preconditions,:disjunctive-preconditions,:conditional-effects,:universal-preconditions,:quantified-preconditions,:existential-preconditions,:fluents,:action-costs,:hierarchy},
+  sensitive=false,
+  morecomment=[l]{;},
+}
+\lstdefinestyle{pddl}{
+  language=PDDL,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{RoyalBlue},
+  keywordstyle=[2]\bfseries\color{RoyalBlue},
+  keywordstyle=[3]\color{Purple},
+  commentstyle=\itshape\color{ForestGreen},
+  moredelim=[s][\color{RedOrange}]{?}{\ },
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  breakindent=2em,
+  aboveskip=\medskipamount,
+  belowskip=\medskipamount,
+}
+\newsavebox{\pddlbox}
+\newcommand{\pddlfile}[2][]{\par\SuspendTagging{pddl}\begin{lrbox}{\pddlbox}\begin{minipage}{\linewidth}\lstinputlisting[style=pddl,#1]{#2}\end{minipage}\end{lrbox}\ResumeTagging{pddl}\noindent\usebox{\pddlbox}\par}
 
 \newcommand{\question}[1]{#1}
 
@@ -193,7 +226,7 @@ Almost all of them are nonsense, and the type predicates in the preconditions ar
 The ones that can ever be applicable are the $2 \times 2 = 4$ instances of \texttt{move}, and the $4 \times 2 \times 2 = 16$ instances each of \texttt{pick-up} and \texttt{drop}: 36 out of 1088.
 
 \item A schema declares the types once and attach them to the parameters, and the type predicates then disappear from the preconditions, because the parameter declaration says the same:
-\pddlfile{solutions/gripper-typed.pddl}
+\pddlfile[firstline=6,lastline=26]{solutions/gripper-typed.pddl}
 Now there are exactly 36 ground actions, the same 36 that could ever be applicable.
 
 The key advantages of typing are twofold. 
@@ -476,11 +509,10 @@ A model that admits better plans is not automatically a model that is easier to 
 
 %% SOURCE: Ours, 2026-09-25. The Assessment 1 rehearsal that Practicals-Redesign.md asks for: a prose scenario, no skeleton, and deliverables named exactly as Assessment 1 names them. Every reference file in solutions/warehouse/ was run under Fast Downward and checked with VAL on 2026-09-25.
 \item\label{q:warehouse}
-\question{\textbf{This question is the second hour of the session, and it rehearses tomorrow morning.}
+\question{\textbf{Assessment Rehearsal.}
 Every modelling question so far has given you a vocabulary.
 Question~\ref{q:cupoftea} handed you the types and predicates and left the action bodies blank, and question~\ref{q:blocksworld} handed you a working domain to edit.
-Assessment 1 hands you a paragraph and an empty file, and choosing the predicates takes most of the time.
-This question does the same.
+Assessment 1 hands you a paragraph and an empty file, and choosing the predicates takes most of the time, which we exercise in this question.
 
 A warehouse has bays, and an aisle joins some pairs of them.
 Pallets rest in bays.
@@ -491,7 +523,7 @@ The battery has four levels, full, half, low and empty, and a forklift whose bat
 Some bays have a charging point, and a forklift standing in such a bay can put one step back into its battery.
 Nothing else charges it.
 
-Hand in the four files below, which are the four Assessment 1 asks for, under the same names.
+Prepare the four files below, which are the four Assessment 1 asks for, under the same names.
 \begin{enumerate}
 \item \texttt{domain.pddl}: the types, the predicates and the actions.
 \item \texttt{problem.pddl}: at least five pallets, at least two forklifts, at least four bays, at least one charging point, and a goal that cannot be reached without recharging at least once.
@@ -516,8 +548,8 @@ If your planner brings back a plan that moves both at once, you have the bug fro
 \item Write a third problem file that is \emph{unsolvable}, and be able to say why before you run it.
 The battery gives you an easy way to do this.
 \end{enumerate}
-No numeric fluents.
-Assessment 1 forbids them and so does this question.
+
+Like Assessment 1, this question forbids numeric fluents.
 The battery has to be symbolic, and working out how to make it symbolic is most of the exercise.}
 \answer{Two encodings follow. Most students write the first, which is pure STRIPS. The second uses ADL, and the Assessment 1 reference solution has that shape. We ran both under Fast Downward and validated them with VAL on 2026-09-25.
 
@@ -562,7 +594,7 @@ Five bays in a line, no charger anywhere, a full battery worth three drives and 
 Fast Downward explores the state space and reports no solution.
 That differs from a planner that has not finished yet, and it is worth seeing the difference once.
 
-Four errors are common.
+There are at least four common errors associated with this question.
 Forgetting \texttt{(not (free ?f))} on pick-up, which the two-pallet instance catches.
 Writing \texttt{connected} in one direction only, so that the forklift reaches the dock and cannot come back; an aisle is two facts, as the doorway in question~\ref{q:takehome-doors} is.
 Declaring \texttt{:requirements :adl} while using only STRIPS, or the reverse, which the translator rejects, as in question~\ref{q:blocks-requirements}.

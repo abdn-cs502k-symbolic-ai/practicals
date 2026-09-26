@@ -188,12 +188,11 @@ Argue with a model if you find that useful, but do not let it answer for you.
 \end{align*}
 \item $P \Leftrightarrow Q \Rightarrow \lnot R$ is correct; the sequence of grammar rules is similar to the previous item.
 \item $P \lnot (P \lor Q)$ is not syntactically correct.
-The grammar for propositional logic establishes $\lnot$ as a unary connective, so this formula is in fact
-\[\mi{AtomicSentence}\,\lnot\,\mi{Sentence}\]
-where $\mi{AtomicSentence}$ is $P$ and $\mi{Sentence}$ is $(P \lor Q)$. Using the grammar we obtain
-\[\mi{AtomicSentence}\,\mi{ComplexSentence}\]
-where $\mi{ComplexSentence}$ is $\lnot (P \lor Q)$. This can be further rewritten as
-\[\mi{Sentence}\,\mi{Sentence}\]
+The grammar for propositional logic establishes $\lnot$ as a unary connective, so this formula is in fact \[\mi{AtomicSentence}\,\lnot\,\mi{Sentence}\]
+where $\mi{AtomicSentence}$ is $P$ and $\mi{Sentence}$ is $(P \lor Q)$.
+Using the grammar we obtain \[\mi{AtomicSentence}\,\mi{ComplexSentence}\]
+where $\mi{ComplexSentence}$ is $\lnot (P \lor Q)$.
+This can be further rewritten as \[\mi{Sentence}\,\mi{Sentence}\]
 The grammar does not allow two sentences to appear juxtaposed with no binary operator between them.
 \end{itemize}}
 
@@ -289,8 +288,7 @@ The right disjunct $(Q \lor \lnot Q)$ is true in every model, so the whole disju
 \item\label{q:enumerate}
 \question{Using the algorithm to enumerate all models studied in our lectures:
 
-\medskip
-\noindent\begin{minipage}{\linewidth}
+\medskip \noindent\begin{minipage}{\linewidth}
 \begin{algorithmic}[1]
 \Require $KB = \alpha_1 \land \cdots \land \alpha_n$, and $\alpha$ (a query)
 \Ensure true or false
@@ -443,8 +441,7 @@ Show that no refutation exists, by giving a model of the remaining clauses.
 \begin{enumerate}
 \item $\lnot \alpha$ is $A$.
 The biconditional $A \Leftrightarrow (B \lor C)$ becomes $(A \Rightarrow (B \lor C)) \land ((B \lor C) \Rightarrow A)$, then $(\lnot A \lor B \lor C) \land (\lnot (B \lor C) \lor A)$, and pushing the negation inwards turns the second conjunct into $(\lnot B \land \lnot C) \lor A$, which distributes to $(\lnot B \lor A) \land (\lnot C \lor A)$.
-The five clauses are
-\[C_1: \lnot A \lor B \lor C \qquad C_2: \lnot B \lor A \qquad C_3: \lnot C \lor A \qquad C_4: \lnot B \qquad C_5: \lnot C \qquad C_6: A\]
+The five clauses are \[C_1: \lnot A \lor B \lor C \qquad C_2: \lnot B \lor A \qquad C_3: \lnot C \lor A \qquad C_4: \lnot B \qquad C_5: \lnot C \qquad C_6: A\]
 where $C_6$ is the negated query.
 
 \item Resolve $C_6$ with $C_1$ on $A$, giving $C_7: B \lor C$.
