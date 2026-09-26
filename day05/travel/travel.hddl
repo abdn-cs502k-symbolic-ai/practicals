@@ -1,0 +1,38 @@
+(define (domain travel)
+  (:requirements :hierarchy :negative-preconditions :method-preconditions)
+  (:predicates (at ?x) (airport ?a ?c) (longDistance ?x ?y) (ticket ?x ?y) (hasTaxi ?x))
+  (:task travel :parameters (?x ?y))
+
+  (:action getTicket
+    :parameters (?x ?y ?xc ?yc)
+    :precondition (and (airport ?x ?xc) (airport ?y ?yc))
+    :effect (and (ticket ?x ?y)))
+  (:action fly
+    :parameters (?x ?y ?x1 ?y1)
+    :precondition (and (airport ?x ?x1) (airport ?y ?y1) (ticket ?x ?y) (at ?x))
+    :effect (and (not (at ?x)) (not (ticket ?x ?y)) (at ?y)))
+  (:action getTaxi
+    :parameters (?x)
+    :precondition (and (at ?x))
+    :effect (and (hasTaxi ?x)))
+  (:action rideTaxi
+    :parameters (?x ?y)
+    :precondition (and (at ?x) (not (longDistance ?x ?y)) (hasTaxi ?x))
+    :effect (and (not (at ?x)) (not (hasTaxi ?x)) (at ?y)))
+
+  (:method travel-by-taxi
+    :parameters (?x ?y)
+    :task (travel ?x ?y)
+    :precondition (and (at ?x) (not (longDistance ?x ?y)))
+    :ordered-subtasks (and (getTaxi ?x) (rideTaxi ?x ?y)))
+  ;; TODO: write travel-by-plane.
+  ;;
+  ;; Task:     travel from ?x to ?y
+  ;; Precond:  you are at ?x, ?y is a long way off, ?ax is the airport of ?x,
+  ;;           and ?ay is the airport of ?y
+  ;; Subtasks: get a ticket from ?ax to ?ay, travel to ?ax, fly, travel on to ?y
+  ;;
+  ;; The four subtasks are not totally ordered: buying the ticket and getting
+  ;; yourself to the airport do not depend on each other. Use :subtasks with
+  ;; labels and an :ordering, rather than :ordered-subtasks.
+)

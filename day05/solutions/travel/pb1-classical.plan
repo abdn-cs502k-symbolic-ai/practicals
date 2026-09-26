@@ -1,0 +1,4 @@
+(gettaxi portoalegre)
+(ridetaxi portoalegre gru)
+(gettaxi gru)
+(ridetaxi gru saopaulo)

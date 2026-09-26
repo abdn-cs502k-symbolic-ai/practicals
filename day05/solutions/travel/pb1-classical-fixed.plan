@@ -1,0 +1,6 @@
+(getticket poa gru portoalegre saopaulo)
+(gettaxi portoalegre)
+(ridetaxi portoalegre poa)
+(fly poa gru portoalegre saopaulo)
+(gettaxi gru)
+(ridetaxi gru saopaulo)

@@ -1,0 +1,12 @@
+F0: (at-robby rooma) (at-ball ball1 rooma) (at-ball ball2 rooma) (free left)
+
+A0: move(rooma,roomb)
+    pick-up(ball1,rooma,left)   pick-up(ball2,rooma,left)
+
+F1: F0 + (at-robby roomb) (carry left ball1) (carry left ball2)
+
+A1: A0 + move(roomb,rooma)
+       + drop(ball1,roomb,left)   drop(ball2,roomb,left)
+       + drop(ball1,rooma,left)   drop(ball2,rooma,left)
+
+F2: F1 + (at-ball ball1 roomb) (at-ball ball2 roomb)
