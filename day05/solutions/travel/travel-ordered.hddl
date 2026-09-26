@@ -1,7 +1,7 @@
-;; The travel domain of Lecture 10, complete.
-;; Reference solution for Tutorial 5b, question 2: travel-by-plane is the method
-;; students write, and the tutorial prints it from this file.
-;; The tutorial prints the travel-by-plane method only, lines 32 to 40.
+;; The travel domain with travel-by-plane totally ordered, for Tutorial 5b,
+;; question 3. It plans, and returns the same six actions as the partially
+;; ordered version, which is the point the question makes.
+;; The tutorial prints the travel-by-plane method only, lines 32 to 39.
 (define (domain travel)
   (:requirements :hierarchy :negative-preconditions :method-preconditions)
   (:predicates (at ?x) (airport ?a ?c) (longDistance ?x ?y) (ticket ?x ?y) (hasTaxi ?x))
@@ -33,9 +33,8 @@
     :parameters (?x ?y ?ax ?ay)
     :task (travel ?x ?y)
     :precondition (and (at ?x) (longDistance ?x ?y) (airport ?ax ?x) (airport ?ay ?y))
-    :subtasks (and (task0 (getTicket ?ax ?ay ?x ?y))
-                   (task1 (travel ?x ?ax))
-                   (task2 (fly ?ax ?ay ?x ?y))
-                   (task3 (travel ?ay ?y)))
-    :ordering (and (< task0 task2) (< task1 task2) (< task2 task3)))
+    :ordered-subtasks (and (getTicket ?ax ?ay ?x ?y)
+                           (travel ?x ?ax)
+                           (fly ?ax ?ay ?x ?y)
+                           (travel ?ay ?y)))
 )

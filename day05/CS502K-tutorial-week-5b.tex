@@ -234,7 +234,7 @@ Ordering constraints are written in prefix form, \texttt{(< task0 task2)}, meani
 \answer{
 \begin{enumerate}
 \item The method, which is the one on Lecture 10's HDDL frame:
-\pddlfile{solutions/travel/travel-by-plane.hddl}
+\pddlfile[firstline=32,lastline=40]{solutions/travel/travel.hddl}
 and the plan, six actions:
 \pddlfile{solutions/travel/pb1.plan}
 Read it against the decomposition tree on the lecture's solution frame: \texttt{travel(portoalegre,saopaulo)} became four subtasks, and each of the two nested \texttt{travel} tasks became a taxi ride through \texttt{travel-by-taxi}.
@@ -288,7 +288,7 @@ The slide is wrong, and we are correcting it.
 It writes the constraint infix, and it also orders \texttt{task0} before \texttt{task2} twice while never ordering \texttt{task1} at all.
 
 \item The same plan, six actions in the same sequence.
-\pddlfile{solutions/travel/travel-by-plane-ordered.hddl}
+\pddlfile[firstline=32,lastline=39]{solutions/travel/travel-ordered.hddl}
 
 \item Every order but that one.
 \texttt{:ordered-subtasks} is shorthand for a total order, so it says that the ticket must be bought before the taxi is called, which is not true of travelling and was not what you meant.

@@ -1,9 +1,0 @@
-  (:method travel-by-plane
-    :parameters (?x ?y ?ax ?ay)
-    :task (travel ?x ?y)
-    :precondition (and (at ?x) (longDistance ?x ?y) (airport ?ax ?x) (airport ?ay ?y))
-    :subtasks (and (task0 (getTicket ?ax ?ay ?x ?y))
-                   (task1 (travel ?x ?ax))
-                   (task2 (fly ?ax ?ay ?x ?y))
-                   (task3 (travel ?ay ?y)))
-    :ordering (and (< task0 task2) (< task1 task2) (< task2 task3)))
